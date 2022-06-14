@@ -1,4 +1,5 @@
 from time import time
+from requests import request, Response
 
 from requests.exceptions import ConnectionError
 
@@ -37,7 +38,7 @@ class Transport:
         json: dict = None,
         params: dict = None,
         headers: dict = None,
-    ):
+    ) -> Response.json:
         """Makes HTTP requests to the configured nodes.
            Retries connection errors
            (e.g. DNS failures, refused connection, etc).
