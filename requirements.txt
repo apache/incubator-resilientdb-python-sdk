@@ -1,2 +1,3 @@
 cryptoconditions
 pysha3
+python-rapidjson

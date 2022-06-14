@@ -13,7 +13,7 @@ NO_TIMEOUT_BACKOFF_CAP = 10  # seconds
 class Transport:
     """Transport class."""
 
-    def __init__(self, *nodes, timeout=None):
+    def __init__(self, *nodes: list, timeout: int = None):
         """Initializes an instance of
         :class:`~nexres_driver.transport.Transport`.
         Args:
@@ -23,12 +23,21 @@ class Transport:
         """
         self.nodes = nodes
         self.timeout = timeout
-        self.connection_pool = Pool([Connection(node_url=node['endpoint'],
-                                                headers=node['headers'])
-                                     for node in nodes])
+        self.connection_pool = Pool(
+            [
+                Connection(node_url=node["endpoint"], headers=node["headers"])
+                for node in nodes
+            ]
+        )
 
-    def forward_request(self, method : str, path : str =None,
-                        json: dict = None, params : dict = None, headers : dict =None):
+    def forward_request(
+        self,
+        method: str,
+        path: str = None,
+        json: dict = None,
+        params: dict = None,
+        headers: dict = None,
+    ):
         """Makes HTTP requests to the configured nodes.
            Retries connection errors
            (e.g. DNS failures, refused connection, etc).
@@ -51,10 +60,9 @@ class Transport:
         """
         error_trace = []
         timeout = self.timeout
-        backoff_cap = NO_TIMEOUT_BACKOFF_CAP if timeout is None \
-            else timeout / 2
+        backoff_cap = NO_TIMEOUT_BACKOFF_CAP if timeout is None else timeout / 2
         while timeout is None or timeout > 0:
-            connection : Connection  = self.connection_pool.get_connection()
+            connection: Connection = self.connection_pool.get_connection()
 
             start = time()
             try:

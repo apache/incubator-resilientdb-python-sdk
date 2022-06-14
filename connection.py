@@ -1,4 +1,3 @@
-
 import time
 
 from collections import namedtuple
@@ -12,13 +11,13 @@ from .exceptions import HTTP_EXCEPTIONS, TransportError
 
 BACKOFF_DELAY = 0.5  # seconds
 
-HttpResponse = namedtuple('HttpResponse', ('status_code', 'headers', 'data'))
+HttpResponse = namedtuple("HttpResponse", ("status_code", "headers", "data"))
 
 
 class Connection:
     """A Connection object to make HTTP requests to a particular node."""
 
-    def __init__(self, *, node_url, headers=None):
+    def __init__(self, *, node_url: str, headers: dict = None):
         """Initializes a :class:`~nexres_driver.connection.Connection`
         instance.
 
@@ -35,9 +34,18 @@ class Connection:
         self._retries = 0
         self.backoff_time = None
 
-    def request(self, method, *, path=None, json=None,
-                params=None, headers=None, timeout=None,
-                backoff_cap=None, **kwargs):
+    def request(
+        self,
+        method: str,
+        *,
+        path: str = None,
+        json: dict = None,
+        params: dict = None,
+        headers: dict = None,
+        timeout: int = None,
+        backoff_cap: int = None,
+        **kwargs
+    ) -> HttpResponse:
         """Performs an HTTP request with the given parameters.
 
            Implements exponential backoff.
@@ -91,11 +99,10 @@ class Connection:
             connExc = err
             raise err
         finally:
-            self.update_backoff_time(success=connExc is None,
-                                     backoff_cap=backoff_cap)
+            self.update_backoff_time(success=connExc is None, backoff_cap=backoff_cap)
         return response
 
-    def get_backoff_timedelta(self):
+    def get_backoff_timedelta(self) -> float:
         if self.backoff_time is None:
             return 0
 
@@ -107,13 +114,13 @@ class Connection:
             self.backoff_time = None
         else:
             utcnow = datetime.utcnow()
-            backoff_delta = BACKOFF_DELAY * 2 ** self._retries
+            backoff_delta = BACKOFF_DELAY * 2**self._retries
             if backoff_cap is not None:
                 backoff_delta = min(backoff_delta, backoff_cap)
             self.backoff_time = utcnow + timedelta(seconds=backoff_delta)
             self._retries += 1
 
-    def _request(self, **kwargs):
+    def _request(self, **kwargs) -> HttpResponse:
         response = self.session.request(**kwargs)
         text = response.text
         try:
@@ -122,6 +129,6 @@ class Connection:
             json = None
         if not (200 <= response.status_code < 300):
             exc_cls = HTTP_EXCEPTIONS.get(response.status_code, TransportError)
-            raise exc_cls(response.status_code, text, json, kwargs['url'])
+            raise exc_cls(response.status_code, text, json, kwargs["url"])
         data = json if json is not None else text
         return HttpResponse(response.status_code, response.headers, data)

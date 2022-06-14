@@ -27,7 +27,6 @@ class TransportError(NexresException):
         return self.args[3]
 
 
-
 class BadRequest(TransportError):
     """Exception for HTTP 400 errors."""
 
@@ -44,7 +43,6 @@ class GatewayTimeout(TransportError):
     """Exception for HTTP 503 errors."""
 
 
-
 class TimeoutError(NexresException):
     """Raised if the request algorithm times out."""
 
@@ -53,10 +51,10 @@ class TimeoutError(NexresException):
         """Returns connection errors occurred before timeout expired."""
         return self.args[0]
 
+
 HTTP_EXCEPTIONS = {
     400: BadRequest,
     404: NotFoundError,
     503: ServiceUnavailable,
     504: GatewayTimeout,
 }
-
