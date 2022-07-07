@@ -16,6 +16,16 @@ Traditionally, people design applications focusing on business processes (e.g. a
 [Comparison between different ways to send send request](https://julien.danjou.info/python-and-fast-http-clients/)
 
 [asyncio - an introduction](https://www.datacamp.com/tutorial/asyncio-introduction)
+
 [more asyncio](https://realpython.com/async-io-python/)
 
 [aiohttp](https://github.com/aio-libs/aiohttp)
+
+
+## Remaining tasks
+1. test the sdk
+2. Implement verify transaction on nexres client
+3. A solution for storing secrets
+4. Build the APIs for NFT marketplce
+
+~ 3 weeks
