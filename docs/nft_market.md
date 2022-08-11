@@ -50,8 +50,8 @@ painting_asset = {
 
 painting_asset_metadata = {
     'date_started': '1/1/2022',
-    'date_completed': '12/3/2022'
-    'price‘: '100'
+    'date_completed': '12/3/2022',
+    'price': '100',
     'currency': 'USD'
 }
 
