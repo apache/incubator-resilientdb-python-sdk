@@ -133,6 +133,10 @@ class Nexres:
             headers=headers,
         )
 
+    def get_transaction(self, txid):
+        # TODO
+        return None
+
 
 class NamespacedDriver:
     """Base class for creating endpoints (namespaced objects) that can be added

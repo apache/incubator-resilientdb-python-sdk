@@ -21,7 +21,7 @@ from .crypto import PrivateKey, hash_data
 from .exceptions import (KeypairMismatchException,
                          InvalidHash, InvalidSignature,
                          AmountError, AssetIdMismatch,
-                         ThresholdTooDeep)
+                         ThresholdTooDeep, DoubleSpend, InputDoesNotExist)
 from .utils import serialize
 
 
@@ -1089,3 +1089,123 @@ class Transaction(object):
         outputs = [Output.from_dict(output) for output in tx['outputs']]
         return cls(tx['operation'], tx['asset'], inputs, outputs,
                    tx['metadata'], tx['version'], hash_id=tx['id'])
+
+    @classmethod
+    def from_db(cls, bigchain, tx_dict_list):
+        """Helper method that reconstructs a transaction dict that was returned
+        from the database. It checks what asset_id to retrieve, retrieves the
+        asset from the asset table and reconstructs the transaction.
+
+        Args:
+            bigchain (:class:`~bigchaindb.tendermint.BigchainDB`): An instance
+                of BigchainDB used to perform database queries.
+            tx_dict_list (:list:`dict` or :obj:`dict`): The transaction dict or
+                list of transaction dict as returned from the database.
+
+        Returns:
+            :class:`~Transaction`
+
+        """
+        return_list = True
+        if isinstance(tx_dict_list, dict):
+            tx_dict_list = [tx_dict_list]
+            return_list = False
+
+        tx_map = {}
+        tx_ids = []
+        for tx in tx_dict_list:
+            tx.update({'metadata': None})
+            tx_map[tx['id']] = tx
+            tx_ids.append(tx['id'])
+
+        assets = list(bigchain.get_assets(tx_ids))
+        for asset in assets:
+            if asset is not None:
+                tx = tx_map[asset['id']]
+                del asset['id']
+                tx['asset'] = asset
+
+        tx_ids = list(tx_map.keys())
+        metadata_list = list(bigchain.get_metadata(tx_ids))
+        for metadata in metadata_list:
+            tx = tx_map[metadata['id']]
+            tx.update({'metadata': metadata.get('metadata')})
+
+        if return_list:
+            tx_list = []
+            for tx_id, tx in tx_map.items():
+                tx_list.append(cls.from_dict(tx))
+            return tx_list
+        else:
+            tx = list(tx_map.values())[0]
+            return cls.from_dict(tx)
+
+    type_registry = {}
+
+    @staticmethod
+    def register_type(tx_type, tx_class):
+        Transaction.type_registry[tx_type] = tx_class
+
+    def resolve_class(operation):
+        """For the given `tx` based on the `operation` key return its implementation class"""
+
+        create_txn_class = Transaction.type_registry.get(Transaction.CREATE)
+        return Transaction.type_registry.get(operation, create_txn_class)
+
+    @classmethod
+    def validate_schema(cls, tx):
+        pass
+
+    def validate_transfer_inputs(self, bigchain, current_transactions=[]):
+        # store the inputs so that we can check if the asset ids match
+        input_txs = []
+        input_conditions = []
+        for input_ in self.inputs:
+            input_txid = input_.fulfills.txid
+            
+            input_tx = bigchain.get_transaction(input_txid)
+
+            if input_tx is None:
+                for ctxn in current_transactions:
+                    if ctxn.id == input_txid:
+                        input_tx = ctxn
+
+            if input_tx is None:
+                raise InputDoesNotExist("input `{}` doesn't exist"
+                                        .format(input_txid))
+
+            spent = bigchain.get_spent(input_txid, input_.fulfills.output,
+                                       current_transactions)
+            if spent:
+                raise DoubleSpend('input `{}` was already spent'
+                                  .format(input_txid))
+
+            output = input_tx.outputs[input_.fulfills.output]
+            input_conditions.append(output)
+            input_txs.append(input_tx)
+
+        # Validate that all inputs are distinct
+        links = [i.fulfills.to_uri() for i in self.inputs]
+        if len(links) != len(set(links)):
+            raise DoubleSpend('tx "{}" spends inputs twice'.format(self.id))
+
+        # validate asset id
+        asset_id = self.get_asset_id(input_txs)
+        if asset_id != self.asset['id']:
+            raise AssetIdMismatch(('The asset id of the input does not'
+                                   ' match the asset id of the'
+                                   ' transaction'))
+
+        input_amount = sum([input_condition.amount for input_condition in input_conditions])
+        output_amount = sum([output_condition.amount for output_condition in self.outputs])
+
+        if output_amount != input_amount:
+            raise AmountError(('The amount used in the inputs `{}`'
+                               ' needs to be same as the amount used'
+                               ' in the outputs `{}`')
+                              .format(input_amount, output_amount))
+
+        if not self.inputs_valid(input_conditions):
+            raise InvalidSignature('Transaction signature is invalid.')
+
+        return True

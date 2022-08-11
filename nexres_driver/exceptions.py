@@ -120,11 +120,18 @@ class DoubleSpend(ValidationError):
     """Raised if a double spend is found"""
 
 
+class DoubleSpend(ValidationError):
+    """Raised if a double spend is found"""
+
+
 class InvalidHash(ValidationError):
     """Raised if there was an error checking the hash for a particular
     operation
     """
 
+
+class InputDoesNotExist(ValidationError):
+    """Raised if a transaction input does not exist"""
 
 class SchemaValidationError(ValidationError):
     """Raised if there was any error validating an object's schema"""
