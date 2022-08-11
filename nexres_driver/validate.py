@@ -1,7 +1,3 @@
-# Copyright © 2020 Interplanetary Database Association e.V.,
-# BigchainDB and IPDB software contributors.
-# SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
-# Code is Apache-2.0 and docs are CC-BY-4.0
 
 # from nexres_driver.backend.schema import validate_language_key
 from nexres_driver.exceptions import (InvalidSignature,
@@ -10,16 +6,15 @@ from nexres_driver.exceptions import (InvalidSignature,
 from nexres_driver.transaction import Transaction
 # from nexres_driver.utils import (validate_txn_obj, validate_key)
 
-
 class Transaction(Transaction):
     ASSET = 'asset'
     METADATA = 'metadata'
     DATA = 'data'
 
-    def validate(self, bigchain, current_transactions=[]):
+    def validate(self, nexre, current_transactions=[]):
         """Validate transaction spend
         Args:
-            bigchain (BigchainDB): an instantiated bigchaindb.BigchainDB object.
+            nexre (BigchainDB): an instantiated nexres_driver.Nexres object.
         Returns:
             The transaction (Transaction) if the transaction is valid else it
             raises an exception describing the reason why the transaction is
@@ -32,7 +27,7 @@ class Transaction(Transaction):
         if self.operation == Transaction.CREATE:
             duplicates = any(txn for txn in current_transactions if txn.id == self.id)
             #TODO check if id already committed
-            # if bigchain.is_committed(self.id) or duplicates:
+            # if nexres.is_committed(self.id) or duplicates:
             #     raise DuplicateTransaction('transaction `{}` already exists'
             #                                .format(self.id))
 
@@ -40,7 +35,7 @@ class Transaction(Transaction):
                 raise InvalidSignature('Transaction signature is invalid.')
 
         elif self.operation == Transaction.TRANSFER:
-            self.validate_transfer_inputs(bigchain, current_transactions)
+            self.validate_transfer_inputs(nexre, current_transactions)
 
         return self
 
