@@ -1,13 +1,18 @@
 # nexres_sdk
 
-## installing dependencies
+## Check Python is up-to-date (3.9+)
+`$ python3 --version`
+
+If your Python version number is too low you may encounter type hinting issues when attempting to run the code
+
+## Installing dependencies
 `$ python3 -m venv venv`
 
 `$ source venv/bin/activate`
 
 `$ pip install -r requirements.txt`
 
-## running the driver
+## Running the driver
 
 examples of using the driver can be seen in [test_driver](/test_driver.py)
 
