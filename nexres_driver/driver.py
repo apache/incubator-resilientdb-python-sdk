@@ -1,4 +1,6 @@
 
+from crypt import methods
+from curses import meta
 from .transport import Transport
 from .offchain import prepare_transaction, fulfill_transaction
 from .utils import normalize_nodes
@@ -42,7 +44,7 @@ class Nexres:
         self._blocks = BlocksEndpoint(self)
         self._assets = AssetsEndpoint(self)
         self._metadata = MetadataEndpoint(self)
-        self.api_prefix = '/api/v1'
+        self.api_prefix = '/v1'
 
     @property
     def nodes(self):
@@ -135,7 +137,7 @@ class Nexres:
 
     def get_transaction(self, txid):
         # TODO
-        return None
+        raise NotImplementedError
 
 
 class NamespacedDriver:
@@ -166,8 +168,7 @@ class NamespacedDriver:
 
     @property
     def path(self):
-        # return self.api_prefix + self.PATH
-        return "/"
+        return self.api_prefix + self.PATH
 
 
 class TransactionsEndpoint(NamespacedDriver):
@@ -370,12 +371,18 @@ class TransactionsEndpoint(NamespacedDriver):
             dict: The transaction sent to the Federation node(s).
 
         """
+        # return self.transport.forward_request(
+        #     method='POST',
+        #     path=self.path,
+        #     json=transaction,
+        #     params={'mode': 'commit'},
+        #     headers=headers)
+        path = self.path + '/commit'
         return self.transport.forward_request(
             method='POST',
-            path=self.path,
-            json=transaction,
-            params={'mode': 'commit'},
-            headers=headers)
+            path=path,
+            headers=headers
+        )
 
     def retrieve(self, txid: str, headers : dict=None) -> dict:
         """Retrieves the transaction with the given id.
