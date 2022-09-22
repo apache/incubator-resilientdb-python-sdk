@@ -377,10 +377,11 @@ class TransactionsEndpoint(NamespacedDriver):
         #     json=transaction,
         #     params={'mode': 'commit'},
         #     headers=headers)
-        path = self.path + '/commit'
+        path = self.path + 'commit'
         return self.transport.forward_request(
             method='POST',
             path=path,
+            json=transaction,
             headers=headers
         )
 
