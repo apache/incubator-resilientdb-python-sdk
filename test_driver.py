@@ -35,11 +35,6 @@ fulfilled_token_tx = db.transactions.fulfill(
 )
 
 #%%
-from resdb_driver.validate import Transaction
-
-t = Transaction.from_dict(fulfilled_token_tx)
-t.validate()
-#%%
 db.transactions.send_commit(fulfilled_token_tx)
 
 #%%
@@ -75,3 +70,10 @@ sent_transfer_tx = db.transactions.send_commit(fulfilled_transfer_tx)
 # %%
 ## replace `testId` with the txid for the transaction to retrieve
 db.transactions.retrieve(txid="testId")
+
+#%%
+# TODO valide a tx object
+# from resdb_driver.validate import Transaction
+
+# t = Transaction.from_dict(fulfilled_token_tx)
+# t.validate()
