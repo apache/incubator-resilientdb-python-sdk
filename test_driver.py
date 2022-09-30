@@ -73,4 +73,5 @@ sent_transfer_tx = db.transactions.send_commit(fulfilled_transfer_tx)
 
 
 # %%
+## replace `testId` with the txid for the transaction to retrieve
 db.transactions.retrieve(txid="testId")

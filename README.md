@@ -16,7 +16,7 @@ If your Python version number is too low you may encounter type hinting issues w
 
 examples of using the driver can be seen in [test_driver](/test_driver.py)
 
-the base_url is a dummy url. The commit wont actually work till the connection to Resdb is complete. But its interesting to see the intermediary steps of asset creation and transfer.
+replace the db_root_url with the url of resilient db e.g `120.0.0.1:8080`
 
 
 ## TODO
