@@ -1,20 +1,20 @@
 
-# from nexres_driver.backend.schema import validate_language_key
-from nexres_driver.exceptions import (InvalidSignature,
+# from resdb_driver.backend.schema import validate_language_key
+from resdb_driver.exceptions import (InvalidSignature,
                                           DuplicateTransaction)
-# from nexres_driver.schema import validate_transaction_schema
-from nexres_driver.transaction import Transaction
-# from nexres_driver.utils import (validate_txn_obj, validate_key)
+# from resdb_driver.schema import validate_transaction_schema
+from resdb_driver.transaction import Transaction
+# from resdb_driver.utils import (validate_txn_obj, validate_key)
 
 class Transaction(Transaction):
     ASSET = 'asset'
     METADATA = 'metadata'
     DATA = 'data'
 
-    def validate(self, nexre, current_transactions=[]):
+    def validate(self, resdb, current_transactions=[]):
         """Validate transaction spend
         Args:
-            nexre (BigchainDB): an instantiated nexres_driver.Nexres object.
+            resdb: an instantiated resdb_driver.Resdb object.
         Returns:
             The transaction (Transaction) if the transaction is valid else it
             raises an exception describing the reason why the transaction is
@@ -27,7 +27,7 @@ class Transaction(Transaction):
         if self.operation == Transaction.CREATE:
             duplicates = any(txn for txn in current_transactions if txn.id == self.id)
             #TODO check if id already committed
-            # if nexres.is_committed(self.id) or duplicates:
+            # if resdb.is_committed(self.id) or duplicates:
             #     raise DuplicateTransaction('transaction `{}` already exists'
             #                                .format(self.id))
 
@@ -35,7 +35,7 @@ class Transaction(Transaction):
                 raise InvalidSignature('Transaction signature is invalid.')
 
         elif self.operation == Transaction.TRANSFER:
-            self.validate_transfer_inputs(nexre, current_transactions)
+            self.validate_transfer_inputs(resdb, current_transactions)
 
         return self
 

@@ -18,7 +18,7 @@ class Connection:
     """A Connection object to make HTTP requests to a particular node."""
 
     def __init__(self, *, node_url: str, headers: dict = None):
-        """Initializes a :class:`~nexres_driver.connection.Connection`
+        """Initializes a :class:`~resdb_driver.connection.Connection`
         instance.
 
         Args:

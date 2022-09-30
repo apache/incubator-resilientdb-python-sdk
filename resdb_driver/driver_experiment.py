@@ -36,7 +36,7 @@ an input is a pointer to an output of a previous transaction. It specifies to wh
 from email import message
 from cryptoconditions import Ed25519Sha256
 import base58
-from nexres_driver.crypto import generate_keypair
+from resdb_driver.crypto import generate_keypair
 
 alice = generate_keypair()
 
@@ -198,7 +198,7 @@ import base58
 import sha3
 from cryptoconditions import Ed25519Sha256
 
-from nexres_driver.crypto import generate_keypair
+from resdb_driver.crypto import generate_keypair
 
 bob = generate_keypair()
 

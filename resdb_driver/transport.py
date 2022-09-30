@@ -16,7 +16,7 @@ class Transport:
 
     def __init__(self, *nodes: list, timeout: int = None):
         """Initializes an instance of
-        :class:`~nexres_driver.transport.Transport`.
+        :class:`~resdb_driver.transport.Transport`.
         Args:
             nodes: each node is a dictionary with the keys `endpoint` and
                    `headers`

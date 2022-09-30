@@ -1,5 +1,5 @@
 """
-Module for offchain operations. Connection to nexres nodes not required!
+Module for offchain operations. Connection to resdb nodes not required!
 """
 
 import logging
@@ -13,7 +13,7 @@ from .transaction import (
 )
 from .exceptions import KeypairMismatchException
 
-from .exceptions import BigchaindbException, MissingPrivateKeyError
+from .exceptions import ResdbException, MissingPrivateKeyError
 from .utils import (
     CreateOperation,
     TransferOperation,
@@ -30,7 +30,7 @@ def _prepare_transaction(operation,
                          asset=None,
                          metadata=None,
                          inputs=None):
-    raise BigchaindbException((
+    raise ResdbException((
         'Unsupported operation: {}. '
         'Only "CREATE" and "TRANSFER" are supported.'.format(operation)))
 
@@ -81,7 +81,7 @@ def prepare_transaction(*, operation='CREATE', signers=None,
         dict: The prepared transaction.
 
     Raises:
-        :class:`~.exceptions.BigchaindbException`: If ``operation`` is
+        :class:`~.exceptions.ResdbException`: If ``operation`` is
             not ``'CREATE'`` or ``'TRANSFER'``.
 
     .. important::
@@ -239,7 +239,7 @@ def prepare_transfer_transaction(*,
 
             # noqa E501
             >>> tx
-                {'asset': {'data': {'msg': 'Hello Nexres!'}},
+                {'asset': {'data': {'msg': 'Hello Resdb!'}},
                  'id': '9650055df2539223586d33d273cb8fd05bd6d485b1fef1caf7c8901a49464c87',
                  'inputs': [{'fulfillment': {'public_key': '3Cxh1eKZk3Wp9KGBWFS7iVde465UvqUKnEqTg2MW4wNf',
                                              'type': 'ed25519-sha-256'},
@@ -326,7 +326,7 @@ def fulfill_transaction(transaction, *, private_keys):
 
     Returns:
         dict: The fulfilled transaction payload, ready to be sent to a
-        BigchainDB federation.
+        ResDB federation.
 
     Raises:
         :exc:`~.exceptions.MissingPrivateKeyError`: If a private

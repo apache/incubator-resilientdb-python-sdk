@@ -1,14 +1,14 @@
-class NexresException(Exception):
-    """Base exception for all nexres exceptions."""
+class ResdbException(Exception):
+    """Base exception for all resdb exceptions."""
 
-class BigchaindbException(Exception):
-    """Base exception for all Bigchaindb exceptions."""
+class ResdbException(Exception):
+    """Base exception for all Resdb exceptions."""
 
-class MissingPrivateKeyError(BigchaindbException):
+class MissingPrivateKeyError(ResdbException):
     """Raised if a private key is missing."""
 
 
-class TransportError(NexresException):
+class TransportError(ResdbException):
     """Base exception for transport related errors.
 
     This is mainly for cases where the status code denotes an HTTP error, and
@@ -49,7 +49,7 @@ class GatewayTimeout(TransportError):
     """Exception for HTTP 503 errors."""
 
 
-class TimeoutError(NexresException):
+class TimeoutError(ResdbException):
     """Raised if the request algorithm times out."""
 
     @property
@@ -69,37 +69,37 @@ HTTP_EXCEPTIONS = {
 
 
 
-class BigchainDBError(Exception):
-    """Base class for BigchainDB exceptions."""
+class ResDBError(Exception):
+    """Base class for ResDB exceptions."""
 
 
-class ConfigurationError(BigchainDBError):
+class ConfigurationError(ResDBError):
     """Raised when there is a problem with server configuration"""
 
 
-class DatabaseAlreadyExists(BigchainDBError):
+class DatabaseAlreadyExists(ResDBError):
     """Raised when trying to create the database but the db is already there"""
 
 
-class DatabaseDoesNotExist(BigchainDBError):
+class DatabaseDoesNotExist(ResDBError):
     """Raised when trying to delete the database but the db is not there"""
 
 
-class StartupError(BigchainDBError):
+class StartupError(ResDBError):
     """Raised when there is an error starting up the system"""
 
 
-class CyclicBlockchainError(BigchainDBError):
+class CyclicBlockchainError(ResDBError):
     """Raised when there is a cycle in the blockchain"""
 
 
-class KeypairMismatchException(BigchainDBError):
+class KeypairMismatchException(ResDBError):
     """Raised if the private key(s) provided for signing don't match any of the
     current owner(s)
     """
 
 
-class OperationError(BigchainDBError):
+class OperationError(ResDBError):
     """Raised when an operation cannot go through"""
 
 
@@ -112,7 +112,7 @@ class OperationError(BigchainDBError):
 # especially for the purposes of testing.
 
 
-class ValidationError(BigchainDBError):
+class ValidationError(ResDBError):
     """Raised if there was an error in validation"""
 
 

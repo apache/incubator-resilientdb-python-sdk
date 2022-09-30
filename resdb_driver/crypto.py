@@ -17,6 +17,7 @@ def generate_keypair(seed=None) -> CryptoKeypair:
 
 def hash_data(data) -> sha3.sha3_256:
     """Hash the provided data using SHA3-256"""
+    print(f"HASH DATA {type(data)}, {data=}")
     return sha3.sha3_256(data.encode()).hexdigest()
 
 

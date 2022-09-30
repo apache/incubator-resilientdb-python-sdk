@@ -1,4 +1,4 @@
-# Building a NFT market with nexres
+# Building a NFT market with resdb
 
 ## How can Sajjad sell his painting to Mo?
 1. Sajjad registers his painting as an immutable asset of which he has ownership
@@ -12,7 +12,7 @@
 2. Uploading the NFT = `SEND` transaction or `send_commit`
 3. transferring ownership from Sajjad to Mo = `TRANSFER` transaction
 
-Nexres uses public key cryptography to register and maintain the integrity and security of assets.
+Resdb uses public key cryptography to register and maintain the integrity and security of assets.
 Each asset has to be signed with the owner's private key. This provides surity that the owner of the asset is the one making the transactions.
 
 Each transactions generates a unique hash called `transaction ID`.
@@ -21,8 +21,8 @@ Each transactions generates a unique hash called `transaction ID`.
 
 #### Importing the important stuff
 ```python
-from nexres_driver import Nexres
-from nexres_driver.crypto import generate_keypair
+from resdb_driver import Resdb
+from resdb_driver.crypto import generate_keypair
 ```
 
 #### Generating keys
@@ -32,7 +32,7 @@ Sajjad, Mo = generate_keypair(), generate_keypair()
 
 #### Set up root url
 ```python
-root_url = 'https://nexres_url:8080'
+root_url = 'https://resdb_url:8080'
 ```
 
 #### PART 1: Creating the Asset and registering it under Sajjad's ownership
@@ -103,7 +103,7 @@ fulfilled_transfer_tx = db.transactions.fulfill(
 ```
 
 #### competing the TRANSFER operatiom with a commit
-`sent_transfer_tx = bdb.transactions.send_commit(fulfilled_transfer_tx)`
+`sent_transfer_tx = resdb.transactions.send_commit(fulfilled_transfer_tx)`
 
 #### Comfirming
 ```python

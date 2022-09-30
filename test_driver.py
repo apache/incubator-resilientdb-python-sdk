@@ -1,11 +1,11 @@
 #%%
 
-from nexres_driver import Nexres
+from resdb_driver import Resdb
 
-db_root_url = 'https://nexres.free.beeceptor.com'
+db_root_url = 'https://resdb.free.beeceptor.com'
 
-db = Nexres(db_root_url)
-from nexres_driver.crypto import generate_keypair
+db = Resdb(db_root_url)
+from resdb_driver.crypto import generate_keypair
 
 alice, bob = generate_keypair(), generate_keypair()
 #%%
@@ -38,6 +38,10 @@ fulfilled_token_tx = db.transactions.fulfill(
     private_keys=alice.private_key)
 
 #%%
+from resdb_driver.validate import Transaction
+t = Transaction.from_dict(fulfilled_token_tx)
+t.validate()
+#%%
 db.transactions.send_commit(fulfilled_token_tx)
 
 #%%
@@ -69,5 +73,4 @@ sent_transfer_tx = db.transactions.send_commit(fulfilled_transfer_tx)
 
 
 # %%
-
-db.transactions.retrieve()
+db.transactions.retrieve(txid="testId")

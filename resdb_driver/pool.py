@@ -8,18 +8,18 @@ class AbstractPicker(metaclass=ABCMeta):
 
     @abstractmethod
     def pick(self, connections: list[Connection]):
-        """Picks a :class:`~nexres_driver.connection.Connection`
+        """Picks a :class:`~resdb_driver.connection.Connection`
         instance from the given list of
-        :class:`~nexres_driver.connection.Connection` instances.
+        :class:`~resdb_driver.connection.Connection` instances.
         Args:
             connections (List): List of
-                :class:`~nexres_driver.connection.Connection` instances.
+                :class:`~resdb_driver.connection.Connection` instances.
         """
         pass
 
 
 class RoundRobinPicker(AbstractPicker):
-    """Picks a :class:`~nexres_driver.connection.Connection`
+    """Picks a :class:`~resdb_driver.connection.Connection`
     instance from a list of connections.
     """
 
@@ -30,7 +30,7 @@ class RoundRobinPicker(AbstractPicker):
            Otherwise, the connections are tried in a round robin fashion.
         Args:
             connections (:obj:list): List of
-                :class:`~nexres_driver.connection.Connection` instances.
+                :class:`~resdb_driver.connection.Connection` instances.
         """
         if len(connections) == 1:
             return connections[0]
@@ -47,18 +47,18 @@ class Pool:
     """Pool of connections."""
 
     def __init__(self, connections: list[Connection], picker_class=RoundRobinPicker):
-        """Initializes a :class:`~nexres_driver.pool.Pool` instance.
+        """Initializes a :class:`~resdb_driver.pool.Pool` instance.
         Args:
             connections (list): List of
-                :class:`~nexres_driver.connection.Connection` instances.
+                :class:`~resdb_driver.connection.Connection` instances.
         """
         self.connections = connections
         self.picker = picker_class()
 
     def get_connection(self) -> Connection:
-        """Gets a :class:`~nexres_driver.connection.Connection`
+        """Gets a :class:`~resdb_driver.connection.Connection`
         instance from the pool.
         Returns:
-            A :class:`~nexres_driver.connection.Connection` instance.
+            A :class:`~resdb_driver.connection.Connection` instance.
         """
         return self.picker.pick(self.connections)

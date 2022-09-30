@@ -1,4 +1,4 @@
-# nexres_sdk
+# resdb_sdk
 
 ## Check Python is up-to-date (3.9+)
 `$ python3 --version`
@@ -16,10 +16,10 @@ If your Python version number is too low you may encounter type hinting issues w
 
 examples of using the driver can be seen in [test_driver](/test_driver.py)
 
-the base_url is a dummy url. The commit wont actually work till the connection to nexres is complete. But its interesting to see the intermediary steps of asset creation and transfer.
+the base_url is a dummy url. The commit wont actually work till the connection to Resdb is complete. But its interesting to see the intermediary steps of asset creation and transfer.
 
 
 ## TODO
 - Setting up linting (using [black](https://github.com/psf/black)) through github hooks
 - convert the sdk into a package (for pip install)
-- Potentially have a docker setup which fetched the nexres image and runs it locally
+- Potentially have a docker setup which fetched the Resdb image and runs it locally

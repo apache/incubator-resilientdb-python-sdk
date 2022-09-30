@@ -7,8 +7,8 @@ from .utils import normalize_nodes
 from typing import Any, Union
 
 
-class Nexres:
-    """A :class:`~nexres_driver.Nexres` driver is able to create, sign,
+class Resdb:
+    """A :class:`~resdb_driver.Resdb` driver is able to create, sign,
        and submit transactions to one or more nodes in a Federation.
 
        If initialized with ``>1`` nodes, the driver will send successive
@@ -19,20 +19,20 @@ class Nexres:
 
     def __init__(self, *nodes: list[Union[str,dict]], transport_class: Transport=Transport,
                  headers=None, timeout=20):
-        """Initialize a :class:`~nexres_driver.Nexres` driver instance.
+        """Initialize a :class:`~resdb_driver.Resdb` driver instance.
 
         Args:
-            *nodes (list of (str or dict)): Nexres nodes to connect to.
+            *nodes (list of (str or dict)): Resdb nodes to connect to.
                 Currently, the full URL must be given. In the absence of any
                 node, the default(``'http://localhost:9984'``) will be used.
                 If node is passed as a dict, `endpoint` is a required key;
                 `headers` is an optional `dict` of headers.
             transport_class: Optional transport class to use.
-                Defaults to :class:`~nexres_driver.transport.Transport`.
+                Defaults to :class:`~resdb_driver.transport.Transport`.
             headers (dict): Optional headers that will be passed with
                 each request. To pass headers only on a per-request
                 basis, you can pass the headers to the method of choice
-                (e.g. :meth:`Nexres().transactions.send_commit()
+                (e.g. :meth:`Resdb().transactions.send_commit()
                 <.TransactionsEndpoint.send_commit>`).
             timeout (int): Optional timeout in seconds that will be passed
                 to each request.
@@ -53,43 +53,43 @@ class Nexres:
 
     @property
     def transport(self):
-        """:class:`~nexres_driver.transport.Transport`: Object
+        """:class:`~resdb_driver.transport.Transport`: Object
         responsible for forwarding requests to a
-        :class:`~nexres_driver.connection.Connection` instance (node).
+        :class:`~resdb_driver.connection.Connection` instance (node).
         """
         return self._transport
 
     @property
     def transactions(self):
-        """:class:`~nexres_driver.driver.TransactionsEndpoint`:
+        """:class:`~resdb_driver.driver.TransactionsEndpoint`:
             Exposes functionalities of the ``'/transactions'`` endpoint.
         """
         return self._transactions
 
     @property
     def outputs(self):
-        """:class:`~nexres_driver.driver.OutputsEndpoint`:
+        """:class:`~resdb_driver.driver.OutputsEndpoint`:
             Exposes functionalities of the ``'/outputs'`` endpoint.
         """
         return self._outputs
 
     @property
     def assets(self):
-        """:class:`~nexres_driver.driver.AssetsEndpoint`:
+        """:class:`~resdb_driver.driver.AssetsEndpoint`:
             Exposes functionalities of the ``'/assets'`` endpoint.
         """
         return self._assets
 
     @property
     def metadata(self):
-        """:class:`~nexres_driver.driver.MetadataEndpoint`:
+        """:class:`~resdb_driver.driver.MetadataEndpoint`:
             Exposes functionalities of the ``'/metadata'`` endpoint.
         """
         return self._metadata
 
     @property
     def blocks(self):
-        """:class:`~nexres_driver.driver.BlocksEndpoint`:
+        """:class:`~resdb_driver.driver.BlocksEndpoint`:
             Exposes functionalities of the ``'/blocks'`` endpoint.
         """
         return self._blocks
@@ -125,7 +125,7 @@ class Nexres:
             headers (dict): Optional headers to pass to the request.
 
         Returns:
-            dict: Details of the HTTP API provided by the Nexres
+            dict: Details of the HTTP API provided by the Resdb
             server.
 
         """
@@ -142,19 +142,19 @@ class Nexres:
 
 class NamespacedDriver:
     """Base class for creating endpoints (namespaced objects) that can be added
-    under the :class:`~nexres_driver.driver.Nexres` driver.
+    under the :class:`~resdb_driver.driver.Resdb` driver.
     """
 
     PATH = '/'
 
-    def __init__(self, driver: Nexres):
+    def __init__(self, driver: Resdb):
         """Initializes an instance of
-        :class:`~nexres_driver.driver.NamespacedDriver` with the given
+        :class:`~resdb_driver.driver.NamespacedDriver` with the given
         driver instance.
 
         Args:
-            driver (Nexres): Instance of
-                :class:`~nexres_driver.driver.Nexres`.
+            driver (Resdb): Instance of
+                :class:`~resdb_driver.driver.Resdb`.
         """
         self.driver = driver
 
@@ -212,7 +212,7 @@ class TransactionsEndpoint(NamespacedDriver):
             dict: The prepared transaction.
 
         Raises:
-            :class:`~.exceptions.BigchaindbException`: If ``operation`` is
+            :class:`~.exceptions.ResdbException`: If ``operation`` is
                 not ``'CREATE'`` or ``'TRANSFER'``.
 
         .. important::
@@ -270,7 +270,7 @@ class TransactionsEndpoint(NamespacedDriver):
 
         Returns:
             dict: The fulfilled transaction payload, ready to be sent to a
-            Nexres federation.
+            Resdb federation.
 
         Raises:
             :exc:`~.exceptions.MissingPrivateKeyError`: If a private
@@ -292,7 +292,7 @@ class TransactionsEndpoint(NamespacedDriver):
             headers (dict): Optional headers to pass to the request.
 
         Note:
-            Please note that the id of an asset in Nexres is
+            Please note that the id of an asset in Resdb is
             actually the id of the transaction which created the asset.
             In other words, when querying for an asset id with the
             operation set to ``'CREATE'``, only one transaction should
@@ -302,9 +302,9 @@ class TransactionsEndpoint(NamespacedDriver):
             :meth:`.retrieve` and :meth:`.get` should return the same
             transaction.
 
-                >>> bdb = Nexres()
-                >>> bdb.transactions.retrieve('foo')
-                >>> bdb.transactions.get(asset_id='foo', operation='CREATE')
+                >>> resdb = Resdb()
+                >>> resdb.transactions.retrieve('foo')
+                >>> resdb.transactions.get(asset_id='foo', operation='CREATE')
 
             Since :meth:`.get` returns a list of transactions, it may
             be more efficient to use :meth:`.retrieve` instead, if one
@@ -433,8 +433,8 @@ class OutputsEndpoint(NamespacedDriver):
             `ed25519` condition (at index ``0``) with alice's public
             key::
 
-                >>> bdb = Nexres()
-                >>> bdb.outputs.get(alice_pubkey)
+                >>> resdb = Resdb()
+                >>> resdb.outputs.get(alice_pubkey)
                 ... ['../transactions/da1b64a907ba54/conditions/0']
 
         """
