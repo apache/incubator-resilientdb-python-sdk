@@ -1,8 +1,10 @@
 class ResdbException(Exception):
     """Base exception for all resdb exceptions."""
 
+
 class ResdbException(Exception):
     """Base exception for all Resdb exceptions."""
+
 
 class MissingPrivateKeyError(ResdbException):
     """Raised if a private key is missing."""
@@ -64,9 +66,6 @@ HTTP_EXCEPTIONS = {
     503: ServiceUnavailable,
     504: GatewayTimeout,
 }
-
-
-
 
 
 class ResDBError(Exception):
@@ -133,6 +132,7 @@ class InvalidHash(ValidationError):
 class InputDoesNotExist(ValidationError):
     """Raised if a transaction input does not exist"""
 
+
 class SchemaValidationError(ValidationError):
     """Raised if there was any error validating an object's schema"""
 
@@ -179,4 +179,3 @@ class GenesisBlockAlreadyExistsError(ValidationError):
 
 class MultipleValidatorOperationError(ValidationError):
     """Raised when a validator update pending but new request is submited"""
-

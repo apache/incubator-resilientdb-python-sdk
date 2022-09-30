@@ -1,15 +1,16 @@
-
 # from resdb_driver.backend.schema import validate_language_key
-from resdb_driver.exceptions import (InvalidSignature,
-                                          DuplicateTransaction)
+from resdb_driver.exceptions import InvalidSignature, DuplicateTransaction
+
 # from resdb_driver.schema import validate_transaction_schema
 from resdb_driver.transaction import Transaction
+
 # from resdb_driver.utils import (validate_txn_obj, validate_key)
 
+
 class Transaction(Transaction):
-    ASSET = 'asset'
-    METADATA = 'metadata'
-    DATA = 'data'
+    ASSET = "asset"
+    METADATA = "metadata"
+    DATA = "data"
 
     def validate(self, resdb, current_transactions=[]):
         """Validate transaction spend
@@ -26,13 +27,13 @@ class Transaction(Transaction):
 
         if self.operation == Transaction.CREATE:
             duplicates = any(txn for txn in current_transactions if txn.id == self.id)
-            #TODO check if id already committed
+            # TODO check if id already committed
             # if resdb.is_committed(self.id) or duplicates:
             #     raise DuplicateTransaction('transaction `{}` already exists'
             #                                .format(self.id))
 
             if not self.inputs_valid(input_conditions):
-                raise InvalidSignature('Transaction signature is invalid.')
+                raise InvalidSignature("Transaction signature is invalid.")
 
         elif self.operation == Transaction.TRANSFER:
             self.validate_transfer_inputs(resdb, current_transactions)
@@ -65,7 +66,7 @@ class FastTransaction:
 
     @property
     def id(self):
-        return self.data['id']
+        return self.data["id"]
 
     def to_dict(self):
         return self.data
