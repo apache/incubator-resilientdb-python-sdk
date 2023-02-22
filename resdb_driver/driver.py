@@ -67,6 +67,7 @@ class Resdb:
     def transactions(self):
         """:class:`~resdb_driver.driver.TransactionsEndpoint`:
         Exposes functionalities of the ``'/transactions'`` endpoint.
+        TODO: check
         """
         return self._transactions
 
@@ -74,6 +75,7 @@ class Resdb:
     def outputs(self):
         """:class:`~resdb_driver.driver.OutputsEndpoint`:
         Exposes functionalities of the ``'/outputs'`` endpoint.
+        TODO: check
         """
         return self._outputs
 
@@ -81,6 +83,7 @@ class Resdb:
     def assets(self):
         """:class:`~resdb_driver.driver.AssetsEndpoint`:
         Exposes functionalities of the ``'/assets'`` endpoint.
+        TODO: check
         """
         return self._assets
 
@@ -88,6 +91,7 @@ class Resdb:
     def metadata(self):
         """:class:`~resdb_driver.driver.MetadataEndpoint`:
         Exposes functionalities of the ``'/metadata'`` endpoint.
+        TODO: check 
         """
         return self._metadata
 
@@ -95,10 +99,11 @@ class Resdb:
     def blocks(self):
         """:class:`~resdb_driver.driver.BlocksEndpoint`:
         Exposes functionalities of the ``'/blocks'`` endpoint.
+        TODO: check
         """
         return self._blocks
 
-    def info(self, headers=None):
+    def info(self, headers=None) -> dict:
         """Retrieves information of the node being connected to via the
         root endpoint ``'/'``.
 
@@ -113,14 +118,12 @@ class Resdb:
                 * an overview of all the endpoints
 
         Note:
-            Currently limited to one node, and will be expanded to
-            return information for each node that this instance is
-            connected to.
+            TODO: implement the endpoin in the node (Single node)
 
         """
         return self.transport.forward_request(method="GET", path="/", headers=headers)
 
-    def api_info(self, headers=None):
+    def api_info(self, headers=None) -> dict:
         """Retrieves information provided by the API root endpoint
         ``'/api/v1'``.
 
@@ -131,6 +134,8 @@ class Resdb:
             dict: Details of the HTTP API provided by the Resdb
             server.
 
+        TODO: implement the endpoin in the node 
+
         """
         return self.transport.forward_request(
             method="GET",
@@ -140,6 +145,8 @@ class Resdb:
 
     def get_transaction(self, txid):
         # TODO
+        # use transactions.retieve() instead 
+        # return self._transactions.retrieve(txid=txid)
         raise NotImplementedError
 
 
@@ -162,15 +169,15 @@ class NamespacedDriver:
         self.driver = driver
 
     @property
-    def transport(self):
+    def transport(self) -> Transport:
         return self.driver.transport
 
     @property
-    def api_prefix(self):
+    def api_prefix(self) -> str:
         return self.driver.api_prefix
 
     @property
-    def path(self):
+    def path(self) -> str:
         return self.api_prefix + self.PATH
 
 
@@ -193,7 +200,7 @@ class TransactionsEndpoint(NamespacedDriver):
         asset=None,
         metadata=None,
         inputs=None
-    ):
+    ) -> dict:
         """Prepares a transaction payload, ready to be fulfilled.
 
         Args:
@@ -291,7 +298,7 @@ class TransactionsEndpoint(NamespacedDriver):
         """
         return fulfill_transaction(transaction, private_keys=private_keys)
 
-    def get(self, *, asset_id, operation=None, headers=None):
+    def get(self, *, asset_id, operation=None, headers=None) -> list:
         """Given an asset id, get its list of transactions (and
         optionally filter for only ``'CREATE'`` or ``'TRANSFER'``
         transactions).
@@ -334,7 +341,10 @@ class TransactionsEndpoint(NamespacedDriver):
         )
 
     def send_async(self, transaction, headers=None):
-        """Submit a transaction to the Federation with the mode `async`.
+        """
+        Note:
+            Not used in resdb
+        Submit a transaction to the Federation with the mode `async`.
 
         Args:
             transaction (dict): the transaction to be sent
@@ -345,16 +355,20 @@ class TransactionsEndpoint(NamespacedDriver):
             dict: The transaction sent to the Federation node(s).
 
         """
-        return self.transport.forward_request(
-            method="POST",
-            path=self.path,
-            json=transaction,
-            params={"mode": "async"},
-            headers=headers,
-        )
+        # return self.transport.forward_request(
+        #     method="POST",
+        #     path=self.path,
+        #     json=transaction,
+        #     params={"mode": "async"},
+        #     headers=headers,
+        # )
+        raise NotImplementedError
 
     def send_sync(self, transaction, headers=None):
-        """Submit a transaction to the Federation with the mode `sync`.
+        """
+        Note:
+            Not used in resdb
+        Submit a transaction to the Federation with the mode `sync`.
 
         Args:
             transaction (dict): the transaction to be sent
@@ -365,13 +379,14 @@ class TransactionsEndpoint(NamespacedDriver):
             dict: The transaction sent to the Federation node(s).
 
         """
-        return self.transport.forward_request(
-            method="POST",
-            path=self.path,
-            json=transaction,
-            params={"mode": "sync"},
-            headers=headers,
-        )
+        # return self.transport.forward_request(
+        #     method="POST",
+        #     path=self.path,
+        #     json=transaction,
+        #     params={"mode": "sync"},
+        #     headers=headers,
+        # )
+        raise NotImplementedError
 
     def send_commit(self, transaction: dict, headers: dict = None) -> dict:
         """Submit a transaction to the Federation with the mode `commit`.
@@ -391,7 +406,8 @@ class TransactionsEndpoint(NamespacedDriver):
         #     json=transaction,
         #     params={'mode': 'commit'},
         #     headers=headers)
-        path = self.path + "commit"
+        function = "commit"
+        path = self.path + function
         return self.transport.forward_request(
             method="POST", path=path, json=transaction, headers=headers
         )
@@ -412,7 +428,10 @@ class TransactionsEndpoint(NamespacedDriver):
 
 
 class OutputsEndpoint(NamespacedDriver):
-    """Exposes functionality of the ``'/outputs'`` endpoint.
+    """
+    TODO:
+        add endpoint in nodes
+    Exposes functionality of the ``'/outputs'`` endpoint.
 
     Attributes:
         path (str): The path of the endpoint.
@@ -421,7 +440,7 @@ class OutputsEndpoint(NamespacedDriver):
 
     PATH = "/outputs/"
 
-    def get(self, public_key, spent=None, headers=None):
+    def get(self, public_key, spent=None, headers=None) -> list[dict]:
         """Get transaction outputs by public key. The public_key parameter
         must be a base58 encoded ed25519 public key associated with
         transaction output ownership.
@@ -466,8 +485,11 @@ class BlocksEndpoint(NamespacedDriver):
 
     PATH = "/blocks/"
 
-    def get(self, *, txid, headers=None):
-        """Get the block that contains the given transaction id (``txid``)
+    def get(self, *, txid, headers=None) -> list[dict]:
+        """
+        TODO:
+            add endpoints in nodes. transaction_id is a query parameter here
+        Get the block that contains the given transaction id (``txid``)
            else return ``None``
 
         Args:
@@ -486,19 +508,6 @@ class BlocksEndpoint(NamespacedDriver):
         )
         return block_list[0] if len(block_list) else None
 
-    def retrieve(self, block_height, headers=None):
-        """Retrieves the block with the given ``block_height``.
-
-        Args:
-            block_height (str): height of the block to retrieve.
-            headers (dict): Optional headers to pass to the request.
-
-        Returns:
-            dict: The block with the given ``block_height``.
-
-        """
-        path = self.path + block_height
-        return self.transport.forward_request(method="GET", path=path, headers=None)
 
 
 class AssetsEndpoint(NamespacedDriver):
@@ -511,8 +520,11 @@ class AssetsEndpoint(NamespacedDriver):
 
     PATH = "/assets/"
 
-    def get(self, *, search, limit=0, headers=None):
-        """Retrieves the assets that match a given text search string.
+    def get(self, *, search, limit=0, headers=None) -> list[dict]:
+        """
+        TODO:
+            add endpoints in nodes. transaction_id is a query parameter here
+        Retrieves the assets that match a given text search string.
 
         Args:
             search (str): Text search string.
@@ -542,7 +554,7 @@ class MetadataEndpoint(NamespacedDriver):
 
     PATH = "/metadata/"
 
-    def get(self, *, search, limit=0, headers=None):
+    def get(self, *, search, limit=0, headers=None) -> list[dict]:
         """Retrieves the metadata that match a given text search string.
 
         Args:

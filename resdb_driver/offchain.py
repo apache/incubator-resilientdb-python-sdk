@@ -50,7 +50,7 @@ def prepare_transaction(
     asset=None,
     metadata=None,
     inputs=None
-):
+) -> dict:
     """Prepares a transaction payload, ready to be fulfilled. Depending on
     the value of ``operation``, simply dispatches to either
     :func:`~.prepare_create_transaction` or
@@ -221,7 +221,7 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
 
     Example:
 
-        .. todo:: Replace this section with docs.
+        # .. todo:: Replace this section with docs.
 
         In case it may not be clear what an input should look like, say
         Alice (public key: ``'3Cxh1eKZk3Wp9KGBWFS7iVde465UvqUKnEqTg2MW4wNf'``)
@@ -257,7 +257,7 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
                     'output_index': output_index,
                     'transaction_id': tx['id'],
                 },
-                'owners_before': output['owners_after'],
+                'owners_before': output['public_keys'],
             }
 
         Displaying the input on the prompt would look like::
@@ -311,7 +311,7 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
     return transaction.to_dict()
 
 
-def fulfill_transaction(transaction, *, private_keys):
+def fulfill_transaction(transaction, *, private_keys) -> dict:
     """Fulfills the given transaction.
 
     Args:
