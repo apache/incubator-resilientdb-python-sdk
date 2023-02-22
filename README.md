@@ -1,4 +1,4 @@
-# resdb_sdk
+# ResilientDB SDK
 
 ## Check Python is up-to-date (3.9+)
 `$ python3 --version`
