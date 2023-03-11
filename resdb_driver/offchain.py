@@ -56,7 +56,6 @@ def prepare_transaction(
     :func:`~.prepare_create_transaction` or
     :func:`~.prepare_transfer_transaction`.
 
-    Args:
         @param operation The operation to perform. Must be ``'CREATE'``
                 or ``'TRANSFER'``. Case insensitive. Defaults to ``'CREATE'``.
         @param signers One or more public keys representing the issuer(s) of
@@ -129,7 +128,6 @@ def prepare_create_transaction(*, signers, recipients=None, asset=None, metadata
     """! Prepares a ``"CREATE"`` transaction payload, ready to be
     fulfilled.
 
-    Args:
         @param signers One or more public keys representing 
                 the issuer(s) of the asset being created.
         @param recipients One or more public keys representing 
@@ -185,7 +183,6 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
     """! Prepares a ``"TRANSFER"`` transaction payload, ready to be
     fulfilled.
 
-    Args:
         @param inputs One or more inputs holding the condition(s) that this transaction
                     intends to fulfill. Each input is expected to be a
                     :obj:`dict`.
@@ -302,7 +299,6 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
 def fulfill_transaction(transaction, *, private_keys) -> dict:
     """! Fulfills the given transaction.
 
-    Args:
         @param transaction The transaction to be fulfilled.
         @param private_keys One or more private keys to be 
                 used for fulfilling the transaction.
