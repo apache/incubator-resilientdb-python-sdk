@@ -7,7 +7,7 @@ from typing import Any, Union
 
 
 class Resdb:
-    """A :class:`~resdb_driver.Resdb` driver is able to create, sign,
+    """! A :class:`~resdb_driver.Resdb` driver is able to create, sign,
     and submit transactions to one or more nodes in a Federation.
 
     If initialized with ``>1`` nodes, the driver will send successive
@@ -23,23 +23,23 @@ class Resdb:
         headers=None,
         timeout=20
     ):
-        """Initialize a :class:`~resdb_driver.Resdb` driver instance.
+        """! Initialize a :class:`~resdb_driver.Resdb` driver instance.
+            @param *nodes Resdb nodes to connect to.
+                    Currently, the full URL must be given. In the absence of any
+                    node, the default(``'http://localhost:9984'``) will be used.
+                    If node is passed as a dict, `endpoint` is a required key;
+                    `headers` is an optional `dict` of headers.
+            @param transport_class Optional transport class to use.
+                    Defaults to :class:`~resdb_driver.transport.Transport`.
+            @param headers Optional headers that will be passed with
+                    each request. To pass headers only on a per-request
+                    basis, you can pass the headers to the method of choice
+                    (e.g. :meth:`Resdb().transactions.send_commit()
+                    <.TransactionsEndpoint.send_commit>`).
+            @param timeout Optional timeout in seconds that will be passed
+                    to each request.
 
-        Args:
-            *nodes (list of (str or dict)): Resdb nodes to connect to.
-                Currently, the full URL must be given. In the absence of any
-                node, the default(``'http://localhost:9984'``) will be used.
-                If node is passed as a dict, `endpoint` is a required key;
-                `headers` is an optional `dict` of headers.
-            transport_class: Optional transport class to use.
-                Defaults to :class:`~resdb_driver.transport.Transport`.
-            headers (dict): Optional headers that will be passed with
-                each request. To pass headers only on a per-request
-                basis, you can pass the headers to the method of choice
-                (e.g. :meth:`Resdb().transactions.send_commit()
-                <.TransactionsEndpoint.send_commit>`).
-            timeout (int): Optional timeout in seconds that will be passed
-                to each request.
+            @return An instance of the Resdb class
         """
         self._nodes = normalize_nodes(*nodes, headers=headers)
         self._transport = transport_class(*self._nodes, timeout=timeout)
@@ -52,12 +52,13 @@ class Resdb:
 
     @property
     def nodes(self):
-        """:obj:`tuple` of :obj:`str`: URLs of connected nodes."""
+        """! :obj:`tuple` of :obj:`str`: URLs of connected nodes.
+        """
         return self._nodes
 
     @property
     def transport(self):
-        """:class:`~resdb_driver.transport.Transport`: Object
+        """! :class:`~resdb_driver.transport.Transport`: Object
         responsible for forwarding requests to a
         :class:`~resdb_driver.connection.Connection` instance (node).
         """
@@ -65,7 +66,7 @@ class Resdb:
 
     @property
     def transactions(self):
-        """:class:`~resdb_driver.driver.TransactionsEndpoint`:
+        """! :class:`~resdb_driver.driver.TransactionsEndpoint`:
         Exposes functionalities of the ``'/transactions'`` endpoint.
         TODO: check
         """
@@ -73,7 +74,7 @@ class Resdb:
 
     @property
     def outputs(self):
-        """:class:`~resdb_driver.driver.OutputsEndpoint`:
+        """! :class:`~resdb_driver.driver.OutputsEndpoint`:
         Exposes functionalities of the ``'/outputs'`` endpoint.
         TODO: check
         """
@@ -81,7 +82,7 @@ class Resdb:
 
     @property
     def assets(self):
-        """:class:`~resdb_driver.driver.AssetsEndpoint`:
+        """! :class:`~resdb_driver.driver.AssetsEndpoint`:
         Exposes functionalities of the ``'/assets'`` endpoint.
         TODO: check
         """
@@ -89,7 +90,7 @@ class Resdb:
 
     @property
     def metadata(self):
-        """:class:`~resdb_driver.driver.MetadataEndpoint`:
+        """! :class:`~resdb_driver.driver.MetadataEndpoint`:
         Exposes functionalities of the ``'/metadata'`` endpoint.
         TODO: check 
         """
@@ -97,44 +98,41 @@ class Resdb:
 
     @property
     def blocks(self):
-        """:class:`~resdb_driver.driver.BlocksEndpoint`:
+        """! :class:`~resdb_driver.driver.BlocksEndpoint`:
         Exposes functionalities of the ``'/blocks'`` endpoint.
         TODO: check
         """
         return self._blocks
 
     def info(self, headers=None) -> dict:
-        """Retrieves information of the node being connected to via the
+        """! Retrieves information of the node being connected to via the
         root endpoint ``'/'``.
 
-        Args:
-            headers (dict): Optional headers to pass to the request.
-
-        Returns:
-            dict: Details of the node that this instance is connected
-            to. Some information that may be interesting:
-
-                * the server version and
-                * an overview of all the endpoints
-
         Note:
-            TODO: implement the endpoin in the node (Single node)
+            TODO: implement the endpoint in the node (Single node)
+        """
+
+        """!
+            @param headers Optional headers to pass to the request.
+            @return Details of the node that this instance is connected
+            to. Some information that may be interesting - Server version, overview of all the endpoints
 
         """
+
         return self.transport.forward_request(method="GET", path="/", headers=headers)
 
     def api_info(self, headers=None) -> dict:
-        """Retrieves information provided by the API root endpoint
+        """! Retrieves information provided by the API root endpoint
         ``'/api/v1'``.
 
-        Args:
-            headers (dict): Optional headers to pass to the request.
+        TODO: implement the endpoint in the node 
 
-        Returns:
-            dict: Details of the HTTP API provided by the Resdb
+        """
+        """!
+    
+            @param headers Optional headers to pass to the request.
+            @return Details of the HTTP API provided by the Resdb
             server.
-
-        TODO: implement the endpoin in the node 
 
         """
         return self.transport.forward_request(
@@ -151,20 +149,21 @@ class Resdb:
 
 
 class NamespacedDriver:
-    """Base class for creating endpoints (namespaced objects) that can be added
+    """! Base class for creating endpoints (namespaced objects) that can be added
     under the :class:`~resdb_driver.driver.Resdb` driver.
     """
 
     PATH = "/"
 
     def __init__(self, driver: Resdb):
-        """Initializes an instance of
-        :class:`~resdb_driver.driver.NamespacedDriver` with the given
-        driver instance.
+        """! Initializes an instance of
+            :class:`~resdb_driver.driver.NamespacedDriver` with the given
+            driver instance.
+        """
+        """!
+            @param driver Instance of :class:`~resdb_driver.driver.Resdb`.
+            @return An instance of the NamespacedDriver class.
 
-        Args:
-            driver (Resdb): Instance of
-                :class:`~resdb_driver.driver.Resdb`.
         """
         self.driver = driver
 
@@ -182,7 +181,7 @@ class NamespacedDriver:
 
 
 class TransactionsEndpoint(NamespacedDriver):
-    """Exposes functionality of the ``'/transactions/'`` endpoint.
+    """! Exposes functionality of the ``'/transactions/'`` endpoint.
 
     Attributes:
         path (str): The path of the endpoint.
@@ -201,37 +200,32 @@ class TransactionsEndpoint(NamespacedDriver):
         metadata=None,
         inputs=None
     ) -> dict:
-        """Prepares a transaction payload, ready to be fulfilled.
+        """! 
+            Prepares a transaction payload, ready to be fulfilled.
+        """
+        """!
+            @param operation The operation to perform. Must be ``'CREATE'``
+                    or ``'TRANSFER'``. Case insensitive. Defaults to ``'CREATE'``.
+            @param signers One or more public keys representing the issuer(s) of
+                    the asset being created. Only applies for ``'CREATE'``
+                    operations. Defaults to ``None``.
+            @param recipients One or more public keys representing the new recipients(s)
+                    of the asset being created or transferred. Defaults to ``None``.
+            @param asset The asset to be created or transferred. MUST be supplied 
+                    for ``'TRANSFER'`` operations. Defaults to ``None``.
+            @param metadata Metadata associated with the transaction. Defaults to ``None``.
+            @param inputs One or more inputs holding the condition(s) that this
+                    transaction intends to fulfill. Each input is expected to
+                    be a :obj:`dict`. Only applies to, and MUST be supplied for,
+                    ``'TRANSFER'`` operations.
 
-        Args:
-            operation (str): The operation to perform. Must be ``'CREATE'``
-                or ``'TRANSFER'``. Case insensitive. Defaults to ``'CREATE'``.
-            signers (:obj:`list` | :obj:`tuple` | :obj:`str`, optional):
-                One or more public keys representing the issuer(s) of
-                the asset being created. Only applies for ``'CREATE'``
-                operations. Defaults to ``None``.
-            recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional):
-                One or more public keys representing the new recipients(s)
-                of the asset being created or transferred.
-                Defaults to ``None``.
-            asset (:obj:`dict`, optional): The asset to be created or
-                transferred. MUST be supplied for ``'TRANSFER'`` operations.
-                Defaults to ``None``.
-            metadata (:obj:`dict`, optional): Metadata associated with the
-                transaction. Defaults to ``None``.
-            inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`, optional):
-                One or more inputs holding the condition(s) that this
-                transaction intends to fulfill. Each input is expected to
-                be a :obj:`dict`. Only applies to, and MUST be supplied for,
-                ``'TRANSFER'`` operations.
+            @return The prepared transaction
 
-        Returns:
-            dict: The prepared transaction.
-
-        Raises:
-            :class:`~.exceptions.ResdbException`: If ``operation`` is
+            @exception :class:`~.exceptions.ResdbException`: If ``operation`` is
                 not ``'CREATE'`` or ``'TRANSFER'``.
-
+        """
+        """!
+                
         .. important::
 
             **CREATE operations**
@@ -279,36 +273,28 @@ class TransactionsEndpoint(NamespacedDriver):
     def fulfill(
         transaction: dict, private_keys: Union[str, list, tuple]
     ) -> dict[str, Any]:
-        """Fulfills the given transaction.
+        """! 
+        
+            Fulfills the given transaction.
 
-        Args:
-            transaction (dict): The transaction to be fulfilled.
-            private_keys (:obj:`str` | :obj:`list` | :obj:`tuple`): One or
-                more private keys to be used for fulfilling the
-                transaction.
+        """
+        """!
+            @param transaction The transaction to be fulfilled.
+            @param private_keys One or more private keys to be 
+                    used for fulfilling the transaction.
 
-        Returns:
-            dict: The fulfilled transaction payload, ready to be sent to a
-            Resdb federation.
+            @return The fulfilled transaction payload, ready to 
+                    be sent to a Resdb federation.
 
-        Raises:
-            :exc:`~.exceptions.MissingPrivateKeyError`: If a private
+            @exception :exc:`~.exceptions.MissingPrivateKeyError`: If a private
                 key is missing.
-
         """
         return fulfill_transaction(transaction, private_keys=private_keys)
 
     def get(self, *, asset_id, operation=None, headers=None) -> list:
-        """Given an asset id, get its list of transactions (and
+        """! Given an asset id, get its list of transactions (and
         optionally filter for only ``'CREATE'`` or ``'TRANSFER'``
         transactions).
-
-        Args:
-            asset_id (str): Id of the asset.
-            operation (str): The type of operation the transaction
-                should be. Either ``'CREATE'`` or ``'TRANSFER'``.
-                Defaults to ``None``.
-            headers (dict): Optional headers to pass to the request.
 
         Note:
             Please note that the id of an asset in Resdb is
@@ -329,10 +315,18 @@ class TransactionsEndpoint(NamespacedDriver):
             be more efficient to use :meth:`.retrieve` instead, if one
             is only interested in the ``'CREATE'`` operation.
 
-        Returns:
-            list: List of transactions.
-
         """
+        """! 
+
+            @param asset_id Id of the asset.
+            @param operation The type of operation the transaction
+                    should be. Either ``'CREATE'`` or ``'TRANSFER'``.
+                    Defaults to ``None``.
+            @param headers Optional headers to pass to the request.
+
+            @return List of transactions
+        """
+
         return self.transport.forward_request(
             method="GET",
             path=self.path,
@@ -341,18 +335,18 @@ class TransactionsEndpoint(NamespacedDriver):
         )
 
     def send_async(self, transaction, headers=None):
-        """
+        """!
         Note:
             Not used in resdb
         Submit a transaction to the Federation with the mode `async`.
 
-        Args:
-            transaction (dict): the transaction to be sent
+        """
+        """!
+            @param transaction The transaction to be sent
                 to the Federation node(s).
-            headers (dict): Optional headers to pass to the request.
+            @param headers Optional headers to pass to the request.
 
-        Returns:
-            dict: The transaction sent to the Federation node(s).
+            @return The transaction sent to the Federation node(s).
 
         """
         # return self.transport.forward_request(
@@ -365,18 +359,17 @@ class TransactionsEndpoint(NamespacedDriver):
         raise NotImplementedError
 
     def send_sync(self, transaction, headers=None):
-        """
+        """!
         Note:
             Not used in resdb
         Submit a transaction to the Federation with the mode `sync`.
 
         Args:
-            transaction (dict): the transaction to be sent
+            @param transaction The transaction to be sent
                 to the Federation node(s).
-            headers (dict): Optional headers to pass to the request.
+            @param headers Optional headers to pass to the request.
 
-        Returns:
-            dict: The transaction sent to the Federation node(s).
+            @return The transaction sent to the Federation node(s).
 
         """
         # return self.transport.forward_request(
@@ -389,15 +382,15 @@ class TransactionsEndpoint(NamespacedDriver):
         raise NotImplementedError
 
     def send_commit(self, transaction: dict, headers: dict = None) -> dict:
-        """Submit a transaction to the Federation with the mode `commit`.
-
-        Args:
-            transaction (dict): the transaction to be sent
+        """! 
+            Submit a transaction to the Federation with the mode `commit`.
+        """
+        """!
+            @param transaction The transaction to be sent
                 to the Federation node(s).
-            headers (dict): Optional headers to pass to the request.
+            @param headers Optional headers to pass to the request.
 
-        Returns:
-            dict: The transaction sent to the Federation node(s).
+            @return The transaction sent to the Federation node(s).
 
         """
         # return self.transport.forward_request(
@@ -413,14 +406,15 @@ class TransactionsEndpoint(NamespacedDriver):
         )
 
     def retrieve(self, txid: str, headers: dict = None) -> dict:
-        """Retrieves the transaction with the given id.
+        """!
+            Retrieves the transaction with the given id.
+        """
+        
+        """!
+            @param txid Id of the transaction to retrieve.
+            @param headers Optional headers to pass to the request.
 
-        Args:
-            txid (str): Id of the transaction to retrieve.
-            headers (dict): Optional headers to pass to the request.
-
-        Returns:
-            dict: The transaction with the given id.
+            @return The transaction with the given id.
 
         """
         path = self.path + txid
@@ -428,7 +422,7 @@ class TransactionsEndpoint(NamespacedDriver):
 
 
 class OutputsEndpoint(NamespacedDriver):
-    """
+    """!
     TODO:
         add endpoint in nodes
     Exposes functionality of the ``'/outputs'`` endpoint.
@@ -441,21 +435,9 @@ class OutputsEndpoint(NamespacedDriver):
     PATH = "/outputs/"
 
     def get(self, public_key, spent=None, headers=None) -> list[dict]:
-        """Get transaction outputs by public key. The public_key parameter
+        """! Get transaction outputs by public key. The public_key parameter
         must be a base58 encoded ed25519 public key associated with
         transaction output ownership.
-
-        Args:
-            public_key (str): Public key for which unfulfilled
-                conditions are sought.
-            spent (bool): Indicate if the result set should include only spent
-                or only unspent outputs. If not specified (``None``) the
-                result includes all the outputs (both spent and unspent)
-                associated with the public key.
-            headers (dict): Optional headers to pass to the request.
-
-        Returns:
-            :obj:`list` of :obj:`str`: List of unfulfilled conditions.
 
         Example:
             Given a transaction with `id` ``da1b64a907ba54`` having an
@@ -467,6 +449,18 @@ class OutputsEndpoint(NamespacedDriver):
                 ... ['../transactions/da1b64a907ba54/conditions/0']
 
         """
+        """!
+            @param public_key Public key for which unfulfilled
+                conditions are sought.
+            @param spent Indicate if the result set should include only spent
+                or only unspent outputs. If not specified (``None``) the
+                result includes all the outputs (both spent and unspent)
+                associated with the public key.
+            @param headers Optional headers to pass to the request.
+
+            @return List of unfulfilled conditions.
+        """
+
         return self.transport.forward_request(
             method="GET",
             path=self.path,
@@ -476,7 +470,7 @@ class OutputsEndpoint(NamespacedDriver):
 
 
 class BlocksEndpoint(NamespacedDriver):
-    """Exposes functionality of the ``'/blocks'`` endpoint.
+    """! Exposes functionality of the ``'/blocks'`` endpoint.
 
     Attributes:
         path (str): The path of the endpoint.
@@ -486,18 +480,16 @@ class BlocksEndpoint(NamespacedDriver):
     PATH = "/blocks/"
 
     def get(self, *, txid, headers=None) -> list[dict]:
-        """
+        """!
         TODO:
             add endpoints in nodes. transaction_id is a query parameter here
         Get the block that contains the given transaction id (``txid``)
            else return ``None``
 
-        Args:
-            txid (str): Transaction id.
-            headers (dict): Optional headers to pass to the request.
+            @param txid Transaction id.
+            @param headers Optional headers to pass to the request.
 
-        Returns:
-            :obj:`list` of :obj:`int`: List of block heights.
+            @return List of block heights.
 
         """
         block_list = self.transport.forward_request(
@@ -511,7 +503,7 @@ class BlocksEndpoint(NamespacedDriver):
 
 
 class AssetsEndpoint(NamespacedDriver):
-    """Exposes functionality of the ``'/assets'`` endpoint.
+    """! Exposes functionality of the ``'/assets'`` endpoint.
 
     Attributes:
         path (str): The path of the endpoint.
@@ -521,21 +513,21 @@ class AssetsEndpoint(NamespacedDriver):
     PATH = "/assets/"
 
     def get(self, *, search, limit=0, headers=None) -> list[dict]:
-        """
+        """!
         TODO:
             add endpoints in nodes. transaction_id is a query parameter here
         Retrieves the assets that match a given text search string.
-
-        Args:
-            search (str): Text search string.
-            limit (int): Limit the number of returned documents. Defaults to
-                zero meaning that it returns all the matching assets.
-            headers (dict): Optional headers to pass to the request.
-
-        Returns:
-            :obj:`list` of :obj:`dict`: List of assets that match the query.
-
         """
+
+        """!
+        @param search Text search string.
+        @param limit Limit the number of returned documents. Defaults to
+            zero meaning that it returns all the matching assets.
+        @param headers Optional headers to pass to the request.
+
+        @return List of assets that match the query.
+        """
+            
         return self.transport.forward_request(
             method="GET",
             path=self.path,
@@ -545,7 +537,7 @@ class AssetsEndpoint(NamespacedDriver):
 
 
 class MetadataEndpoint(NamespacedDriver):
-    """Exposes functionality of the ``'/metadata'`` endpoint.
+    """! Exposes functionality of the ``'/metadata'`` endpoint.
 
     Attributes:
         path (str): The path of the endpoint.
@@ -555,16 +547,16 @@ class MetadataEndpoint(NamespacedDriver):
     PATH = "/metadata/"
 
     def get(self, *, search, limit=0, headers=None) -> list[dict]:
-        """Retrieves the metadata that match a given text search string.
-
-        Args:
-            search (str): Text search string.
-            limit (int): Limit the number of returned documents. Defaults to
+        """! 
+            Retrieves the metadata that match a given text search string.
+        """
+        """!
+            @param search Text search string.
+            @param limit Limit the number of returned documents. Defaults to
                 zero meaning that it returns all the matching metadata.
-            headers (dict): Optional headers to pass to the request.
+            @param headers Optional headers to pass to the request.
 
-        Returns:
-            :obj:`list` of :obj:`dict`: List of metadata that match the query.
+            @return List of metadata that match the query.
 
         """
         return self.transport.forward_request(

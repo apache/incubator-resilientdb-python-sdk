@@ -13,15 +13,14 @@ class Transaction(Transaction):
     DATA = "data"
 
     def validate(self, resdb, current_transactions=[]):
-        """Validate transaction spend
-        Args:
-            resdb: an instantiated resdb_driver.Resdb object.
-        Returns:
-            The transaction (Transaction) if the transaction is valid else it
-            raises an exception describing the reason why the transaction is
-            invalid.
-        Raises:
-            ValidationError: If the transaction is invalid
+        """! Validate transaction spend
+            @param resdb An instantiated resdb_driver.Resdb object.
+            @return The transaction (Transaction) if the transaction is valid else it
+                    raises an exception describing the reason why the transaction is
+                    invalid.
+
+            @exception ValidationError: If the transaction is invalid
+            
         """
         input_conditions = []
 
@@ -54,7 +53,7 @@ class Transaction(Transaction):
 
 
 class FastTransaction:
-    """A minimal wrapper around a transaction dictionary. This is useful for
+    """! A minimal wrapper around a transaction dictionary. This is useful for
     when validation is not required but a routine expects something that looks
     like a transaction, for example during block creation.
 

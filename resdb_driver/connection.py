@@ -15,16 +15,16 @@ HttpResponse = namedtuple("HttpResponse", ("status_code", "headers", "data"))
 
 
 class Connection:
-    """A Connection object to make HTTP requests to a particular node."""
+    """! A Connection object to make HTTP requests to a particular node."""
 
     def __init__(self, *, node_url: str, headers: dict = None):
-        """Initializes a :class:`~resdb_driver.connection.Connection`
+        """! Initializes a :class:`~resdb_driver.connection.Connection`
         instance.
+	
+	    @param node_url Url of the node to connect to.
+	    @param headers Optional headers to send with each request.
 
-        Args:
-            node_url (str):  Url of the node to connect to.
-            headers (dict): Optional headers to send with each request.
-
+	    @return An instance of the Connection class 
         """
         self.node_url = node_url
         self.session = Session()
@@ -46,7 +46,8 @@ class Connection:
         backoff_cap: int = None,
         **kwargs
     ) -> HttpResponse:
-        """Performs an HTTP request with the given parameters.
+
+        """ Performs an HTTP request with the given parameters.
 
            Implements exponential backoff.
 
@@ -62,19 +63,21 @@ class Connection:
 
            If a request is successful, the backoff timestamp is removed,
            the retry count is back to zero.
-
-        Args:
-            method (str): HTTP method (e.g.: ``'GET'``).
-            path (str): API endpoint path (e.g.: ``'/transactions'``).
-            json (dict): JSON data to send along with the request.
-            params (dict): Dictionary of URL (query) parameters.
-            headers (dict): Optional headers to pass to the request.
-            timeout (int): Optional timeout in seconds.
-            backoff_cap (int): The maximal allowed backoff delay in seconds
-                               to be assigned to a node.
-            kwargs: Optional keyword arguments.
-
         """
+           
+        """!
+        @param method HTTP method (e.g.: ``'GET'``).
+        @param path API endpoint path (e.g.: ``'/transactions'``).
+        @param json JSON data to send along with the request.
+        @param params Dictionary of URL (query) parameters.
+        @param headers Optional headers to pass to the request.
+        @param timeout Optional timeout in seconds.
+        @param backoff_cap The maximal allowed backoff delay in seconds to be assigned to a node.
+        @param kwargs: Optional keyword arguments.
+
+        @return Response of the HTTP request.
+        """
+
         backoff_timedelta = self.get_backoff_timedelta()
 
         if timeout is not None and timeout < backoff_timedelta:
