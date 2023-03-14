@@ -1,10 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-local_repository(
-    name = "nexres",
-    path = "nexres",
-)
-
 http_archive(
     name = "rules_foreign_cc",
     sha256 = "69023642d5781c68911beda769f91fcbc8ca48711db935a75da7f6536b65047f",
@@ -340,3 +335,11 @@ http_archive(
     strip_prefix = "civetweb-1.15",
     url = "https://github.com/civetweb/civetweb/archive/refs/tags/v1.15.zip",
 )
+
+http_archive(
+    name = "nexres_release",
+    sha256 = "2d1ce52e5955c5a1c2bc6cc8c5d4dbdcd58dc5e656a5b7832849b4978098f2d6",
+    strip_prefix = "resilientdb-nexres-v.1.4.0",
+    url = "https://github.com/resilientdb/resilientdb/archive/refs/tags/nexres-v.1.4.0.zip",
+)
+

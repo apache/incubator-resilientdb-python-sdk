@@ -25,10 +25,14 @@
 
 #include <glog/logging.h>
 
-#include "platform/config/resdb_config_utils.h"
-#include "platform/statistic/stats.h"
+//#include "platform/config/resdb_config_utils.h"
+//#include "platform/statistic/stats.h"
 #include "service/kv_service/kv_service_transaction_manager.h"
-#include "service/utils/server_factory.h"
+//#include "service/utils/server_factory.h"
+
+#include "application/utils/server_factory.h"
+#include "config/resdb_config_utils.h"
+#include "statistic/stats.h"
 
 using resdb::GenerateResDBConfig;
 using sdk::KVServiceTransactionManager;

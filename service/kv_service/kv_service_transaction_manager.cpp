@@ -28,41 +28,20 @@
 #include <glog/logging.h>
 
 #include "service/kv_service/proto/kv_server.pb.h"
-#include "storage/in_mem_kv_storage.h"
-
-#ifdef ENABLE_LEVELDB
-#include "storage/res_leveldb.h"
-#endif
-
-#ifdef ENABLE_ROCKSDB
-#include "storage/res_rocksdb.h"
-#endif
 
 namespace sdk {
 
-using resdb::ResConfigData;
-using resdb::NewInMemKVStorage;
-using resdb::Storage;
-
-KVServiceTransactionManager::KVServiceTransactionManager(
-    const ResConfigData& config_data, char* cert_file) {
-#ifdef ENABLE_LEVELDB
-  bool equip_leveldb = config_data.leveldb_info().enable_leveldb();
-  if (equip_leveldb_) {
-    storage_ = NewResLevelDB(cert_file, config_data);
-  }
-#endif
-
-  if (storage_ == nullptr) {
-    storage_ = NewInMemKVStorage();
-  }
+KVServiceTransactionManager::KVServiceTransactionManager(const resdb::ResConfigData& config_data,
+                                   char* cert_file)
+    : l_storage_layer_(cert_file, config_data),
+      r_storage_layer_(cert_file, config_data) {
+  equip_rocksdb_ = config_data.rocksdb_info().enable_rocksdb();
+  equip_leveldb_ = config_data.leveldb_info().enable_leveldb();
 
   py_verificator_ = std::make_unique<PYVerificator>();
 }
 
-KVServiceTransactionManager::KVServiceTransactionManager(
-    std::unique_ptr<Storage> storage)
-    : storage_(std::move(storage)) {}
+KVServiceTransactionManager::KVServiceTransactionManager(void) {}
 
 std::unique_ptr<std::string> KVServiceTransactionManager::ExecuteData(
     const std::string& request) {
@@ -92,28 +71,73 @@ std::unique_ptr<std::string> KVServiceTransactionManager::ExecuteData(
   return resp_str;
 }
 
-void KVServiceTransactionManager::Set(const std::string& key,
-                                      const std::string& value) {
+void KVServiceTransactionManager::Set(const std::string& key, const std::string& value) {
   bool is_valid = py_verificator_->Validate(value);
   if (!is_valid) {
-    LOG(ERROR) << "Invalid transaction for " << key;
-    return;
+	LOG(ERROR) << "Invalid transaction for " << key;
+	return;
   }
-  storage_->SetValue(key, value);
+
+  if (equip_rocksdb_) {
+    r_storage_layer_.SetValue(key, value);
+  } else if (equip_leveldb_) {
+    l_storage_layer_.SetValue(key, value);
+  } else {
+    kv_map_[key] = value;
+  }
 }
 
 std::string KVServiceTransactionManager::Get(const std::string& key) {
-  return storage_->GetValue(key);
+  if (equip_rocksdb_) {
+    return r_storage_layer_.GetValue(key);
+  } else if (equip_leveldb_) {
+    return l_storage_layer_.GetValue(key);
+  } else {
+    auto search = kv_map_.find(key);
+    if (search != kv_map_.end())
+      return search->second;
+    else
+      return "";
+  }
 }
 
 std::string KVServiceTransactionManager::GetValues() {
-  return storage_->GetAllValues();
+  if (equip_rocksdb_) {
+    return r_storage_layer_.GetAllValues();
+  } else if (equip_leveldb_) {
+    return l_storage_layer_.GetAllValues();
+  } else {
+    std::string values = "[";
+    bool first_iteration = true;
+    for (auto kv : kv_map_) {
+      if (!first_iteration) values.append(",");
+      first_iteration = false;
+      values.append(kv.second);
+    }
+    values.append("]");
+    return values;
+  }
 }
 
 // Get values on a range of keys
 std::string KVServiceTransactionManager::GetRange(const std::string& min_key,
-                                                  const std::string& max_key) {
-  return storage_->GetRange(min_key, max_key);
+                                       const std::string& max_key) {
+  if (equip_rocksdb_) {
+    return r_storage_layer_.GetRange(min_key, max_key);
+  } else if (equip_leveldb_) {
+    return l_storage_layer_.GetRange(min_key, max_key);
+  } else {
+    std::string values = "[";
+    bool first_iteration = true;
+    for (auto kv : kv_map_) {
+      if (kv.first >= min_key && kv.first <= max_key) {
+        if (!first_iteration) values.append(",");
+        first_iteration = false;
+        values.append(kv.second);
+      }
+    }
+    values.append("]");
+    return values;
+  }
 }
-
 }  // namespace resdb

@@ -29,32 +29,38 @@
 #include <optional>
 #include <unordered_map>
 
-#include "service/kv_service/py_verificator.h"
+#include "config/resdb_config_utils.h"
+#include "durable_layer/leveldb_durable.h"
+#include "durable_layer/rocksdb_durable.h"
+#include "execution/transaction_executor_impl.h"
 
-#include "platform/config/resdb_config_utils.h"
-#include "platform/consensus/execution/transaction_manager.h"
-#include "storage/storage.h"
+#include "service/kv_service/py_verificator.h"
 
 namespace sdk {
 
-class KVServiceTransactionManager : public resdb::TransactionManager {
+class KVServiceTransactionManager : public resdb::TransactionExecutorImpl {
  public:
-  KVServiceTransactionManager(std::unique_ptr<resdb::Storage> storage);
-  KVServiceTransactionManager(const resdb::ResConfigData& config_data,
-                              char* cert_file);
+  KVServiceTransactionManager(const resdb::ResConfigData& config_data, char* cert_file);
+  KVServiceTransactionManager(void);
   virtual ~KVServiceTransactionManager() = default;
 
   std::unique_ptr<std::string> ExecuteData(const std::string& request) override;
 
- protected:
-  virtual void Set(const std::string& key, const std::string& value);
+ private:
+  void Set(const std::string& key, const std::string& value);
   std::string Get(const std::string& key);
   std::string GetValues();
   std::string GetRange(const std::string& min_key, const std::string& max_key);
 
  private:
-  std::unique_ptr<resdb::Storage> storage_;
   std::unique_ptr<PYVerificator> py_verificator_;
+
+  std::unordered_map<std::string, std::string> kv_map_;
+  LevelDurable l_storage_layer_;
+  RocksDurable r_storage_layer_;
+  bool equip_rocksdb_ = false;
+  bool equip_leveldb_ = false;
+  bool require_txn_validation_;
 };
 
 }  // namespace resdb

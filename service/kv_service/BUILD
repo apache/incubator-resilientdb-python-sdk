@@ -5,8 +5,8 @@ cc_library(
     srcs = ["resdb_kv_client.cpp"],
     hdrs = ["resdb_kv_client.h"],
     deps = [
-        "@nexres//platform/interface:resdb_transaction_proposer",
         "//service/kv_service/proto:kv_server_cc_proto",
+        "@nexres_release//client:resdb_user_client",
     ],
 )
 
@@ -16,8 +16,9 @@ cc_library(
     hdrs = ["py_verificator.h"],
     tags = ["manual"],
     deps = [
-        "@nexres//common:comm",
-        "@nexres//common:pybind",
+	"@pybind11",
+        "@pybind11//:pybind11_embed",
+	"@com_github_google_glog//:glog",
     ],
 )
 
@@ -27,11 +28,12 @@ cc_library(
     hdrs = ["kv_service_transaction_manager.h"],
     deps = [
         ":py_verificator",
-        "@nexres//common:comm",
-        "@nexres//platform/config:resdb_config_utils",
-        "@nexres//platform/consensus/execution:transaction_manager",
-        "@nexres//storage:in_mem_kv_storage",
         "//service/kv_service/proto:kv_server_cc_proto",
+	"@nexres_release//common:comm",
+        "@nexres_release//config:resdb_config_utils",
+        "@nexres_release//durable_layer:leveldb_durable",
+        "@nexres_release//durable_layer:rocksdb_durable",
+        "@nexres_release//execution:transaction_executor_impl",
     ]
 )
 
@@ -40,8 +42,8 @@ cc_binary(
     srcs = ["kv_server.cpp"],
     deps = [
         ":kv_service_transaction_manager",
-        "@nexres//platform/config:resdb_config_utils",
-        "@nexres//service/utils:server_factory",
+	"@nexres_release//application/utils:server_factory",
+        "@nexres_release//config:resdb_config_utils",
     ],
 )
 
@@ -49,9 +51,8 @@ cc_binary(
     name = "kv_service_tools",
     srcs = ["kv_service_tools.cpp"],
     deps = [
-        "@nexres//common/proto:signature_info_cc_proto",
-        "@nexres//platform/config:resdb_config_utils",
-        "//service/kv_service:resdb_kv_client",
+        "@nexres_release//config:resdb_config_utils",
+        ":resdb_kv_client",
     ],
 )
 
