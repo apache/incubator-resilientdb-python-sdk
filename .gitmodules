@@ -1,0 +1,3 @@
+[submodule "nexres"]
+	path = nexres
+	url = https://github.com/msadoghi/nexres.git
