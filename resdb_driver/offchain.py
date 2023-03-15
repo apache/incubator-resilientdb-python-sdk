@@ -56,28 +56,33 @@ def prepare_transaction(
     :func:`~.prepare_create_transaction` or
     :func:`~.prepare_transfer_transaction`.
 
-        @param operation The operation to perform. Must be ``'CREATE'``
-                or ``'TRANSFER'``. Case insensitive. Defaults to ``'CREATE'``.
-        @param signers One or more public keys representing the issuer(s) of
-                the asset being created. Only applies for ``'CREATE'``
-                operations. Defaults to ``None``.
-        @param recipients One or more public keys representing the new recipients(s)
-                of the asset being created or transferred.
-                Defaults to ``None``.
-        @param asset The asset to be created orctransferred. 
-                MUST be supplied for ``'TRANSFER'`` operations.
-                Defaults to ``None``.
-        @param metadata Metadata associated with the
-                transaction. Defaults to ``None``.
-        @param inputs One or more inputs holding the condition(s) that this
-                transaction intends to fulfill. Each input is expected to
-                be a :obj:`dict`. Only applies to, and MUST be supplied for,
-                ``'TRANSFER'`` operations.
+    @param operation (str): The operation to perform. Must be ``'CREATE'``
+            or ``'TRANSFER'``. Case insensitive. Defaults to ``'CREATE'``.
+    @param signers (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): 
+            One or more public keys representing the issuer(s) of
+            the asset being created. Only applies for ``'CREATE'``
+            operations. Defaults to ``None``.
+    @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): 
+            One or more public keys representing the new recipients(s)
+            of the asset being created or transferred.
+            Defaults to ``None``.
+    @param asset (:obj:`dict`, optional): 
+            The asset to be created orctransferred. 
+            MUST be supplied for ``'TRANSFER'`` operations.
+            Defaults to ``None``.
+    @param metadata (:obj:`dict`, optional): 
+            Metadata associated with the
+            transaction. Defaults to ``None``.
+    @param inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`, optional):
+            One or more inputs holding the condition(s) that this
+            transaction intends to fulfill. Each input is expected to
+            be a :obj:`dict`. Only applies to, and MUST be supplied for,
+            ``'TRANSFER'`` operations.
 
-        @return The prepared transaction
+    @return The prepared transaction
 
-        @exception :class:`~.exceptions.ResdbException`: If ``operation`` is
-            not ``'CREATE'`` or ``'TRANSFER'``.
+    @exception :class:`~.exceptions.ResdbException`: If ``operation`` is
+        not ``'CREATE'`` or ``'TRANSFER'``.
 
     .. important::
 
@@ -128,14 +133,16 @@ def prepare_create_transaction(*, signers, recipients=None, asset=None, metadata
     """! Prepares a ``"CREATE"`` transaction payload, ready to be
     fulfilled.
 
-        @param signers One or more public keys representing 
-                the issuer(s) of the asset being created.
-        @param recipients One or more public keys representing 
-                the new recipients(s) of the asset being created. Defaults to ``None``.
-        @param asset The asset to be created. Defaults to ``None``.
-        @param metadata Metadata associated with the transaction. Defaults to ``None``.
+    @param signers (:obj:`list` | :obj:`tuple` | :obj:`str`): 
+            One or more public keys representing 
+            the issuer(s) of the asset being created.
+    @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): 
+            One or more public keys representing 
+            the new recipients(s) of the asset being created. Defaults to ``None``.
+    @param asset (:obj:`dict`, optional): The asset to be created. Defaults to ``None``.
+    @param metadata (:obj:`dict`, optional): Metadata associated with the transaction. Defaults to ``None``.
 
-        @return The prepared ``"CREATE"`` transaction.
+    @return The prepared ``"CREATE"`` transaction.
 
     .. important::
 
@@ -183,18 +190,20 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
     """! Prepares a ``"TRANSFER"`` transaction payload, ready to be
     fulfilled.
 
-        @param inputs One or more inputs holding the condition(s) that this transaction
-                    intends to fulfill. Each input is expected to be a
-                    :obj:`dict`.
-        @param recipients One or more public keys representing the 
-                new recipients(s) of the
-                asset being transferred.
-        @param asset A single-key dictionary holding the ``id``
-                of the asset being transferred with this transaction.
-        @param metadata Metadata associated with the
-                transaction. Defaults to ``None``.
+    @param inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`): 
+                One or more inputs holding the condition(s) that this transaction
+                intends to fulfill. Each input is expected to be a
+                :obj:`dict`.
+    @param recipients (:obj:`str` | :obj:`list` | :obj:`tuple`): 
+            One or more public keys representing the 
+            new recipients(s) of the
+            asset being transferred.
+    @param asset (:obj:`dict`): A single-key dictionary holding the ``id``
+            of the asset being transferred with this transaction.
+    @param metadata (:obj:`dict`): Metadata associated with the
+            transaction. Defaults to ``None``.
 
-        @return The prepared ``"TRANSFER"`` transaction.
+    @return The prepared ``"TRANSFER"`` transaction.
 
     .. important::
 
@@ -299,15 +308,15 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
 def fulfill_transaction(transaction, *, private_keys) -> dict:
     """! Fulfills the given transaction.
 
-        @param transaction The transaction to be fulfilled.
-        @param private_keys One or more private keys to be 
-                used for fulfilling the transaction.
+    @param transaction The transaction to be fulfilled.
+    @param private_keys One or more private keys to be 
+            used for fulfilling the transaction.
 
-        @return The fulfilled transaction payload, ready to be sent to a
-                ResDB federation.
+    @return The fulfilled transaction payload, ready to be sent to a
+            ResDB federation.
 
-        @exception :exc:`~.exceptions.MissingPrivateKeyError`: If a private
-            key is missing.
+    @exception :exc:`~.exceptions.MissingPrivateKeyError`: If a private
+        key is missing.
     """
     if not isinstance(private_keys, (list, tuple)):
         private_keys = [private_keys]

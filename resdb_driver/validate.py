@@ -14,18 +14,19 @@ class Transaction(Transaction):
 
     def validate(self, resdb, current_transactions=[]):
         """! Validate transaction spend
-            @param resdb An instantiated resdb_driver.Resdb object.
-            @return The transaction (Transaction) if the transaction is valid else it
-                    raises an exception describing the reason why the transaction is
-                    invalid.
+        @param resdb An instantiated resdb_driver.Resdb object.
+        @return The transaction (Transaction) if the transaction is valid else it
+                raises an exception describing the reason why the transaction is
+                invalid.
 
-            @exception ValidationError: If the transaction is invalid
-            
+        @exception ValidationError: If the transaction is invalid
+
         """
         input_conditions = []
 
         if self.operation == Transaction.CREATE:
-            duplicates = any(txn for txn in current_transactions if txn.id == self.id)
+            duplicates = any(
+                txn for txn in current_transactions if txn.id == self.id)
             # TODO check if id already committed
             # if resdb.is_committed(self.id) or duplicates:
             #     raise DuplicateTransaction('transaction `{}` already exists'

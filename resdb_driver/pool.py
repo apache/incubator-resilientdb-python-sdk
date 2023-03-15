@@ -11,8 +11,8 @@ class AbstractPicker(metaclass=ABCMeta):
         """! Picks a :class:`~resdb_driver.connection.Connection`
         instance from the given list of
         :class:`~resdb_driver.connection.Connection` instances.
-            @param connections List of
-                :class:`~resdb_driver.connection.Connection` instances.
+
+        @param connections (list): List of :class:`~resdb_driver.connection.Connection` instances.
         """
         pass
 
@@ -24,11 +24,11 @@ class RoundRobinPicker(AbstractPicker):
 
     def pick(self, connections: list[Connection]) -> Connection:
         """! Picks a connection with the earliest backoff time.
-           As a result, the first connection is picked
-           for as long as it has no backoff time.
-           Otherwise, the connections are tried in a round robin fashion.
-            @param connections (:obj:list): List of
-                :class:`~resdb_driver.connection.Connection` instances.
+        As a result, the first connection is picked
+        for as long as it has no backoff time.
+        Otherwise, the connections are tried in a round robin fashion.
+
+        @param connections (:obj:list): List of :class:`~resdb_driver.connection.Connection` instances.
         """
         if len(connections) == 1:
             return connections[0]
@@ -42,12 +42,12 @@ class RoundRobinPicker(AbstractPicker):
 
 
 class Pool:
-    """! Pool of connections."""
+    """! Pool of connections.
+    """
 
     def __init__(self, connections: list[Connection], picker_class=RoundRobinPicker):
         """! Initializes a :class:`~resdb_driver.pool.Pool` instance.
-            @param connections (list): List of
-                :class:`~resdb_driver.connection.Connection` instances.
+        @param connections (list): List of :class:`~resdb_driver.connection.Connection` instances.
         """
         self.connections = connections
         self.picker = picker_class()
@@ -55,6 +55,6 @@ class Pool:
     def get_connection(self) -> Connection:
         """! Gets a :class:`~resdb_driver.connection.Connection`
         instance from the pool.
-            @return A :class:`~resdb_driver.connection.Connection` instance.
+        @return A :class:`~resdb_driver.connection.Connection` instance.
         """
         return self.picker.pick(self.connections)

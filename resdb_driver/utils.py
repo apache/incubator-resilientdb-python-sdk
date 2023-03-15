@@ -1,3 +1,4 @@
+from urllib.parse import urlparse, urlunparse
 import rapidjson
 import time
 import re
@@ -17,9 +18,9 @@ def serialize(data: dict) -> str:
     hash mismatches for the same structure due to serialization
     differences.
 
-        @param data Dict to serialize
+    @param data (dict): Data to serialize
 
-        @return JSON formatted string
+    @return JSON formatted string
 
     """
     return rapidjson.dumps(data, skipkeys=False, ensure_ascii=False, sort_keys=True)
@@ -28,22 +29,22 @@ def serialize(data: dict) -> str:
 def gen_timestamp():
     """! The Unix time, rounded to the nearest second.
     See https://en.wikipedia.org/wiki/Unix_time
-        @return The Unix time
+    @return The Unix time
     """
     return str(round(time.time()))
 
-
-from urllib.parse import urlparse, urlunparse
 
 DEFAULT_NODE = "http://localhost:9984"
 
 
 class CreateOperation:
-    """! Class representing the ``'CREATE'`` transaction operation."""
+    """! Class representing the ``'CREATE'`` transaction operation.
+    """
 
 
 class TransferOperation:
-    """! Class representing the ``'TRANSFER'`` transaction operation."""
+    """! Class representing the ``'TRANSFER'`` transaction operation.
+    """
 
 
 ops_map = {
@@ -58,10 +59,10 @@ def _normalize_operation(operation):
     :attr:`~.ops_map`, and returning the corresponding class if
     present.
 
-        @param operation The operation string to convert.
+    @param operation (str): The operation string to convert.
 
-        @return The class corresponding to the given string,
-                :class:`~.CreateOperation` or :class:`~TransferOperation`.
+    @return The class corresponding to the given string,
+            :class:`~.CreateOperation` or :class:`~TransferOperation`.
 
         .. important:: If the :meth:`str.upper` step, or the
             :attr:`~.ops_map` lookup fails, the given ``operation``
