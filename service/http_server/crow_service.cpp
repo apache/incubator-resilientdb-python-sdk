@@ -41,7 +41,7 @@
 using crow::request;
 using crow::response;
 using resdb::ResDBConfig;
-using resdb::BatchUserRequest;
+using resdb::BatchClientRequest;
 
 namespace sdk {
 
@@ -157,11 +157,11 @@ void CrowService::run() {
       int cur_size = 0;
       bool first_batch_element = true;
       for (auto& txn : *resp) {
-        BatchUserRequest request;
+        BatchClientRequest request;
         KVRequest kv_request;
         cur_size++;
         if (request.ParseFromString(txn.second)) {
-          for (auto& sub_req : request.user_requests()) {
+          for (auto& sub_req : request.client_requests()) {
             kv_request.ParseFromString(sub_req.request().data());
             LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
                       << kv_request.DebugString().c_str() << "}";
@@ -202,10 +202,10 @@ void CrowService::run() {
     std::string values = "[\n";
     bool first_iteration = true;
     for (auto& txn : *resp) {
-      BatchUserRequest request;
+      BatchClientRequest request;
       KVRequest kv_request;
       if (request.ParseFromString(txn.second)) {
-        for (auto& sub_req : request.user_requests()) {
+        for (auto& sub_req : request.client_requests()) {
           kv_request.ParseFromString(sub_req.request().data());
           LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
                     << kv_request.DebugString().c_str() << "}";
