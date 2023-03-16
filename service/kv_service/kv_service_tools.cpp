@@ -30,7 +30,8 @@
 
 #include <fstream>
 
-#include "config/resdb_config_utils.h"
+#include "common/proto/signature_info.pb.h"
+#include "platform/config/resdb_config_utils.h"
 #include "service/kv_service/resdb_kv_client.h"
 
 using resdb::GenerateReplicaInfo;

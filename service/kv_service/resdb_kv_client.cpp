@@ -32,7 +32,7 @@
 namespace sdk {
 
 ResDBKVClient::ResDBKVClient(const resdb::ResDBConfig& config)
-    : ResDBUserClient(config) {}
+    : ResDBTransactionProposer(config) {}
 
 int ResDBKVClient::Set(const std::string& key, const std::string& data) {
   KVRequest request;
