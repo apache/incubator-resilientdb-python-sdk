@@ -12,6 +12,14 @@ If your Python version number is too low you may encounter type hinting issues w
 
 `$ pip install -r requirements.txt`
 
+## Running kvserver
+
+sh service/tools/start_kv_service_sdk.sh
+
+## test
+
+bazel-bin/service/kv_service/kv_service_tools service/tools/config/interface/service.config set test 1234
+
 ## Running the driver
 
 examples of using the driver can be seen in [test_driver](/test_driver.py)
