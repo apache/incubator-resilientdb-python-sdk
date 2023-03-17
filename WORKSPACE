@@ -98,66 +98,11 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
 
-all_content = """filegroup(name = "all_srcs", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
-
-http_archive(
-    name = "cryptopp",
-    build_file_content = all_content,
-    sha256 = "6055ab314ff4daae9490ddfb3fbcf107bc94a556401ed42f756fa5f7cd8c6510",
-    strip_prefix = "cryptopp-CRYPTOPP_8_7_0",
-    urls = ["https://github.com/weidai11/cryptopp/archive/refs/tags/CRYPTOPP_8_7_0.zip"],
-)
-
 http_archive(
     name = "com_google_absl",
     strip_prefix = "abseil-cpp-20211102.0",
     urls = ["https://github.com/abseil/abseil-cpp/archive/refs/tags/20211102.0.zip"],
 )
-
-# buildifier is written in Go and hence needs rules_go to be built.
-# See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
-http_archive(
-    name = "io_bazel_rules_go",
-    sha256 = "d6b2513456fe2229811da7eb67a444be7785f5323c6708b38d851d2b51e54d83",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.30.0/rules_go-v0.30.0.zip",
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.30.0/rules_go-v0.30.0.zip",
-    ],
-)
-
-load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies")
-
-go_rules_dependencies()
-
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains")
-
-go_register_toolchains(version = "1.19.5")
-
-http_archive(
-    name = "bazel_gazelle",
-    sha256 = "de69a09dc70417580aabf20a28619bb3ef60d038470c7cf8442fafcf627c21cb",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.24.0/bazel-gazelle-v0.24.0.tar.gz",
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.24.0/bazel-gazelle-v0.24.0.tar.gz",
-    ],
-)
-
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-
-gazelle_dependencies()
-
-http_archive(
-    name = "com_github_bazelbuild_buildtools",
-    sha256 = "518b2ce90b1f8ad7c9a319ca84fd7de9a0979dd91e6d21648906ea68faa4f37a",
-    strip_prefix = "buildtools-5.0.1",
-    urls = [
-        "https://github.com/bazelbuild/buildtools/archive/refs/tags/5.0.1.zip",
-    ],
-)
-
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-_RULES_BOOST_COMMIT = "652b21e35e4eeed5579e696da0facbe8dba52b1f"
 
 http_archive(
     name = "com_github_nelhage_rules_boost",
@@ -175,46 +120,13 @@ boost_deps()
 
 http_archive(
     name = "net_zlib_zlib",
-    build_file = "//third_party:z.BUILD",
+    build_file = "@com_resdb_nexres//third_party:z.BUILD",
     sha256 = "91844808532e5ce316b3c010929493c0244f3d37593afd6de04f71821d5136d9",
     strip_prefix = "zlib-1.2.12",
     urls = [
         "https://zlib.net/zlib-1.2.12.tar.gz",
         "https://storage.googleapis.com/bazel-mirror/zlib.net/zlib-1.2.12.tar.gz",
     ],
-)
-
-#prometheus cpp client library
-
-http_archive(
-    name = "com_github_jupp0r_prometheus_cpp",
-    build_file = "//third_party:prometheus.BUILD",
-    sha256 = "281b6d9a26da35375c9958954e03616d71ea28d57ec193b0e75c3e10ff3da55d",
-    strip_prefix = "prometheus-cpp-1.0.1",
-    url = "https://github.com/jupp0r/prometheus-cpp/archive/refs/tags/v1.0.1.zip",
-)
-
-load("@com_github_jupp0r_prometheus_cpp//bazel:repositories.bzl", "prometheus_cpp_repositories")
-
-http_archive(
-    name = "com_google_leveldb",
-    build_file = "//third_party:leveldb.BUILD",
-    sha256 = "a6fa7eebd11de709c46bf1501600ed98bf95439d6967963606cc964931ce906f",
-    strip_prefix = "leveldb-1.23",
-    url = "https://github.com/google/leveldb/archive/refs/tags/1.23.zip",
-)
-
-bind(
-    name = "date",
-    actual = "@com_howardhinnant_date//:date",
-)
-
-http_archive(
-    name = "com_howardhinnant_date",
-    build_file = "//third_party:date.BUILD",
-    sha256 = "f4300b96f7a304d4ef9bf6e0fa3ded72159f7f2d0f605bdde3e030a0dba7cf9f",
-    strip_prefix = "date-3.0.1",
-    url = "https://github.com/HowardHinnant/date/archive/refs/tags/v3.0.1.zip",
 )
 
 http_archive(
@@ -236,59 +148,6 @@ http_archive(
     sha256 = "babcdfd2c744905a73d20de211b51367bda0d5200f11d654c4314b909d8c963c",
     strip_prefix = "asio-asio-1-26-0",
     url = "https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-26-0.zip",
-)
-
-bind(
-    name = "snappy",
-    actual = "@com_google_snappy//:snappy",
-)
-
-http_archive(
-    name = "com_google_snappy",
-    build_file = "//third_party:snappy.BUILD",
-    sha256 = "e170ce0def2c71d0403f5cda61d6e2743373f9480124bcfcd0fa9b3299d428d9",
-    strip_prefix = "snappy-1.1.9",
-    url = "https://github.com/google/snappy/archive/refs/tags/1.1.9.zip",
-)
-
-bind(
-    name = "zlib",
-    actual = "@com_zlib//:zlib",
-)
-
-http_archive(
-    name = "com_zlib",
-    build_file = "//third_party:zlib.BUILD",
-    sha256 = "629380c90a77b964d896ed37163f5c3a34f6e6d897311f1df2a7016355c45eff",
-    strip_prefix = "zlib-1.2.11",
-    url = "https://github.com/madler/zlib/archive/v1.2.11.tar.gz",
-)
-
-bind(
-    name = "zstd",
-    actual = "//third_party:zstd",
-)
-
-http_archive(
-    name = "com_facebook_zstd",
-    build_file_content = all_content,
-    strip_prefix = "zstd-1.5.2",
-    url = "https://github.com/facebook/zstd/archive/refs/tags/v1.5.2.zip",
-)
-
-http_archive(
-    name = "com_github_facebook_rocksdb",
-    build_file = "//third_party:rocksdb.BUILD",
-    sha256 = "928cbd416c0531e9b2e7fa74864ce0d7097dca3f5a8c31f31459772a28dbfcba",
-    strip_prefix = "rocksdb-7.2.2",
-    url = "https://github.com/facebook/rocksdb/archive/refs/tags/v7.2.2.zip",
-)
-
-http_archive(
-    name = "eEVM",
-    build_file = "//third_party:eEVM.BUILD",
-    strip_prefix = "eEVM-main",
-    url = "https://github.com/microsoft/eEVM/archive/refs/heads/main.zip",
 )
 
 http_archive(
@@ -313,14 +172,6 @@ python_configure(
 )
 
 http_archive(
-    name = "nlohmann_json",
-    build_file = "//third_party:json.BUILD",  # see below
-    sha256 = "4cf0df69731494668bdd6460ed8cb269b68de9c19ad8c27abc24cd72605b2d5b",
-    strip_prefix = "json-3.9.1",
-    urls = ["https://github.com/nlohmann/json/archive/v3.9.1.tar.gz"],
-)
-
-http_archive(
     name = "rapidjson",
     build_file = "//third_party:rapidjson.BUILD",
     sha256 = "8e00c38829d6785a2dfb951bb87c6974fa07dfe488aa5b25deec4b8bc0f6a3ab",
@@ -330,16 +181,17 @@ http_archive(
 
 http_archive(
     name = "civetweb",
-    build_file = "//third_party:civetweb.BUILD",
+    build_file = "@com_resdb_nexres//third_party:civetweb.BUILD",
     sha256 = "88574f0cffd6047e22fafa3bdc748dd878a4928409d4f880332e2b0f262b9f62",
     strip_prefix = "civetweb-1.15",
     url = "https://github.com/civetweb/civetweb/archive/refs/tags/v1.15.zip",
 )
 
-http_archive(
-    name = "nexres_release",
-    sha256 = "2d1ce52e5955c5a1c2bc6cc8c5d4dbdcd58dc5e656a5b7832849b4978098f2d6",
-    strip_prefix = "resilientdb-nexres-v.1.4.0",
-    url = "https://github.com/resilientdb/resilientdb/archive/refs/tags/nexres-v.1.4.0.zip",
+git_repository(
+    name = "com_resdb_nexres",
+    branch = "resilient_v2",
+    remote = "https://github.com/resilientdb/resilientdb.git"
 )
 
+load("@com_resdb_nexres//:repositories.bzl", "nexres_repositories")
+nexres_repositories()

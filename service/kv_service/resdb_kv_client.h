@@ -25,12 +25,12 @@
 
 #pragma once
 
-#include "client/resdb_user_client.h"
+#include "platform/interface/resdb_transaction_proposer.h"
 
 namespace sdk {
 
 // ResDBKVClient to send data to the kv server.
-class ResDBKVClient : public resdb::ResDBUserClient {
+class ResDBKVClient : public resdb::ResDBTransactionProposer {
  public:
   ResDBKVClient(const resdb::ResDBConfig& config);
 
