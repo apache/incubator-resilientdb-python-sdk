@@ -14,10 +14,11 @@ cc_library(
     deps = [
         ":sdk_transaction",
         "//service/kv_service:resdb_kv_client",
-        "@nexres_release//common:comm",
-        "@nexres_release//common:asio",
-        "@nexres_release//config:resdb_config_utils",
-        "@nexres_release//client:resdb_txn_client",
+        "@com_resdb_nexres//common:asio",
+        "@com_resdb_nexres//common:boost_comm",
+        "@com_resdb_nexres//common/proto:signature_info_cc_proto",
+        "@com_resdb_nexres//platform/config:resdb_config_utils",
+        "@com_resdb_nexres//platform/interface:resdb_txn_accessor",
         "//third_party:crow",
         "//third_party:rapidjson",
     ],
@@ -36,6 +37,6 @@ cc_test(
     srcs = ["crow_service_test.cpp"],
     deps = [
         ":crow_service",
-        "@nexres_release//common/test:test_main",
+        "@com_resdb_nexres//common/test:test_main",
     ],
 )

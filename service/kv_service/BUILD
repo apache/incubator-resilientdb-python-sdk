@@ -5,7 +5,7 @@ cc_library(
     srcs = ["resdb_kv_client.cpp"],
     hdrs = ["resdb_kv_client.h"],
     deps = [
-        "@nexres_v2//platform/interface:resdb_transaction_proposer",
+        "@com_resdb_nexres//platform/interface:resdb_transaction_proposer",
         "//service/kv_service/proto:kv_server_cc_proto",
     ],
 )
@@ -16,8 +16,8 @@ cc_library(
     hdrs = ["py_verificator.h"],
     tags = ["manual"],
     deps = [
-        "@nexres_v2//common:comm",
-        "@nexres_v2//common:pybind",
+        "@com_resdb_nexres//common:comm",
+        "@com_resdb_nexres//common:pybind",
     ],
 )
 
@@ -27,10 +27,10 @@ cc_library(
     hdrs = ["kv_service_transaction_manager.h"],
     deps = [
         ":py_verificator",
-        "@nexres_v2//common:comm",
-        "@nexres_v2//platform/config:resdb_config_utils",
-        "@nexres_v2//platform/consensus/execution:transaction_manager",
-        "@nexres_v2//storage:in_mem_kv_storage",
+        "@com_resdb_nexres//common:comm",
+        "@com_resdb_nexres//platform/config:resdb_config_utils",
+        "@com_resdb_nexres//platform/consensus/execution:transaction_manager",
+        "@com_resdb_nexres//storage:in_mem_kv_storage",
         "//service/kv_service/proto:kv_server_cc_proto",
     ]
 )
@@ -40,8 +40,8 @@ cc_binary(
     srcs = ["kv_server.cpp"],
     deps = [
         ":kv_service_transaction_manager",
-        "@nexres_v2//platform/config:resdb_config_utils",
-        "@nexres_v2//service/utils:server_factory",
+        "@com_resdb_nexres//platform/config:resdb_config_utils",
+        "@com_resdb_nexres//service/utils:server_factory",
     ],
 )
 
@@ -49,8 +49,8 @@ cc_binary(
     name = "kv_service_tools",
     srcs = ["kv_service_tools.cpp"],
     deps = [
-        "@nexres_v2//common/proto:signature_info_cc_proto",
-        "@nexres_v2//platform/config:resdb_config_utils",
+        "@com_resdb_nexres//common/proto:signature_info_cc_proto",
+        "@com_resdb_nexres//platform/config:resdb_config_utils",
         "//service/kv_service:resdb_kv_client",
     ],
 )

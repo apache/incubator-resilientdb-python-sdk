@@ -28,8 +28,9 @@
 #include <crow.h>
 
 #include "service/kv_service/resdb_kv_client.h"
-#include "config/resdb_config_utils.h"
-#include "client/resdb_txn_client.h"
+#include "common/proto/signature_info.pb.h"
+#include "platform/config/resdb_config_utils.h"
+#include "platform/interface/resdb_txn_accessor.h"
 #include "service/http_server/sdk_transaction.h"
 #include "service/kv_service/proto/kv_server.pb.h"
 
@@ -47,7 +48,7 @@ class CrowService {
   resdb::ResDBConfig server_config_;
   uint16_t port_num_;
   ResDBKVClient kv_client_;
-  resdb::ResDBTxnClient txn_client_;
+  resdb::ResDBTxnAccessor txn_client_;
 };
 
 }  // namespace resdb
