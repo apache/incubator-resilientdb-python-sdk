@@ -29,6 +29,7 @@
 #include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
+#include <stdint.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -155,23 +156,33 @@ void CrowService::run() {
       };
 
       int cur_size = 0;
-      bool first_batch_element = true;
+      bool first_batch_element = true; 
       for (auto& txn : *resp) {
         BatchUserRequest request;
         KVRequest kv_request;
         cur_size++;
         if (request.ParseFromString(txn.second)) {
+	  if (!first_batch_element) cur_batch_str.append(",");
+	  first_batch_element = false;
+
+	  cur_batch_str.append("{\"transactions\": [");
+	  bool first_transaction = true;
           for (auto& sub_req : request.user_requests()) {
             kv_request.ParseFromString(sub_req.request().data());
             LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
                       << kv_request.DebugString().c_str() << "}";
             std::string object = ParseKVRequest(kv_request);
 
-            if (!first_batch_element) cur_batch_str.append(",");
-            first_batch_element = false;
+            if (!first_transaction) cur_batch_str.append(",");
+            first_transaction = false;
             cur_batch_str.append(object);
+	    cur_batch_str.append("\n");
           }
+	  cur_batch_str.append("],"); // close transactions list
+	  int64_t createtime = request.createtime();
+	  cur_batch_str.append(" \"createtime\": " + std::to_string(createtime));
         }
+	cur_batch_str.append("}");
       }
       full_batches = cur_size == batch_size;
       cur_batch_str.append("]");
@@ -180,7 +191,7 @@ void CrowService::run() {
 
       min_seq += batch_size;
     }
-    values.append("\n]");
+    values.append("\n]\n");
     res.set_header("Content-Type", "application/json");
     res.end(values);
   });
