@@ -137,10 +137,12 @@ void CrowService::run() {
     bool first_batch = true;
     while (full_batches) {
       std::string cur_batch_str = "";
-      if (!first_batch)
+/*      if (!first_batch)
         cur_batch_str.append(",\n[");
       else
-        cur_batch_str.append("[");
+        cur_batch_str.append("[");*/
+      if (!first_batch) cur_batch_str.append(",\n");
+      if (batch_size > 1) cur_batch_str.append("[");
       first_batch = false;
 
       int max_seq = min_seq + batch_size - 1;
@@ -162,6 +164,7 @@ void CrowService::run() {
         KVRequest kv_request;
         cur_size++;
         if (request.ParseFromString(txn.second)) {
+	  LOG(INFO) << request.DebugString();
 	  if (!first_batch_element) cur_batch_str.append(",");
 	  first_batch_element = false;
 
@@ -178,14 +181,70 @@ void CrowService::run() {
             cur_batch_str.append(object);
 	    cur_batch_str.append("\n");
           }
-	  cur_batch_str.append("],"); // close transactions list
-	  int64_t createtime = request.createtime();
-	  cur_batch_str.append(" \"createtime\": " + std::to_string(createtime));
+	  cur_batch_str.append("]"); // close transactions list
+
+	  // id
+	  uint64_t local_id = request.local_id();
+          cur_batch_str.append(", \"id\": " + std::to_string(local_id));
+	  
+	  // number
+	  cur_batch_str.append(", \"number\": \"" + std::to_string(local_id) + "\"");
+	  
+	  // hash
+	  cur_batch_str.append(", \"hash\": \"" + request.hash() + "\"");
+
+	  // size
+	  cur_batch_str.append(", \"size\": 0");
+
+	  // blockHeight
+	  cur_batch_str.append(", \"blockHeight\": 0");
+
+	  // minedBy
+          cur_batch_str.append(", \"minedBy\": \"testvalue\"");
+	  
+	  // blockReward
+          cur_batch_str.append(", \"blockReward\": 0");
+
+	  // difficulty
+          cur_batch_str.append(", \"difficulty\": 0");
+
+	  // totalDifficulty
+          cur_batch_str.append(", \"totalDifficulty\": 0");
+
+	  // gasUsed
+	  cur_batch_str.append(", \"gasUsed\": \"testvalue\"");
+
+	  // parentHash
+	  cur_batch_str.append(", \"parentHash\": \"testvalue\"");
+	  
+	  // stateRoot
+          cur_batch_str.append(", \"stateRoot\": \"testvalue\"");
+           
+	  // nounce
+          cur_batch_str.append(", \"nounce\": \"testvalue\"");
+          	  
+	  // commitCertificate
+          cur_batch_str.append(", \"commitCertificate\": \"testvalue\"");
+/*          for (auto& signature_info : request.committed_certs().committed_certs()) {
+            cur_batch_str.append();
+            LOG(INFO) << "signature_info ";
+          }*/
+          
+	  // createdAt
+	  uint64_t createtime = request.createtime();
+	  cur_batch_str.append(", \"createdAt\": \"" + std::to_string(createtime) + "\"");
+
+//    	  uint64_t seq = request.seq();
+//	  cur_batch_str.append(", \"seq\": " + std::to_string(seq));
+
+	  // proxy
+//	  int32_t proxy_id = request.proxy_id();
+//	  cur_batch_str.append(", \"proxy_id\": " + std::to_string(proxy_id));
         }
 	cur_batch_str.append("}");
       }
       full_batches = cur_size == batch_size;
-      cur_batch_str.append("]");
+      if (batch_size > 1) cur_batch_str.append("]");
 
       if (cur_size > 0) values.append(cur_batch_str);
 
@@ -193,6 +252,7 @@ void CrowService::run() {
     }
     values.append("\n]\n");
     res.set_header("Content-Type", "application/json");
+//    values = "[{    \"id\": 0,    \"number\": \"1\",    \"hash\": \"test\",    \"transactions\": [],    \"size\": 0,    \"blockHeight\": 0,    \"minedBy\": \"Glenn\", \"blockReward\": 0,    \"difficulty\": 0,    \"totalDifficulty\": 2,    \"gasUsed\": \"40\",    \"parentHash\": \"test\",    \"stateRoot\": \"test\",    \"nounce\": \"\",    \"commitCertificate\": \"\", \"createdAt\": \"\"   }]";
     res.end(values);
   });
 
@@ -233,6 +293,13 @@ void CrowService::run() {
     values.append("\n]");
     res.set_header("Content-Type", "application/json");
     res.end(values);
+  });
+
+  CROW_ROUTE(app, "/explorertest")
+  ([this](const crow::request& req, response& res) {
+    std::string values = "[{    \"id\": 0,    \"number\": \"1\",    \"hash\": \"test\",    \"transactions\": [],    \"size\": 0,    \"blockHeight\": 0,    \"minedBy\": \"Glenn\", \"blockReward\": 0,    \"difficulty\": 0,    \"totalDifficulty\": 2,    \"gasUsed\": \"40\",    \"parentHash\": \"test\",    \"stateRoot\": \"test\",    \"nounce\": \"\",    \"commitCertificate\": \"\", \"createdAt\": \"\"   }]";
+    res.set_header("Content-Type", "application/json");
+    res.end(std::string(values.c_str()));
   });
 
   // Run the Crow app
