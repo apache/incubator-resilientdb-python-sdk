@@ -34,6 +34,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <ctime>
 #include <fstream>
 #include <memory>
 #include <string>
@@ -165,6 +166,7 @@ void CrowService::run() {
         cur_size++;
         if (request.ParseFromString(txn.second)) {
 	  LOG(INFO) << request.DebugString();
+
 	  if (!first_batch_element) cur_batch_str.append(",");
 	  first_batch_element = false;
 
@@ -172,13 +174,13 @@ void CrowService::run() {
 	  bool first_transaction = true;
           for (auto& sub_req : request.user_requests()) {
             kv_request.ParseFromString(sub_req.request().data());
-            LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
-                      << kv_request.DebugString().c_str() << "}";
-            std::string object = ParseKVRequest(kv_request);
+//            LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
+//                      << kv_request.DebugString().c_str() << "}";
+            std::string kv_request_json = ParseKVRequest(kv_request);
 
             if (!first_transaction) cur_batch_str.append(",");
             first_transaction = false;
-            cur_batch_str.append(object);
+            cur_batch_str.append(kv_request_json);
 	    cur_batch_str.append("\n");
           }
 	  cur_batch_str.append("]"); // close transactions list
@@ -194,10 +196,10 @@ void CrowService::run() {
 	  cur_batch_str.append(", \"hash\": \"" + request.hash() + "\"");
 
 	  // size
-	  cur_batch_str.append(", \"size\": 0");
+	  cur_batch_str.append(", \"size\": " + std::to_string(request.ByteSizeLong()));
 
 	  // blockHeight
-	  cur_batch_str.append(", \"blockHeight\": 0");
+	  cur_batch_str.append(", \"blockHeight\": " + std::to_string(request.seq()));
 
 	  // minedBy
           cur_batch_str.append(", \"minedBy\": \"testvalue\"");
@@ -222,24 +224,19 @@ void CrowService::run() {
            
 	  // nounce
           cur_batch_str.append(", \"nounce\": \"testvalue\"");
-          	  
+
 	  // commitCertificate
-          cur_batch_str.append(", \"commitCertificate\": \"testvalue\"");
-/*          for (auto& signature_info : request.committed_certs().committed_certs()) {
-            cur_batch_str.append();
-            LOG(INFO) << "signature_info ";
-          }*/
+          cur_batch_str.append(", \"commitCertificate\": \"");
+//	  LOG(INFO) << request.committed_certs().DebugString();
+          for (auto& signature_info : request.committed_certs().committed_certs()) {
+            cur_batch_str.append(signature_info.signature());
+          }
+	  cur_batch_str.append("\"");
           
 	  // createdAt
 	  uint64_t createtime = request.createtime();
-	  cur_batch_str.append(", \"createdAt\": \"" + std::to_string(createtime) + "\"");
+	  cur_batch_str.append(", \"createdAt\": \"" + ParseCreateTime(createtime) + "\"");
 
-//    	  uint64_t seq = request.seq();
-//	  cur_batch_str.append(", \"seq\": " + std::to_string(seq));
-
-	  // proxy
-//	  int32_t proxy_id = request.proxy_id();
-//	  cur_batch_str.append(", \"proxy_id\": " + std::to_string(proxy_id));
         }
 	cur_batch_str.append("}");
       }
@@ -340,6 +337,19 @@ std::string CrowService::ParseKVRequest(const KVRequest& kv_request) {
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
   doc.Accept(writer);
   return buffer.GetString();
+}
+
+std::string CrowService::ParseCreateTime(uint64_t createtime) {
+  std::string timestr = "";
+//  uint64_t usec = createtime % 1000000;
+  uint64_t sec = createtime / 1000000;
+
+  std::tm *tm_gmt = std::gmtime((time_t*) &sec);
+  int year = tm_gmt->tm_year + 1900;
+  timestr += std::to_string(tm_gmt->tm_mon + 1) + "/" + std::to_string(tm_gmt->tm_mday) + "/" + std::to_string(year) + " ";
+  timestr += std::to_string(tm_gmt->tm_hour) + ":" + std::to_string(tm_gmt->tm_min) + ":" + std::to_string(tm_gmt->tm_sec) + " GMT";
+
+  return timestr;
 }
 
 }  // namespace resdb
