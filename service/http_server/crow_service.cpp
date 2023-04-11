@@ -301,13 +301,13 @@ void CrowService::run() {
 
    CROW_ROUTE(app, "/populatetable")
   ([this](const crow::request& req, response& res) {
-    std::vector<resdb::ReplicaInfo> replicas = GetAllReplicas();
-    LOG(ERROR) << "all replicas:" << replicas.size();
-    std::vector<resdb::ReplicaInfo> client_replicas = GetClientReplicas();
-    LOG(INFO )<< "client replicas: " << client_replicas.size();
-    
+    size_t replicas = config_.GetReplicaNum();
+    uint32_t client_batch_num = config_.ClientBatchNum(); 
+    uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
+
     std::string values = "";
-    values.append("[{    \"replicas\": " + std::to_string(replicas.size()) + " \"clients\" : " + std::to_string(client_replicas.size()) + "" "}]");
+    values.append("[{    \"replicas\": " + std::to_string(replicas) + " \"client_batch_num\" : " + std::to_string(client_batch_num) + " \"client_batch_wait_time \" : " + std::to_string(client_batch_wait_time) +  " }]") ;
+    
     res.set_header("Content-Type", "application/json");
     res.end(std::string(values.c_str()));
   });
