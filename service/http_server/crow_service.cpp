@@ -299,6 +299,19 @@ void CrowService::run() {
     res.end(std::string(values.c_str()));
   });
 
+   CROW_ROUTE(app, "/populatetable")
+  ([this](const crow::request& req, response& res) {
+    std::vector<resdb::ReplicaInfo> replicas = GetAllReplicas();
+    LOG(ERROR) << "all replicas:" << replicas.size();
+    std::vector<resdb::ReplicaInfo> client_replicas = GetClientReplicas();
+    LOG(INFO )<< "client replicas: " << client_replicas.size();
+    
+    std::string values = "";
+    values.append("[{    \"replicas\": " + std::to_string(replicas.size()) + " \"clients\" : " + std::to_string(client_replicas.size()) + "" "}]");
+    res.set_header("Content-Type", "application/json");
+    res.end(std::string(values.c_str()));
+  });
+
   // Run the Crow app
   app.port(port_num_).multithreaded().run();
 }
@@ -351,5 +364,6 @@ std::string CrowService::ParseCreateTime(uint64_t createtime) {
 
   return timestr;
 }
+
 
 }  // namespace resdb

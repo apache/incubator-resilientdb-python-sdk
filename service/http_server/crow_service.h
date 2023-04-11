@@ -33,6 +33,7 @@
 #include "platform/interface/resdb_txn_accessor.h"
 #include "service/http_server/sdk_transaction.h"
 #include "service/kv_service/proto/kv_server.pb.h"
+#include "platform/communication/consensus_manager.h"
 
 namespace sdk {
 
@@ -44,7 +45,7 @@ class CrowService {
 
  private:
   std::string ParseKVRequest(const KVRequest &kv_request);
-  std::string ParseCreateTime(uint64_t time);
+  std::string ParseCreateTime(uint64_t createtime);
   resdb::ResDBConfig config_;
   resdb::ResDBConfig server_config_;
   uint16_t port_num_;
