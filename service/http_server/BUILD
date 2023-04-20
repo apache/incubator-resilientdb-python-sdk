@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "sdk_transaction",
     srcs = ["sdk_transaction.cpp"],

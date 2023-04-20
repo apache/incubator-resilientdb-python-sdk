@@ -134,8 +134,8 @@ void CrowService::run() {
     }
   });
 
-  // Set a key-value pair. Accepts JSON objects following the SDK Transaction
-  // format with id and value parameters
+  // Commit a key-value pair, extracting the id parameter from the JSON
+  // object and setting the value as the entire JSON object
   CROW_ROUTE(app, "/v1/transactions/commit")
   .methods("POST"_method)([this](const request& req) {
     std::string body = req.body;
@@ -325,6 +325,19 @@ void CrowService::run() {
         std::cout << "false" << std::endl;
     });
 
+  CROW_ROUTE(app, "/populatetable")
+  ([this](const crow::request& req, response& res) {
+    size_t replicas = config_.GetReplicaNum();
+    uint32_t client_batch_num = config_.ClientBatchNum(); 
+    uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
+
+    std::string values = "";
+    values.append("[{    \"replicas\": " + std::to_string(replicas) + " \"client_batch_num\" : " + std::to_string(client_batch_num) + " \"client_batch_wait_time \" : " + std::to_string(client_batch_wait_time) +  " }]") ;
+    
+    res.set_header("Content-Type", "application/json");
+    res.end(std::string(values.c_str()));
+  });
+
   // Run the Crow app
   app.port(port_num_).multithreaded().run();
 }
@@ -461,5 +474,6 @@ std::string CrowService::ParseCreateTime(uint64_t createtime) {
 
   return timestr;
 }
+
 
 }  // namespace resdb
