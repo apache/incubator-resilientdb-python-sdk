@@ -43,6 +43,7 @@ class CrowService {
   void run();
 
  private:
+  std::string GetAllBlocks();
   std::string ParseKVRequest(const KVRequest &kv_request);
   std::string ParseCreateTime(uint64_t time);
   resdb::ResDBConfig config_;
@@ -50,6 +51,7 @@ class CrowService {
   uint16_t port_num_;
   ResDBKVClient kv_client_;
   resdb::ResDBTxnAccessor txn_client_;
+  std::unordered_set<crow::websocket::connection*> users;
 };
 
 }  // namespace resdb
