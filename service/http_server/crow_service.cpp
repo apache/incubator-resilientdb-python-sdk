@@ -73,7 +73,7 @@ void CrowService::run() {
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
-        auto values = GetAllBlocks();
+        auto values = GetAllBlocks(1);
         for (auto u : users)
           u->send_text(values);
       }
@@ -96,7 +96,7 @@ void CrowService::run() {
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
-        auto values = GetAllBlocks();
+        auto values = GetAllBlocks(1);
         for (auto u : users)
           u->send_text(values);
       }
@@ -120,7 +120,7 @@ void CrowService::run() {
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
-        auto values = GetAllBlocks();
+        auto values = GetAllBlocks(1);
         for (auto u : users)
           u->send_text(values);
       }
@@ -157,7 +157,7 @@ void CrowService::run() {
 
     // Send updated blocks list to websocket
     if (users.size() > 0) {
-      auto values = GetAllBlocks();
+      auto values = GetAllBlocks(1);
       for (auto u : users)
         u->send_text(values);
     }
@@ -167,7 +167,7 @@ void CrowService::run() {
   });
 
   CROW_ROUTE(app, "/v1/blocks")([this](const crow::request& req, response& res) {
-    auto values = GetAllBlocks();
+    auto values = GetAllBlocks(1);
     for (auto u : users)
        u->send_text(values);
     res.set_header("Content-Type", "application/json");
@@ -177,85 +177,13 @@ void CrowService::run() {
   // Retrieve blocks in batches of size of the int parameter
   CROW_ROUTE(app, "/v1/blocks/<int>")
   ([this](const crow::request& req, response& res, int batch_size) {
-    int min_seq = 1;
-    bool full_batches = true;
-
-    std::string values = "[\n";
-    bool first_batch = true;
-    while (full_batches) {
-      std::string cur_batch_str = "";
-/*      if (!first_batch)
-        cur_batch_str.append(",\n[");
-      else
-        cur_batch_str.append("[");*/
-      if (!first_batch) cur_batch_str.append(",\n");
-      if (batch_size > 1) cur_batch_str.append("[");
-      first_batch = false;
-
-      int max_seq = min_seq + batch_size - 1;
-      auto resp = txn_client_.GetTxn(min_seq, max_seq);
-      absl::StatusOr<std::vector<std::pair<uint64_t, std::string>>> GetTxn(
-          uint64_t min_seq, uint64_t max_seq);
-      if (!resp.ok()) {
-        LOG(ERROR) << "get replica state fail";
-        res.code = 500;
-        res.set_header("Content-Type", "text/plain");
-        res.end("get replica state fail");
-        exit(1);
-      };
-
-      int cur_size = 0;
-      bool first_batch_element = true; 
-      for (auto& txn : *resp) {
-        BatchUserRequest request;
-        KVRequest kv_request;
-        cur_size++;
-        if (request.ParseFromString(txn.second)) {
-	  LOG(INFO) << request.DebugString();
-
-	  if (!first_batch_element) cur_batch_str.append(",");
-	  first_batch_element = false;
-
-	  cur_batch_str.append("{\"transactions\": [");
-	  bool first_transaction = true;
-          for (auto& sub_req : request.user_requests()) {
-            kv_request.ParseFromString(sub_req.request().data());
-//            LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
-//                      << kv_request.DebugString().c_str() << "}";
-            std::string kv_request_json = ParseKVRequest(kv_request);
-
-            if (!first_transaction) cur_batch_str.append(",");
-            first_transaction = false;
-            cur_batch_str.append(kv_request_json);
-	    cur_batch_str.append("\n");
-          }
-	  cur_batch_str.append("]"); // close transactions list
-
-	  // id
-	  uint64_t local_id = request.local_id();
-          cur_batch_str.append(", \"id\": " + std::to_string(local_id));
-	  
-	  // number
-	  cur_batch_str.append(", \"number\": \"" + std::to_string(local_id) + "\"");
-
-	  // size
-	  cur_batch_str.append(", \"size\": " + std::to_string(request.ByteSizeLong()));
-
-	  // createdAt
-	  uint64_t createtime = request.createtime();
-	  cur_batch_str.append(", \"createdAt\": \"" + ParseCreateTime(createtime) + "\"");
-
-        }
-	cur_batch_str.append("}");
-      }
-      full_batches = cur_size == batch_size;
-      if (batch_size > 1) cur_batch_str.append("]");
-
-      if (cur_size > 0) values.append(cur_batch_str);
-
-      min_seq += batch_size;
-    }
-    values.append("\n]\n");
+    auto values = GetAllBlocks(batch_size);
+    if (values == "") {
+      res.code = 500;
+      res.set_header("Content-Type", "text/plain");
+      res.end("get replica state fail");
+      exit(1);
+    };
     res.set_header("Content-Type", "application/json");
     res.end(values);
   });
@@ -319,10 +247,7 @@ void CrowService::run() {
       std::cout << "close" << std::endl;
     })
     .onmessage([&](crow::websocket::connection& /*conn*/, const std::string& data, bool is_binary){
-      if (is_binary)
-        std::cout << "true" << std::endl;
-      else
-        std::cout << "false" << std::endl;
+      // do nothing
     });
 
   CROW_ROUTE(app, "/populatetable")
@@ -342,20 +267,16 @@ void CrowService::run() {
   app.port(port_num_).multithreaded().run();
 }
 
-std::string CrowService::GetAllBlocks() {
+// If batch_size is 1, the function will not add the extra outer [] braces
+// Otherwise, a list of lists of blocks will be returned 
+std::string CrowService::GetAllBlocks(int batch_size) {
   int min_seq = 1;
   bool full_batches = true;
-
-  int batch_size = 1;
 
   std::string values = "[\n";
   bool first_batch = true;
   while (full_batches) {
     std::string cur_batch_str = "";
-/*      if (!first_batch)
-        cur_batch_str.append(",\n[");
-      else
-        cur_batch_str.append("[");*/
     if (!first_batch) cur_batch_str.append(",\n");
     if (batch_size > 1) cur_batch_str.append("[");
     first_batch = false;
@@ -381,7 +302,14 @@ std::string CrowService::GetAllBlocks() {
         if (!first_batch_element) cur_batch_str.append(",");
         first_batch_element = false;
 
-        cur_batch_str.append("{\"transactions\": [");
+        // id
+        uint64_t local_id = request.local_id();
+        cur_batch_str.append("{\"id\": " + std::to_string(local_id));
+
+        // number
+        cur_batch_str.append(", \"number\": \"" + std::to_string(local_id) + "\"");
+
+        cur_batch_str.append(", \"transactions\": [");
         bool first_transaction = true;
         for (auto& sub_req : request.user_requests()) {
           kv_request.ParseFromString(sub_req.request().data());
@@ -395,13 +323,6 @@ std::string CrowService::GetAllBlocks() {
           cur_batch_str.append("\n");
         }
         cur_batch_str.append("]"); // close transactions list
-
-        // id
-        uint64_t local_id = request.local_id();
-        cur_batch_str.append(", \"id\": " + std::to_string(local_id));
-
-        // number
-        cur_batch_str.append(", \"number\": \"" + std::to_string(local_id) + "\"");
 
         // size
         cur_batch_str.append(", \"size\": " + std::to_string(request.ByteSizeLong()));
@@ -421,7 +342,7 @@ std::string CrowService::GetAllBlocks() {
     min_seq += batch_size;
   }
 
-  values.append("]\n");
+  values.append("\n]\n");
 
   return values;
 }
@@ -464,8 +385,7 @@ std::string CrowService::ParseKVRequest(const KVRequest& kv_request) {
 
 std::string CrowService::ParseCreateTime(uint64_t createtime) {
   std::string timestr = "";
-//  uint64_t usec = createtime % 1000000;
-  uint64_t sec = createtime / 1000000;
+  uint64_t sec = createtime / 1000000000;
 
   std::tm *tm_gmt = std::gmtime((time_t*) &sec);
   int year = tm_gmt->tm_year + 1900;
