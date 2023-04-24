@@ -207,44 +207,61 @@ void CrowService::run() {
     for (auto& txn : *resp) {
       BatchUserRequest request;
       KVRequest kv_request;
+
+      std::string cur_batch_str = "";
       if (request.ParseFromString(txn.second)) {
+        LOG(INFO) << request.DebugString();
+
+        if (!first_iteration) cur_batch_str.append(",");
+        first_iteration = false;
+
+        // id
+        uint64_t local_id = request.local_id();
+        cur_batch_str.append("{\"id\": " + std::to_string(local_id));
+
+        // number
+        cur_batch_str.append(", \"number\": \"" + std::to_string(local_id) + "\"");
+
+        // transactions
+        cur_batch_str.append(", \"transactions\": [");
+        bool first_transaction = true;
         for (auto& sub_req : request.user_requests()) {
           kv_request.ParseFromString(sub_req.request().data());
-          LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
-                    << kv_request.DebugString().c_str() << "}";
-          std::string object = ParseKVRequest(kv_request);
+          std::string kv_request_json = ParseKVRequest(kv_request);
 
-          if (!first_iteration) values.append(",");
-
-          first_iteration = false;
-
-          values.append(object);
+          if (!first_transaction) cur_batch_str.append(",");
+          first_transaction = false;
+          cur_batch_str.append(kv_request_json);
+          cur_batch_str.append("\n");
         }
+        cur_batch_str.append("]"); // close transactions list
+
+        // size
+        cur_batch_str.append(", \"size\": " + std::to_string(request.ByteSizeLong()));
+
+        // createdAt
+        uint64_t createtime = request.createtime();
+        cur_batch_str.append(", \"createdAt\": \"" + ParseCreateTime(createtime) + "\"");
       }
+      cur_batch_str.append("}\n");
+      values.append(cur_batch_str);
     }
-    values.append("\n]");
+    values.append("]\n");
     res.set_header("Content-Type", "application/json");
     res.end(values);
   });
 
-  CROW_ROUTE(app, "/explorertest")
-  ([this](const crow::request& req, response& res) {
-    std::string values = "[{    \"id\": 0,    \"number\": \"1\",    \"hash\": \"test\",    \"transactions\": [],    \"size\": 0,    \"blockHeight\": 0,    \"minedBy\": \"Glenn\", \"blockReward\": 0,    \"difficulty\": 0,    \"totalDifficulty\": 2,    \"gasUsed\": \"40\",    \"parentHash\": \"test\",    \"stateRoot\": \"test\",    \"nounce\": \"\",    \"commitCertificate\": \"\", \"createdAt\": \"\"   }]";
-    res.set_header("Content-Type", "application/json");
-    res.end(std::string(values.c_str()));
-  });
-
-  CROW_ROUTE(app, "/ws")
+  CROW_ROUTE(app, "/blockupdatelistener")
     .websocket()
-    .onopen([&](crow::websocket::connection& conn){
-      std::cout << "on open" << std::endl;
+    .onopen([&](crow::websocket::connection& conn) {
+      LOG(INFO) << "Opened websocket";
       std::lock_guard<std::mutex> _(mtx);
       users.insert(&conn);
     })
-    .onclose([&](crow::websocket::connection& conn, const std::string& reason){
+    .onclose([&](crow::websocket::connection& conn, const std::string& reason) {
+      LOG(INFO) << "Closed websocket";
       std::lock_guard<std::mutex> _(mtx);
       users.erase(&conn);
-      std::cout << "close" << std::endl;
     })
     .onmessage([&](crow::websocket::connection& /*conn*/, const std::string& data, bool is_binary){
       // do nothing
@@ -309,12 +326,11 @@ std::string CrowService::GetAllBlocks(int batch_size) {
         // number
         cur_batch_str.append(", \"number\": \"" + std::to_string(local_id) + "\"");
 
+        // transactions
         cur_batch_str.append(", \"transactions\": [");
         bool first_transaction = true;
         for (auto& sub_req : request.user_requests()) {
           kv_request.ParseFromString(sub_req.request().data());
-//            LOG(INFO) << "Block data:\n{\nseq: " << txn.first << "\n"
-//                      << kv_request.DebugString().c_str() << "}";
           std::string kv_request_json = ParseKVRequest(kv_request);
 
           if (!first_transaction) cur_batch_str.append(",");
@@ -330,9 +346,8 @@ std::string CrowService::GetAllBlocks(int batch_size) {
         // createdAt
         uint64_t createtime = request.createtime();
         cur_batch_str.append(", \"createdAt\": \"" + ParseCreateTime(createtime) + "\"");
-
       }
-      cur_batch_str.append("}");
+      cur_batch_str.append("}\n");
     }
     full_batches = cur_size == batch_size;
     if (batch_size > 1) cur_batch_str.append("]");
