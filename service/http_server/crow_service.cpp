@@ -269,26 +269,13 @@ void CrowService::run() {
 
   CROW_ROUTE(app, "/populatetable")
   ([this](const crow::request& req, response& res) {
-    size_t replicas = config_.GetReplicaNum();
-    uint32_t client_batch_num = config_.ClientBatchNum(); 
-    uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
-
-    std::string values = "";
-    values.append("[{    \"replicas\": " + std::to_string(replicas) + " \"client_batch_num\" : " + std::to_string(client_batch_num) + " \"client_batch_wait_time \" : " + std::to_string(client_batch_wait_time) +  " }]") ;
-    
-    res.set_header("Content-Type", "application/json");
-    res.end(std::string(values.c_str()));
-  });
-
-  CROW_ROUTE(app, "/populatetable")
-  ([this](const crow::request& req, response& res) {
+    std::vector<resdb::ReplicaInfo> replicas = config_.GetReplicaInfos();
+    size_t replica_num = replicas[0].id() - 1;
     uint32_t client_num = config_.GetReplicaNum();
     uint32_t worker_num = config_.GetWorkerNum();
     uint32_t client_batch_num = config_.ClientBatchNum();
     uint32_t max_process_txn = config_.GetMaxProcessTxn();
     uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
-    std::vector<resdb::ReplicaInfo> replicas = config_.GetReplicaInfos();
-    size_t replica_num = replicas[0].id() - 1;
 
     std::string values = "";
     values.append("[{   \"replicaNum\": " + std::to_string(replica_num) 
