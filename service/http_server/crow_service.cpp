@@ -299,6 +299,29 @@ void CrowService::run() {
     res.end(std::string(values.c_str()));
   });
 
+  CROW_ROUTE(app, "/populatetable")
+  ([this](const crow::request& req, response& res) {
+    uint32_t client_num = config_.GetReplicaNum();
+    uint32_t worker_num = config_.GetWorkerNum();
+    uint32_t client_batch_num = config_.ClientBatchNum();
+    uint32_t max_process_txn = config_.GetMaxProcessTxn();
+    uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
+    std::vector<resdb::ReplicaInfo> replicas = config_.GetReplicaInfos();
+    size_t replica_num = replicas[0].id() - 1;
+
+    std::string values = "";
+    values.append("[{   \"replicaNum\": " + std::to_string(replica_num) 
+                      + ", \"clientNum\": " + std::to_string(client_num)
+                      + ", \"workerNum\" : " + std::to_string(worker_num) 
+                      + ", \"clientBatchNum\" : " + std::to_string(client_batch_num)
+                      + ", \"maxProcessTxn\" : " + std::to_string(max_process_txn) 
+                      + ", \"clientBatchWaitTime\" : " + std::to_string(client_batch_wait_time)
+                      + "" "}]");  
+    LOG(INFO) <<   std::string(values.c_str());
+    res.set_header("Content-Type", "application/json");
+    res.end(std::string(values.c_str()));
+  });
+
   // Run the Crow app
   app.port(port_num_).multithreaded().run();
 }

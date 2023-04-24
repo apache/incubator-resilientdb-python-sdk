@@ -33,6 +33,7 @@
 #include "platform/interface/resdb_txn_accessor.h"
 #include "service/http_server/sdk_transaction.h"
 #include "service/kv_service/proto/kv_server.pb.h"
+#include "platform/interface/resdb_state_accessor.h"
 
 namespace sdk {
 
