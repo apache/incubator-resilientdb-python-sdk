@@ -276,6 +276,12 @@ void CrowService::run() {
     uint32_t client_batch_num = config_.ClientBatchNum();
     uint32_t max_process_txn = config_.GetMaxProcessTxn();
     uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
+    uint32_t input_worker_num = config_.GetInputWorkerNum();
+    uint32_t output_worker_num = config_.GetOutputWorkerNum();
+    int client_timeout_ms = config_.GetClientTimeoutMs();
+    int min_data_receive_num = config_.GetMinDataReceiveNum();
+    size_t max_malicious_replica_num = config_.GetMaxMaliciousReplicaNum();
+    int checkpoint_water_mark = config_.GetCheckPointWaterMark();
 
     std::string values = "";
     values.append("[{   \"replicaNum\": " + std::to_string(replica_num) 
@@ -284,6 +290,12 @@ void CrowService::run() {
                       + ", \"clientBatchNum\" : " + std::to_string(client_batch_num)
                       + ", \"maxProcessTxn\" : " + std::to_string(max_process_txn) 
                       + ", \"clientBatchWaitTime\" : " + std::to_string(client_batch_wait_time)
+                      + ", \"inputWorkerNum\" : " + std::to_string(input_worker_num)
+                      + ", \"outputWorkerNum\" : " + std::to_string(output_worker_num)
+                      + ", \"clientTimeoutMs\" : " + std::to_string(client_timeout_ms)
+                      + ", \"minDataReceiveNum\" : " + std::to_string(min_data_receive_num)
+                      + ", \"maxMaliciousReplicaNum\" : " + std::to_string(max_malicious_replica_num)
+                      + ", \"checkpointWaterMark\" : " + std::to_string(checkpoint_water_mark)
                       + "" "}]");  
     LOG(INFO) <<   std::string(values.c_str());
     res.set_header("Content-Type", "application/json");
