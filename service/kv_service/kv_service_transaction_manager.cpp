@@ -57,7 +57,7 @@ KVServiceTransactionManager::KVServiceTransactionManager(
     storage_ = NewInMemKVStorage();
   }
 
-  py_verificator_ = std::make_unique<PYVerificator>();
+  // py_verificator_ = std::make_unique<PYVerificator>();
 }
 
 KVServiceTransactionManager::KVServiceTransactionManager(
@@ -94,11 +94,11 @@ std::unique_ptr<std::string> KVServiceTransactionManager::ExecuteData(
 
 void KVServiceTransactionManager::Set(const std::string& key,
                                       const std::string& value) {
-  bool is_valid = py_verificator_->Validate(value);
-  if (!is_valid) {
-    LOG(ERROR) << "Invalid transaction for " << key;
-    return;
-  }
+  // bool is_valid = py_verificator_->Validate(value);
+  // if (!is_valid) {
+  //   LOG(ERROR) << "Invalid transaction for " << key;
+  //   return;
+  // }
   storage_->SetValue(key, value);
 }
 

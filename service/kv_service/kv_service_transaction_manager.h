@@ -29,7 +29,7 @@
 #include <optional>
 #include <unordered_map>
 
-#include "service/kv_service/py_verificator.h"
+// #include "service/kv_service/py_verificator.h"
 
 #include "platform/config/resdb_config_utils.h"
 #include "platform/consensus/execution/transaction_manager.h"
@@ -54,7 +54,7 @@ class KVServiceTransactionManager : public resdb::TransactionManager {
 
  private:
   std::unique_ptr<resdb::Storage> storage_;
-  std::unique_ptr<PYVerificator> py_verificator_;
+  // std::unique_ptr<PYVerificator> py_verificator_;
 };
 
 }  // namespace resdb

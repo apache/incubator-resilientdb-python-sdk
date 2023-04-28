@@ -22,11 +22,20 @@ cc_library(
 )
 
 cc_library(
+    name = "c_validator",
+    srcs = ["c_validator.cpp"],
+    hdrs = ["c_validator.h"],
+    deps = [
+        "@com_resdb_nexres//:cryptopp_lib",
+    ]
+)
+
+cc_library(
     name = "kv_service_transaction_manager",
     srcs = ["kv_service_transaction_manager.cpp"],
     hdrs = ["kv_service_transaction_manager.h"],
     deps = [
-        ":py_verificator",
+        # ":py_verificator",
         "@com_resdb_nexres//common:comm",
         "@com_resdb_nexres//platform/config:resdb_config_utils",
         "@com_resdb_nexres//platform/consensus/execution:transaction_manager",
