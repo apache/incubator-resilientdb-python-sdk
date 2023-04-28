@@ -1,3 +1,5 @@
+#include "service/tools/base64.h"
+
 #pragma once
 
 class CValidator {

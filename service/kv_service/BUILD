@@ -27,6 +27,7 @@ cc_library(
     hdrs = ["c_validator.h"],
     deps = [
         "@com_resdb_nexres//:cryptopp_lib",
+        "//service/tools:base64",
     ]
 )
 
