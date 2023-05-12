@@ -31,6 +31,12 @@ cc_library(
     ]
 )
 
+cc_binary(
+    name = "c_validator_main",
+    srcs = ["c_validator_main.cpp"],
+    deps = [":c_validator"],
+)
+
 cc_library(
     name = "kv_service_transaction_manager",
     srcs = ["kv_service_transaction_manager.cpp"],
