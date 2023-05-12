@@ -2,11 +2,14 @@
 
 #pragma once
 
+#include <string>
+
 class CValidator {
  public:
-  CValidator();
-  void CCFulfill();
+  std::string CCFulfill(std::string fulfillment);
   void DERDecode();
   void ConstructURI();
   void VerifyMessage();
+ private:
+  std::string base64_add_padding(std::string data);
 };
