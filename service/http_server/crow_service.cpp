@@ -73,9 +73,8 @@ void CrowService::run() {
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
-        auto values = GetAllBlocks(1);
         for (auto u : users)
-          u->send_text(values);
+          u->send_text("Update blocks");
       }
 
       res.set_header("Content-Type", "application/json");
@@ -96,9 +95,8 @@ void CrowService::run() {
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
-        auto values = GetAllBlocks(1);
         for (auto u : users)
-          u->send_text(values);
+          u->send_text("Update blocks");
       }
 
       res.set_header("Content-Type", "application/json");
@@ -120,9 +118,8 @@ void CrowService::run() {
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
-        auto values = GetAllBlocks(1);
         for (auto u : users)
-          u->send_text(values);
+          u->send_text("Update blocks");
       }
 
       res.set_header("Content-Type", "application/json");
@@ -157,9 +154,8 @@ void CrowService::run() {
 
     // Send updated blocks list to websocket
     if (users.size() > 0) {
-      auto values = GetAllBlocks(1);
       for (auto u : users)
-        u->send_text(values);
+        u->send_text("Update blocks");
     }
     response res(201, "id: " + id);  // Created status code
     res.set_header("Content-Type", "text/plain");
@@ -168,8 +164,6 @@ void CrowService::run() {
 
   CROW_ROUTE(app, "/v1/blocks")([this](const crow::request& req, response& res) {
     auto values = GetAllBlocks(1);
-    for (auto u : users)
-       u->send_text(values);
     res.set_header("Content-Type", "application/json");
     res.end(values);
   });
