@@ -32,7 +32,7 @@
 #include "service/kv_service/py_verificator.h"
 
 #include "platform/config/resdb_config_utils.h"
-#include "platform/consensus/execution/transaction_manager.h"
+#include "executor/common/transaction_manager.h"
 #include "storage/storage.h"
 
 namespace sdk {
