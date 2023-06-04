@@ -1,10 +1,12 @@
 #include "c_validator.h"
 
 #include <cryptopp/cryptlib.h>
+#include <cryptopp/files.h>
+#include <cryptopp/hex.h>
 #include <cryptopp/queue.h>
+#include <cryptopp/sha3.h>
 #include <cryptopp/xed25519.h>
 
-// #include "json.hpp"
 #include <nlohmann/json.hpp>
 
 #include <string>
@@ -77,7 +79,7 @@ std::string CValidator::CreateMessage(std::string& tx) {
   doc.Parse(tx);
 
   RemoveSignature(doc);
-  doc.RemoveMember("id");
+  doc.AddMember("id", rapidjson::Value(), doc.GetAllocator());
 
   rapidjson::StringBuffer buffer;
   buffer.Clear();
@@ -85,11 +87,34 @@ std::string CValidator::CreateMessage(std::string& tx) {
   doc.Accept(writer);
   std::string json_str = buffer.GetString();
 
-  std::string serialized_str = SerializeJSON(json_str);
-  return serialized_str;
+  std::string serialized_str = SerializeMessage(json_str);
+  // std::cout << serialized_str << std::endl;
+
+  // sha3 256 encode the serialized json
+  CryptoPP::SHA3_256 hash;
+  hash.Update((const CryptoPP::byte*) serialized_str.data(), serialized_str.size());
+  
+  // add encoded tx id it fulfills and its index to the sha 256 hash
+  std::string tail_str = "";
+  std::string tx_id = doc["inputs"][0]["fulfills"]["transaction_id"].GetString();
+  int output_index = doc["inputs"][0]["fulfills"]["output_index"].GetInt();
+  tail_str += tx_id;
+  tail_str += std::to_string(output_index);
+  hash.Update((const CryptoPP::byte*) tail_str.data(), tail_str.size());
+
+  std::string digest;
+  digest.resize(hash.DigestSize());
+  hash.Final((CryptoPP::byte*)&digest[0]);
+
+  std::cout << "Digest: ";
+  CryptoPP::HexEncoder encoder(new CryptoPP::FileSink(std::cout));
+  CryptoPP::StringSource(digest, true, new CryptoPP::Redirector(encoder));
+  std::cout << std::endl;
+
+  return digest;
 }
 
-std::string CValidator::SerializeJSON(std::string& tx) {
+std::string CValidator::SerializeMessage(std::string& tx) {
   nlohmann::json j;
   j = nlohmann::json::parse(tx); // sort keys
   std::string str = j.dump(-1, ' ', false); // don't indent, don't ensure ascii
@@ -98,10 +123,10 @@ std::string CValidator::SerializeJSON(std::string& tx) {
 }
 
 void CValidator::RemoveSignature(rapidjson::Document& doc) {
-  assert(doc.HasMember("inputs"));
-  assert(doc["inputs"].IsArray());
+  // assert(doc.HasMember("inputs"));
+  // assert(doc["inputs"].IsArray());
 
   for (auto& inp : doc["inputs"].GetArray()) {
-    inp.RemoveMember("fulfillment");
+    inp.AddMember("fulfillment", rapidjson::Value(), doc.GetAllocator());
   }
 }

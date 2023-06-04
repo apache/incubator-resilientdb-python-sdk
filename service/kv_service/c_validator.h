@@ -17,6 +17,6 @@ class CValidator {
   std::string CreateMessage(std::string& tx);
  private:
   std::string base64_add_padding(std::string data);
-  std::string SerializeJSON(std::string& tx);
+  std::string SerializeMessage(std::string& tx);
   void RemoveSignature(rapidjson::Document& doc);
 };
