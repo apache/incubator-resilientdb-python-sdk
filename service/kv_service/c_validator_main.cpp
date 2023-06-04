@@ -10,5 +10,8 @@ int main() {
   // std::cout<< "\nDER Decoding\n";
   // cval.DERDecode(str);
   std::string tx = "{\"inputs\":[{\"owners_before\":[\"C1CECot9umaqYvCjpt31GiKpYmsaGWQDdnHJjCv8yQiS\"],\"fulfills\":{\"transaction_id\":\"123415ca19849d95571e0d828102365f24bd322a54d6701e477d32a5bd009c6f\",\"output_index\":0},\"fulfillment\":\"pGSAIKN9QFdMwU21tgN2hzUd8pi75C8EsQ6LjnMjLssTKgivgUAmOHl2O1vsWN_bvPjoofVWyHf1p_thSJIUNCkfNStc748Rz37tMPT8NouEgjIvwgXpM1zOvA3TmzdoCjpaNm0N\"}]}";
-  cval.CreateMessage(tx);
+  std::cout << cval.CreateMessage(tx) << std::endl;
+
+  // std::string tx2 = "{\"inputs\":[{\"owners_before\":[\"C1CECot9umaqYvCjpt31GiKpYmsaGWQDdnHJjCv8yQiS\"],\"fulfills\":{\"transaction_id\":\"123415ca19849d95571e0d828102365f24bd322a54d6701e477d32a5bd009c6f\",\"output_index\":0},\"fulfillment\":\"pGSAIKN9QFdMwU21tgN2hzUd8pi75C8EsQ6LjnMjLssTKgivgUAmOHl2O1vsWN_bvPjoofVWyHf1p_thSJIUNCkfNStc748Rz37tMPT8NouEgjIvwgXpM1zOvA3TmzdoCjpaNm0N\"}]}";
+  // std::cout << cval.SerializeJSON(tx2) << std::endl;
 }

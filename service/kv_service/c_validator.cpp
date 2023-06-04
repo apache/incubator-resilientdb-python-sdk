@@ -4,6 +4,8 @@
 #include <cryptopp/queue.h>
 #include <cryptopp/xed25519.h>
 
+// #include "json.hpp"
+#include <nlohmann/json.hpp>
 
 #include <string>
 #include <iostream>
@@ -70,24 +72,29 @@ std::string CValidator::base64_add_padding(std::string data) {
   return encoded_data;
 }
 
-void CValidator::CreateMessage(std::string& tx) {
+std::string CValidator::CreateMessage(std::string& tx) {
   rapidjson::Document doc;
   doc.Parse(tx);
 
   RemoveSignature(doc);
-
   doc.RemoveMember("id");
 
   rapidjson::StringBuffer buffer;
   buffer.Clear();
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
   doc.Accept(writer);
-  std::cout << buffer.GetString() << std::endl;
+  std::string json_str = buffer.GetString();
+
+  std::string serialized_str = SerializeJSON(json_str);
+  return serialized_str;
 }
 
-// todo
 std::string CValidator::SerializeJSON(std::string& tx) {
-  return tx;
+  nlohmann::json j;
+  j = nlohmann::json::parse(tx); // sort keys
+  std::string str = j.dump(-1, ' ', false); // don't indent, don't ensure ascii
+
+  return str;
 }
 
 void CValidator::RemoveSignature(rapidjson::Document& doc) {

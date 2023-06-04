@@ -14,7 +14,7 @@ class CValidator {
   void DERDecode(std::string& uri_bytes);
   void ConstructURI();
   void VerifyMessage();
-  void CreateMessage(std::string& tx);
+  std::string CreateMessage(std::string& tx);
  private:
   std::string base64_add_padding(std::string data);
   std::string SerializeJSON(std::string& tx);

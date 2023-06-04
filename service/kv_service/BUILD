@@ -28,6 +28,7 @@ cc_library(
     deps = [
         "@com_resdb_nexres//:cryptopp_lib",
         "//third_party:rapidjson",
+        "//third_party:json",
         "//service/tools:base64",
     ]
 )

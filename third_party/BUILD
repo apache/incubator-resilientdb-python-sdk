@@ -18,3 +18,10 @@ cc_library(
         "@rapidjson",
     ],
 )
+
+cc_library(
+    name = "json",
+    deps = [
+        "@json",
+    ],
+)
