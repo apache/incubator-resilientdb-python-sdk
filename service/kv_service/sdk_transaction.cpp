@@ -1,5 +1,7 @@
 #include "sdk_transaction.h"
 
+#include <cryptopp/files.h>
+#include <cryptopp/hex.h>
 #include <cryptopp/sha3.h>
 
 #include <nlohmann/json.hpp>
@@ -17,7 +19,6 @@ SDKTransaction::SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_va
   inputs_ = &inputs;
   rapidjson::GenericArray<false, rapidjson::Value> outputs = tx_body["outputs"].GetArray();
   outputs_ = &outputs;
-  // metadata_.CopyFrom(tx_body["metadata"], metadata_.GetAllocator());
   
   // TODO: check if null beforehand)
   rapidjson::Value::Object metadata = tx_body["metadata"].GetObject();
@@ -38,12 +39,50 @@ SDKTransaction::SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_va
 }
 
 // TODO
-// SDKTransaction& SDKTransaction::Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions) {
-//   return current_transactions[id_];
-// }
+void SDKTransaction::Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions) {
+  if (operation_ == "CREATE") {
+    // check for txn with same id in current_transactions
+    if (current_transactions.find(id_) != current_transactions.end()) {
+      // raise exception
+    }
+    if (IsCommitted(id_)) {
+      // raise exception
+    }
+    if (!InputsValid(nullptr)) { // pass empty array
+      // raise exception
+    }
+  }
+  else if (operation_ == "TRANSFER") {
+    ValidateTransferInputs(current_transactions);
+  }
+}
 
 // TODO
-bool SDKTransaction::InputsValid() {
+bool SDKTransaction::InputsValid(rapidjson::GenericArray<false, rapidjson::Value>* outputs) {
+  if (operation_ == "CREATE") {
+    std::vector<std::string> dummy_outputs;
+    for (unsigned int i = 0; i < inputs_->Size(); i++) {
+      dummy_outputs.push_back("dummy_value");
+    }
+    return InputsValid2(dummy_outputs);
+  }
+  else if (operation_ == "TRANSFER") {
+    std::vector<std::string> output_condition_uris;
+    if (outputs) {
+      for (auto& output : *outputs) {
+        output_condition_uris.push_back(output["condition"]["uri"].GetString());
+      }
+    }
+    return InputsValid2(output_condition_uris);
+  }
+  else {
+    // raise exception
+    return false;
+  }
+}
+
+// TODO
+bool SDKTransaction::InputsValid2(std::vector<std::string> output_condition_uris) {
   return true;
 }
 
@@ -56,17 +95,64 @@ std::string SDKTransaction::SerializeMessage(std::string& tx) {
 }
 
 std::string SDKTransaction::HashData(std::string& data) {
-  return "";
+  CryptoPP::SHA3_256 hash;
+  hash.Update((const CryptoPP::byte*) data.data(), data.size());
+
+  std::string digest;
+  digest.resize(hash.DigestSize());
+  hash.Final((CryptoPP::byte*)&digest[0]);
+
+  std::string encoded;
+  CryptoPP::StringSource ss((const CryptoPP::byte*) digest.data(), digest.size(), true,
+    new CryptoPP::HexEncoder(
+      new CryptoPP::StringSink(encoded)
+    )
+  );
+  return encoded;
 }
 
 void SDKTransaction::ValidateId(rapidjson::Document& tx_body) {
-  ;
+  rapidjson::Document tx_body_copy;
+  tx_body_copy.CopyFrom(tx_body, tx_body_copy.GetAllocator());
+
+  if (!tx_body_copy.HasMember("id")) {
+    // raise KeyError
+  }
+  std::string proposed_tx_id = tx_body_copy["id"].GetString();
+
+  // set id to null
+  tx_body_copy.AddMember("id", rapidjson::Value(), tx_body_copy.GetAllocator());
+
+  // create string of serialized transaction
+  rapidjson::StringBuffer buffer;
+  buffer.Clear();
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+  tx_body_copy.Accept(writer);
+  std::string tx_body_str = buffer.GetString();
+  std::string tx_body_serialized_str = SerializeMessage(tx_body_str);
+
+  std::string valid_tx_id = HashData(tx_body_serialized_str);
+  if (proposed_tx_id != valid_tx_id) {
+    std::cout << "proposed tx id DIFFERS from valid tx id" << std::endl;
+    // raise Exception // todo make better exceptions
+  }
+}
+
+// TODO
+bool SDKTransaction::IsCommitted(std::string& tx_id) {
+  // use storage pointer?
+  return true;
 }
 
 void SDKTransaction::ValidateOperation(rapidjson::Document& tx_body) {
-  ;
+  std::string operation = tx_body["operation"].GetString();
+
+  if (operation != "CREATE" && operation != "TRANSFER") {
+    // raise exception
+  }
 }
 
-bool SDKTransaction::IsCommitted(std::string& tx_id) {
-  return true;
+// TODO
+void SDKTransaction::ValidateTransferInputs(std::unordered_map<std::string, SDKTransaction&>& current_transactions) {
+  ;
 }

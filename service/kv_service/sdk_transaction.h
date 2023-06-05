@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
@@ -10,9 +11,11 @@
 class SDKTransaction {
  public:
   SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_validation);
-  // SDKTransaction& Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions);
-  bool InputsValid();
- private:
+  void Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions);
+  bool InputsValid(rapidjson::GenericArray<false, rapidjson::Value>* outputs);
+  bool InputsValid2(std::vector<std::string> output_condition_uris);
+  void ValidateTransferInputs(std::unordered_map<std::string, SDKTransaction&>& current_transactions);
+//  private:
   std::string SerializeMessage(std::string& tx);
   std::string HashData(std::string& data);
   void ValidateId(rapidjson::Document& tx_body);
