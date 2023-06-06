@@ -30,7 +30,7 @@
 #include "service/kv_service/resdb_kv_client.h"
 #include "common/proto/signature_info.pb.h"
 #include "platform/config/resdb_config_utils.h"
-#include "platform/interface/resdb_txn_accessor.h"
+#include "interface/common/resdb_txn_accessor.h"
 #include "service/http_server/sdk_transaction.h"
 #include "service/kv_service/proto/kv_server.pb.h"
 #include "platform/interface/resdb_state_accessor.h"

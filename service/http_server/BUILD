@@ -20,8 +20,7 @@ cc_library(
         "@com_resdb_nexres//common:boost_comm",
         "@com_resdb_nexres//common/proto:signature_info_cc_proto",
         "@com_resdb_nexres//platform/config:resdb_config_utils",
-        "@com_resdb_nexres//platform/interface:resdb_txn_accessor",
-        "@com_resdb_nexres//platform/interface:resdb_state_accessor",
+        "@com_resdb_nexres//interface/common:resdb_txn_accessor",
         "//third_party:crow",
         "//third_party:rapidjson",
     ],
@@ -32,14 +31,6 @@ cc_binary(
     srcs = ["crow_service_main.cpp"],
     deps = [
         ":crow_service",
-    ],
-)
-
-cc_binary(
-    name = "websocket_main",
-    srcs = ["websocket_main.cpp"],
-    deps = [
-	"//third_party:crow",
     ],
 )
 
