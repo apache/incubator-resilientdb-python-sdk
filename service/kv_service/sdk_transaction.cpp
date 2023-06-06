@@ -7,6 +7,7 @@
 #include <nlohmann/json.hpp>
 
 #include <iostream>
+#include <stdexcept>
 
 SDKTransaction::SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_validation) {
   if (!skip_schema_validation) {
@@ -15,9 +16,9 @@ SDKTransaction::SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_va
   }
   id_ = tx_body["id"].GetString();
   operation_ = tx_body["operation"].GetString();
-  rapidjson::GenericArray<false, rapidjson::Value> inputs = tx_body["inputs"].GetArray();
+  rapidjson::Value::Array inputs = tx_body["inputs"].GetArray();
   inputs_ = &inputs;
-  rapidjson::GenericArray<false, rapidjson::Value> outputs = tx_body["outputs"].GetArray();
+  rapidjson::Value::Array outputs = tx_body["outputs"].GetArray();
   outputs_ = &outputs;
   
   // TODO: check if null beforehand)
@@ -38,18 +39,18 @@ SDKTransaction::SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_va
   // std::cout << (*asset_)["data"]["description"].GetString() << std::endl;
 }
 
-// TODO
+// TODO: find better exceptions
 void SDKTransaction::Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions) {
   if (operation_ == "CREATE") {
     // check for txn with same id in current_transactions
     if (current_transactions.find(id_) != current_transactions.end()) {
-      // raise exception
+      throw std::invalid_argument("Transaction with same id already found in current_transactions");
     }
     if (IsCommitted(id_)) {
-      // raise exception
+      throw std::invalid_argument("Transaction with same id already committed to NexRes");
     }
     if (!InputsValid(nullptr)) { // pass empty array
-      // raise exception
+      throw std::invalid_argument("Invalid inputs");
     }
   }
   else if (operation_ == "TRANSFER") {
@@ -57,13 +58,15 @@ void SDKTransaction::Validate(std::unordered_map<std::string, SDKTransaction&>& 
   }
 }
 
-// TODO
-bool SDKTransaction::InputsValid(rapidjson::GenericArray<false, rapidjson::Value>* outputs) {
+// TODO: find better exceptions
+// Validates the Inputs in the Transaction against given Outputs
+bool SDKTransaction::InputsValid(rapidjson::Value::Array* outputs) {
   if (operation_ == "CREATE") {
     std::vector<std::string> dummy_outputs;
     for (unsigned int i = 0; i < inputs_->Size(); i++) {
       dummy_outputs.push_back("dummy_value");
     }
+    std::cout << "inputs size: " << inputs_->Size() << std::endl;
     return InputsValid2(dummy_outputs);
   }
   else if (operation_ == "TRANSFER") {
@@ -76,12 +79,14 @@ bool SDKTransaction::InputsValid(rapidjson::GenericArray<false, rapidjson::Value
     return InputsValid2(output_condition_uris);
   }
   else {
-    // raise exception
+    throw std::invalid_argument("Invalid operation type");
     return false;
   }
 }
 
 // TODO
+// Validates the Inputs in the Transaction against given Outputs
+// Note: The number of `output_condition_uris` must be equal to the number of Inputs a Transaction has.
 bool SDKTransaction::InputsValid2(std::vector<std::string> output_condition_uris) {
   return true;
 }
@@ -111,12 +116,13 @@ std::string SDKTransaction::HashData(std::string& data) {
   return encoded;
 }
 
+// TODO: find better exceptions
 void SDKTransaction::ValidateId(rapidjson::Document& tx_body) {
   rapidjson::Document tx_body_copy;
   tx_body_copy.CopyFrom(tx_body, tx_body_copy.GetAllocator());
 
   if (!tx_body_copy.HasMember("id")) {
-    // raise KeyError
+    throw std::invalid_argument("tx_body has no member \"id\"");
   }
   std::string proposed_tx_id = tx_body_copy["id"].GetString();
 
@@ -133,8 +139,7 @@ void SDKTransaction::ValidateId(rapidjson::Document& tx_body) {
 
   std::string valid_tx_id = HashData(tx_body_serialized_str);
   if (proposed_tx_id != valid_tx_id) {
-    std::cout << "proposed tx id DIFFERS from valid tx id" << std::endl;
-    // raise Exception // todo make better exceptions
+    throw std::invalid_argument("proposed tx id differs from valid tx id");
   }
 }
 
@@ -148,7 +153,7 @@ void SDKTransaction::ValidateOperation(rapidjson::Document& tx_body) {
   std::string operation = tx_body["operation"].GetString();
 
   if (operation != "CREATE" && operation != "TRANSFER") {
-    // raise exception
+    throw std::invalid_argument("Invalid operation type");
   }
 }
 
