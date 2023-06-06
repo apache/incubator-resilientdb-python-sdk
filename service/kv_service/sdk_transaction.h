@@ -12,7 +12,7 @@ class SDKTransaction {
  public:
   SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_validation);
   void Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions);
-  bool InputsValid(rapidjson::Value::Array outputs);
+  bool InputsValid(rapidjson::Value::Array* outputs);
   bool InputsValid2(std::vector<std::string> output_condition_uris);
   void ValidateTransferInputs(std::unordered_map<std::string, SDKTransaction&>& current_transactions);
 //  private:
