@@ -416,7 +416,7 @@ std::string CrowService::ParseKVRequest(const KVRequest& kv_request) {
 
 std::string CrowService::ParseCreateTime(uint64_t createtime) {
   std::string timestr = "";
-  uint64_t sec = createtime / 1000000000;
+  uint64_t sec = createtime / 1000000; // see resilientdb/common/utils/utils.cpp
 
   std::tm *tm_gmt = std::gmtime((time_t*) &sec);
   int year = tm_gmt->tm_year + 1900;
