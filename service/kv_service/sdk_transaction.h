@@ -21,12 +21,5 @@ class SDKTransaction {
   void ValidateId(rapidjson::Document& tx_body);
   void ValidateOperation(rapidjson::Document& tx_body);
   bool IsCommitted(std::string& tx_id);
-  std::string id_;
-  std::string operation_;
-  // rapidjson::GenericArray<false, rapidjson::Value>* inputs_;
-  // rapidjson::GenericArray<false, rapidjson::Value>* outputs_;
-  rapidjson::Value::Array* inputs_;
-  rapidjson::Value::Array* outputs_;
-  rapidjson::Value::Object* metadata_;
-  rapidjson::Value::Object* asset_;
+  rapidjson::Document doc_;
 };

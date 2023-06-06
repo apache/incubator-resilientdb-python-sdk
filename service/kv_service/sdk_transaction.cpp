@@ -14,46 +14,40 @@ SDKTransaction::SDKTransaction(rapidjson::Document& tx_body, bool skip_schema_va
     ValidateId(tx_body);
     ValidateOperation(tx_body);
   }
-  id_ = tx_body["id"].GetString();
-  operation_ = tx_body["operation"].GetString();
-  rapidjson::Value::Array inputs = tx_body["inputs"].GetArray();
-  inputs_ = &inputs;
-  rapidjson::Value::Array outputs = tx_body["outputs"].GetArray();
-  outputs_ = &outputs;
-  
-  // TODO: check if null beforehand)
-  rapidjson::Value::Object metadata = tx_body["metadata"].GetObject();
-  metadata_ = &metadata;
 
-  rapidjson::Value::Object asset = tx_body["asset"].GetObject();
-  asset_ = &asset;
-
-  // for (auto& elem : *inputs_) {
-  //   std::cout << elem["fulfillment"].GetString() << std::endl;
-  // }
-  // for (auto& elem : *outputs_) {
-  //   std::cout << elem["amount"].GetString() << std::endl;
-  // }
-  // std::cout << (*metadata_)["price"].GetString() << std::endl;
-  // std::cout << (*metadata_).HasMember("price") << std::endl;
-  // std::cout << (*asset_)["data"]["description"].GetString() << std::endl;
+  // clears the fields of tx_body parameter and moves them to doc_
+  doc_.SetObject();
+  doc_.AddMember("id", tx_body["id"], doc_.GetAllocator());
+  // std::cout<< "added id" << std::endl;
+  doc_.AddMember("operation", tx_body["operation"], doc_.GetAllocator());
+  // std::cout << "added operation" << std::endl;
+  doc_.AddMember("inputs", tx_body["inputs"], doc_.GetAllocator());
+  // std::cout << "added inputs" << std::endl;
+  doc_.AddMember("outputs", tx_body["outputs"], doc_.GetAllocator());
+  // std::cout << "added outputs" << std::endl;
+  doc_.AddMember("metadata", tx_body["metadata"], doc_.GetAllocator());
+  // std::cout << "added metadata" << std::endl;
+  doc_.AddMember("asset", tx_body["asset"], doc_.GetAllocator());
+  // std::cout << "added asset" << std::endl;
 }
 
 // TODO: find better exceptions
 void SDKTransaction::Validate(std::unordered_map<std::string, SDKTransaction&>& current_transactions) {
-  if (operation_ == "CREATE") {
+  std::string operation = doc_["operation"].GetString();
+  if (operation == "CREATE") {
+    std::string id = doc_["id"].GetString();
     // check for txn with same id in current_transactions
-    if (current_transactions.find(id_) != current_transactions.end()) {
+    if (current_transactions.find(id) != current_transactions.end()) {
       throw std::invalid_argument("Transaction with same id already found in current_transactions");
     }
-    if (IsCommitted(id_)) {
+    if (IsCommitted(id)) {
       throw std::invalid_argument("Transaction with same id already committed to NexRes");
     }
     if (!InputsValid(nullptr)) { // pass empty array
       throw std::invalid_argument("Invalid inputs");
     }
   }
-  else if (operation_ == "TRANSFER") {
+  else if (operation == "TRANSFER") {
     ValidateTransferInputs(current_transactions);
   }
 }
@@ -61,15 +55,16 @@ void SDKTransaction::Validate(std::unordered_map<std::string, SDKTransaction&>& 
 // TODO: find better exceptions
 // Validates the Inputs in the Transaction against given Outputs
 bool SDKTransaction::InputsValid(rapidjson::Value::Array* outputs) {
-  if (operation_ == "CREATE") {
+  std::string operation = doc_["operation"].GetString();
+  if (operation == "CREATE") {
+
     std::vector<std::string> dummy_outputs;
-    for (unsigned int i = 0; i < inputs_->Size(); i++) {
+    for (unsigned int i = 0; i < doc_["inputs"].GetArray().Size(); i++) {
       dummy_outputs.push_back("dummy_value");
     }
-    std::cout << "inputs size: " << inputs_->Size() << std::endl;
     return InputsValid2(dummy_outputs);
   }
-  else if (operation_ == "TRANSFER") {
+  else if (operation == "TRANSFER") {
     std::vector<std::string> output_condition_uris;
     if (outputs) {
       for (auto& output : *outputs) {
