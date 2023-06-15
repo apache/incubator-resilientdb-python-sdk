@@ -30,7 +30,7 @@ cc_library(
         "@com_resdb_nexres//common:comm",
         "@com_resdb_nexres//platform/config:resdb_config_utils",
         "@com_resdb_nexres//executor/common:transaction_manager",
-        "@com_resdb_nexres//storage:in_mem_kv_storage",
+        "@com_resdb_nexres//chain/state:chain_state",
         "//service/kv_service/proto:kv_server_cc_proto",
     ]
 )

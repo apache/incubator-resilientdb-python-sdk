@@ -30,14 +30,28 @@
 #include "service/kv_service/kv_service_transaction_manager.h"
 #include "service/utils/server_factory.h"
 
-using resdb::GenerateResDBConfig;
 using sdk::KVServiceTransactionManager;
-using resdb::ResConfigData;
-using resdb::ResDBConfig;
-using resdb::Stats;
+using namespace resdb;
 
 void ShowUsage() {
   printf("<config> <private_key> <cert_file> [logging_dir]\n");
+}
+
+std::unique_ptr<ChainState> NewState(const std::string& cert_file,
+                                    const ResConfigData& config_data) {
+  std::unique_ptr<Storage> storage = nullptr;
+
+#ifdef ENABLE_ROCKSDB
+  storage = NewResRocksDB(cert_file.c_str(), config_data);
+  LOG(INFO) << "use rocksdb storage.";
+#endif
+
+#ifdef ENABLE_LEVELDB
+  storage = NewResLevelDB(cert_file.c_str(), config_data);
+  LOG(INFO) << "use leveldb storage.";
+#endif
+  std::unique_ptr<ChainState> state  = std::make_unique<ChainState>(std::move(storage));
+  return state;
 }
 
 int main(int argc, char** argv) {
@@ -67,7 +81,7 @@ int main(int argc, char** argv) {
 
   auto server = GenerateResDBServer(
       config_file, private_key_file, cert_file,
-      std::make_unique<KVServiceTransactionManager>(config_data, cert_file),
+      std::make_unique<KVServiceTransactionManager>(NewState(cert_file, config_data)),
       logging_dir);
   server->Run();
 }

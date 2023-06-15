@@ -33,15 +33,13 @@
 
 #include "platform/config/resdb_config_utils.h"
 #include "executor/common/transaction_manager.h"
-#include "storage/storage.h"
+#include "chain/state/chain_state.h"
 
 namespace sdk {
 
 class KVServiceTransactionManager : public resdb::TransactionManager {
  public:
-  KVServiceTransactionManager(std::unique_ptr<resdb::Storage> storage);
-  KVServiceTransactionManager(const resdb::ResConfigData& config_data,
-                              char* cert_file);
+  KVServiceTransactionManager(std::unique_ptr<resdb::ChainState> state);
   virtual ~KVServiceTransactionManager() = default;
 
   std::unique_ptr<std::string> ExecuteData(const std::string& request) override;
@@ -53,7 +51,7 @@ class KVServiceTransactionManager : public resdb::TransactionManager {
   std::string GetRange(const std::string& min_key, const std::string& max_key);
 
  private:
-  std::unique_ptr<resdb::Storage> storage_;
+  std::unique_ptr<resdb::ChainState> state_;
   std::unique_ptr<PYVerificator> py_verificator_;
 };
 
