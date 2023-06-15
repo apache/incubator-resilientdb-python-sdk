@@ -62,6 +62,7 @@ CrowService::CrowService(ResDBConfig config, ResDBConfig server_config,
 void CrowService::run() {
   crow::SimpleApp app;
 
+  // For adding and removing websocket connections
   std::mutex mtx;
 
   // Get all values
@@ -261,6 +262,7 @@ void CrowService::run() {
       // do nothing
     });
 
+  // For metadata table on the Explorer
   CROW_ROUTE(app, "/populatetable")
   ([this](const crow::request& req, response& res) {
     std::vector<resdb::ReplicaInfo> replicas = config_.GetReplicaInfos();
