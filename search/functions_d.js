@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['register_5ftype_0',['register_type',['../classresdb__driver_1_1transaction_1_1Transaction.html#a558f796227463b498627298e4923e1dc',1,'resdb_driver::transaction::Transaction']]],
-  ['request_1',['request',['../classresdb__driver_1_1connection_1_1Connection.html#a19266ed871cd2ded25922bb8b06d730c',1,'resdb_driver::connection::Connection']]],
-  ['resolve_5fclass_2',['resolve_class',['../classresdb__driver_1_1transaction_1_1Transaction.html#aee2f8472b5454714161586a590efc99a',1,'resdb_driver::transaction::Transaction']]],
-  ['retrieve_3',['retrieve',['../classresdb__driver_1_1driver_1_1TransactionsEndpoint.html#a99346f6388758e4f467b72916931f558',1,'resdb_driver::driver::TransactionsEndpoint']]]
+  ['onrequest_0',['onRequest',['../classHelloHandler.html#a8bb7248a9d789866208984da0733e918',1,'HelloHandler']]],
+  ['outputs_1',['outputs',['../classresdb__driver_1_1driver_1_1Resdb.html#a1caf108b3655fb4a0cbec09a6ecca5fc',1,'resdb_driver::driver::Resdb']]]
 ];

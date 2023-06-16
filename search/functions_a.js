@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['nodes_0',['nodes',['../classresdb__driver_1_1driver_1_1Resdb.html#aa73023f6afe78892e001c420bddfdada',1,'resdb_driver::driver::Resdb']]],
-  ['normalize_5fnode_1',['normalize_node',['../namespaceresdb__driver_1_1utils.html#abf1ca378bf7c69c9ab6d076625ff7fe3',1,'resdb_driver::utils']]],
-  ['normalize_5fnodes_2',['normalize_nodes',['../namespaceresdb__driver_1_1utils.html#a3e9041bf18af0c6b7e27229934799a08',1,'resdb_driver::utils']]],
-  ['normalize_5furl_3',['normalize_url',['../namespaceresdb__driver_1_1utils.html#abba19482331dce88ed3c7b0e502b7f5e',1,'resdb_driver::utils']]]
+  ['key_5fpair_5ffrom_5fed25519_5fkey_0',['key_pair_from_ed25519_key',['../namespaceresdb__validator_1_1crypto.html#ac53b67466e3762ec0cbbaf63755db7de',1,'resdb_validator::crypto']]],
+  ['kvservicetransactionmanager_1',['KVServiceTransactionManager',['../classsdk_1_1KVServiceTransactionManager.html#abe8650f99f2e635d2dff30e5b4c37ddf',1,'sdk::KVServiceTransactionManager']]]
 ];

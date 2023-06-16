@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['to_5fdict_0',['to_dict',['../classresdb__driver_1_1transaction_1_1Input.html#a7c6470f8f9e59994ab7b7cdf61e3860d',1,'resdb_driver.transaction.Input.to_dict()'],['../classresdb__driver_1_1transaction_1_1TransactionLink.html#a7c6470f8f9e59994ab7b7cdf61e3860d',1,'resdb_driver.transaction.TransactionLink.to_dict()'],['../classresdb__driver_1_1transaction_1_1Output.html#a7c6470f8f9e59994ab7b7cdf61e3860d',1,'resdb_driver.transaction.Output.to_dict()'],['../classresdb__driver_1_1transaction_1_1Transaction.html#a7c6470f8f9e59994ab7b7cdf61e3860d',1,'resdb_driver.transaction.Transaction.to_dict()'],['../classresdb__driver_1_1validate_1_1FastTransaction.html#a7c6470f8f9e59994ab7b7cdf61e3860d',1,'resdb_driver.validate.FastTransaction.to_dict()']]],
-  ['to_5fhash_1',['to_hash',['../classresdb__driver_1_1transaction_1_1Transaction.html#a57fe7dfdb7f68e1f66ba8ba1f08d5317',1,'resdb_driver::transaction::Transaction']]],
-  ['to_5finputs_2',['to_inputs',['../classresdb__driver_1_1transaction_1_1Transaction.html#ae92d8d73ac456c668db5dc8e4d0970c1',1,'resdb_driver::transaction::Transaction']]],
-  ['to_5furi_3',['to_uri',['../classresdb__driver_1_1transaction_1_1TransactionLink.html#a6ac6abb3842a5b00fbfb448806d9cc74',1,'resdb_driver::transaction::TransactionLink']]],
-  ['transactions_4',['transactions',['../classresdb__driver_1_1driver_1_1Resdb.html#a9a84524bb2a78ee3a0ede3ea8accb2b7',1,'resdb_driver::driver::Resdb']]],
-  ['transfer_5',['transfer',['../classresdb__driver_1_1transaction_1_1Transaction.html#a7b8cb99e6cd79c12becb1657af6a5e9a',1,'resdb_driver::transaction::Transaction']]],
-  ['transport_6',['transport',['../classresdb__driver_1_1driver_1_1Resdb.html#aa9cde18b0d7855a8f5a50d67937b0cab',1,'resdb_driver.driver.Resdb.transport()'],['../classresdb__driver_1_1driver_1_1NamespacedDriver.html#ae71d9b898c84d98291d44b27505b00c1',1,'resdb_driver.driver.NamespacedDriver.transport()']]]
+  ['register_5ftype_0',['register_type',['../classresdb__driver_1_1transaction_1_1Transaction.html#af67cd34f82736ec2e9c70d0977867621',1,'resdb_driver.transaction.Transaction.register_type()'],['../classresdb__validator_1_1transaction_1_1Transaction.html#af67cd34f82736ec2e9c70d0977867621',1,'resdb_validator.transaction.Transaction.register_type()']]],
+  ['request_1',['request',['../classresdb__driver_1_1connection_1_1Connection.html#a19266ed871cd2ded25922bb8b06d730c',1,'resdb_driver::connection::Connection']]],
+  ['resdbkvclient_2',['ResDBKVClient',['../classsdk_1_1ResDBKVClient.html#a07ed2589783d3fa90e1dc8dd1ead4121',1,'sdk::ResDBKVClient']]],
+  ['resolve_5fclass_3',['resolve_class',['../classresdb__driver_1_1transaction_1_1Transaction.html#ae6c5425e15f6fa5a565ec73b411e4867',1,'resdb_driver.transaction.Transaction.resolve_class()'],['../classresdb__validator_1_1transaction_1_1Transaction.html#ae6c5425e15f6fa5a565ec73b411e4867',1,'resdb_validator.transaction.Transaction.resolve_class()']]],
+  ['retrieve_4',['retrieve',['../classresdb__driver_1_1driver_1_1TransactionsEndpoint.html#a99346f6388758e4f467b72916931f558',1,'resdb_driver::driver::TransactionsEndpoint']]],
+  ['run_5',['run',['../classsdk_1_1CrowService.html#a13a43e6d814de94978c515cb084873b1',1,'sdk::CrowService']]]
 ];

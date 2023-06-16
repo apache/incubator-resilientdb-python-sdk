@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['readme_2emd_0',['README.md',['../README_8md.html',1,'']]],
-  ['research_2emd_1',['research.md',['../research_8md.html',1,'']]]
+  ['nft_5fmarket_2emd_0',['nft_market.md',['../docs_2nft__market_8md.html',1,'(Global Namespace)'],['../service_2sdk__validator_2docs_2nft__market_8md.html',1,'(Global Namespace)']]]
 ];

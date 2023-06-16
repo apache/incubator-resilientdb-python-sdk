@@ -1,5 +1,8 @@
 var annotated_dup =
 [
+    [ "resdb", "namespaceresdb.html", [
+      [ "SDKTransaction", "structresdb_1_1SDKTransaction.html", "structresdb_1_1SDKTransaction" ]
+    ] ],
     [ "resdb_driver", "namespaceresdb__driver.html", [
       [ "connection", "namespaceresdb__driver_1_1connection.html", [
         [ "Connection", "classresdb__driver_1_1connection_1_1Connection.html", "classresdb__driver_1_1connection_1_1Connection" ]
@@ -67,5 +70,57 @@ var annotated_dup =
         [ "FastTransaction", "classresdb__driver_1_1validate_1_1FastTransaction.html", "classresdb__driver_1_1validate_1_1FastTransaction" ],
         [ "Transaction", "classresdb__driver_1_1validate_1_1Transaction.html", "classresdb__driver_1_1validate_1_1Transaction" ]
       ] ]
-    ] ]
+    ] ],
+    [ "resdb_validator", "namespaceresdb__validator.html", [
+      [ "exceptions", "namespaceresdb__validator_1_1exceptions.html", [
+        [ "AmountError", "classresdb__validator_1_1exceptions_1_1AmountError.html", null ],
+        [ "AssetIdMismatch", "classresdb__validator_1_1exceptions_1_1AssetIdMismatch.html", null ],
+        [ "ConfigurationError", "classresdb__validator_1_1exceptions_1_1ConfigurationError.html", null ],
+        [ "CyclicBlockchainError", "classresdb__validator_1_1exceptions_1_1CyclicBlockchainError.html", null ],
+        [ "DatabaseDoesNotExist", "classresdb__validator_1_1exceptions_1_1DatabaseDoesNotExist.html", null ],
+        [ "DoubleSpend", "classresdb__validator_1_1exceptions_1_1DoubleSpend.html", null ],
+        [ "DuplicateTransaction", "classresdb__validator_1_1exceptions_1_1DuplicateTransaction.html", null ],
+        [ "InputDoesNotExist", "classresdb__validator_1_1exceptions_1_1InputDoesNotExist.html", null ],
+        [ "InvalidHash", "classresdb__validator_1_1exceptions_1_1InvalidHash.html", null ],
+        [ "InvalidPowerChange", "classresdb__validator_1_1exceptions_1_1InvalidPowerChange.html", null ],
+        [ "InvalidProposer", "classresdb__validator_1_1exceptions_1_1InvalidProposer.html", null ],
+        [ "InvalidPublicKey", "classresdb__validator_1_1exceptions_1_1InvalidPublicKey.html", null ],
+        [ "InvalidSignature", "classresdb__validator_1_1exceptions_1_1InvalidSignature.html", null ],
+        [ "KeypairMismatchException", "classresdb__validator_1_1exceptions_1_1KeypairMismatchException.html", null ],
+        [ "MultipleInputsError", "classresdb__validator_1_1exceptions_1_1MultipleInputsError.html", null ],
+        [ "MultipleValidatorOperationError", "classresdb__validator_1_1exceptions_1_1MultipleValidatorOperationError.html", null ],
+        [ "OperationError", "classresdb__validator_1_1exceptions_1_1OperationError.html", null ],
+        [ "ResDBError", "classresdb__validator_1_1exceptions_1_1ResDBError.html", null ],
+        [ "SchemaValidationError", "classresdb__validator_1_1exceptions_1_1SchemaValidationError.html", null ],
+        [ "StartupError", "classresdb__validator_1_1exceptions_1_1StartupError.html", null ],
+        [ "ThresholdTooDeep", "classresdb__validator_1_1exceptions_1_1ThresholdTooDeep.html", null ],
+        [ "TransactionOwnerError", "classresdb__validator_1_1exceptions_1_1TransactionOwnerError.html", null ],
+        [ "UnequalValidatorSet", "classresdb__validator_1_1exceptions_1_1UnequalValidatorSet.html", null ],
+        [ "ValidationError", "classresdb__validator_1_1exceptions_1_1ValidationError.html", null ]
+      ] ],
+      [ "lib", "namespaceresdb__validator_1_1lib.html", [
+        [ "ResDB", "classresdb__validator_1_1lib_1_1ResDB.html", "classresdb__validator_1_1lib_1_1ResDB" ]
+      ] ],
+      [ "memoize", "namespaceresdb__validator_1_1memoize.html", [
+        [ "HDict", "classresdb__validator_1_1memoize_1_1HDict.html", "classresdb__validator_1_1memoize_1_1HDict" ],
+        [ "ToDictWrapper", "classresdb__validator_1_1memoize_1_1ToDictWrapper.html", "classresdb__validator_1_1memoize_1_1ToDictWrapper" ]
+      ] ],
+      [ "models", "namespaceresdb__validator_1_1models.html", [
+        [ "FastTransaction", "classresdb__validator_1_1models_1_1FastTransaction.html", "classresdb__validator_1_1models_1_1FastTransaction" ],
+        [ "Transaction", "classresdb__validator_1_1models_1_1Transaction.html", "classresdb__validator_1_1models_1_1Transaction" ]
+      ] ],
+      [ "transaction", "namespaceresdb__validator_1_1transaction.html", [
+        [ "Input", "classresdb__validator_1_1transaction_1_1Input.html", "classresdb__validator_1_1transaction_1_1Input" ],
+        [ "Output", "classresdb__validator_1_1transaction_1_1Output.html", "classresdb__validator_1_1transaction_1_1Output" ],
+        [ "Transaction", "classresdb__validator_1_1transaction_1_1Transaction.html", "classresdb__validator_1_1transaction_1_1Transaction" ],
+        [ "TransactionLink", "classresdb__validator_1_1transaction_1_1TransactionLink.html", "classresdb__validator_1_1transaction_1_1TransactionLink" ]
+      ] ]
+    ] ],
+    [ "sdk", "namespacesdk.html", [
+      [ "CrowService", "classsdk_1_1CrowService.html", "classsdk_1_1CrowService" ],
+      [ "KVServiceTransactionManager", "classsdk_1_1KVServiceTransactionManager.html", "classsdk_1_1KVServiceTransactionManager" ],
+      [ "PYVerificator", "classsdk_1_1PYVerificator.html", "classsdk_1_1PYVerificator" ],
+      [ "ResDBKVClient", "classsdk_1_1ResDBKVClient.html", "classsdk_1_1ResDBKVClient" ]
+    ] ],
+    [ "HelloHandler", "classHelloHandler.html", "classHelloHandler" ]
 ];

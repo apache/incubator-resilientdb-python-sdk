@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['version_0',['VERSION',['../classresdb__driver_1_1transaction_1_1Transaction.html#a5eb009c6ad9e10533deb1e5b1b270692',1,'resdb_driver::transaction::Transaction']]],
-  ['version_1',['version',['../classresdb__driver_1_1transaction_1_1Transaction.html#a4c7a521b8f1a0769c09bfa4a1fca7dab',1,'resdb_driver::transaction::Transaction']]]
+  ['unspentoutput_0',['UnspentOutput',['../namespaceresdb__driver_1_1transaction.html#a52c26a4f636a64c89ad572528ab67b5a',1,'resdb_driver.transaction.UnspentOutput'],['../namespaceresdb__validator_1_1transaction.html#a52c26a4f636a64c89ad572528ab67b5a',1,'resdb_validator.transaction.UnspentOutput']]],
+  ['url_1',['url',['../namespaceendpoint__test.html#a20a9104258763c0bc647977724fb8883',1,'endpoint_test']]]
 ];

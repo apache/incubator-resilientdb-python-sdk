@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['sent_5ftransfer_5ftx_0',['sent_transfer_tx',['../namespacetest__driver.html#ab2742dbf9462f99ca8730a3da75406cc',1,'test_driver.sent_transfer_tx()'],['../namespacetest__update__metadata.html#ab2742dbf9462f99ca8730a3da75406cc',1,'test_update_metadata.sent_transfer_tx()']]],
-  ['session_1',['session',['../classresdb__driver_1_1connection_1_1Connection.html#aa0823e1ff851f7526e7fc5487718a051',1,'resdb_driver::connection::Connection']]]
+  ['res_0',['res',['../namespacevalidator__example.html#ab0bd7560790c13b656fd58e17e35143e',1,'validator_example']]],
+  ['response_1',['response',['../namespaceendpoint__test.html#a8ab7bcb35ce5bba05608c72da6b4a0d3',1,'endpoint_test']]],
+  ['ret_2',['ret',['../namespacevalidator.html#a46ac5459ea4e059d2e70cac8c64648ec',1,'validator']]]
 ];
