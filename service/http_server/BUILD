@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "sdk_transaction",
     srcs = ["sdk_transaction.cpp"],
@@ -19,6 +21,7 @@ cc_library(
         "@com_resdb_nexres//common/proto:signature_info_cc_proto",
         "@com_resdb_nexres//platform/config:resdb_config_utils",
         "@com_resdb_nexres//interface/common:resdb_txn_accessor",
+	"@com_resdb_nexres//interface/common:resdb_state_accessor",
         "//third_party:crow",
         "//third_party:rapidjson",
     ],
