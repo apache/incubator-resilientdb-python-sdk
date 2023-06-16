@@ -127,3 +127,5 @@ venv/
 
 .DS_store
 
+#bazel
+bazel-*
