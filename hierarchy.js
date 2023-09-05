@@ -19,8 +19,10 @@ var hierarchy =
           [ "AmountError", "classresdb__driver_1_1exceptions_1_1AmountError.html", null ],
           [ "AssetIdMismatch", "classresdb__driver_1_1exceptions_1_1AssetIdMismatch.html", null ],
           [ "DoubleSpend", "classresdb__driver_1_1exceptions_1_1DoubleSpend.html", null ],
+          [ "DoubleSpend", "classresdb__driver_1_1exceptions_1_1DoubleSpend.html", null ],
           [ "DuplicateTransaction", "classresdb__driver_1_1exceptions_1_1DuplicateTransaction.html", null ],
           [ "GenesisBlockAlreadyExistsError", "classresdb__driver_1_1exceptions_1_1GenesisBlockAlreadyExistsError.html", null ],
+          [ "InputDoesNotExist", "classresdb__driver_1_1exceptions_1_1InputDoesNotExist.html", null ],
           [ "InputDoesNotExist", "classresdb__driver_1_1exceptions_1_1InputDoesNotExist.html", null ],
           [ "InvalidHash", "classresdb__driver_1_1exceptions_1_1InvalidHash.html", null ],
           [ "InvalidSignature", "classresdb__driver_1_1exceptions_1_1InvalidSignature.html", null ],
@@ -41,6 +43,7 @@ var hierarchy =
           [ "ServiceUnavailable", "classresdb__driver_1_1exceptions_1_1ServiceUnavailable.html", null ]
         ] ]
       ] ],
+      [ "ResdbException", "classresdb__driver_1_1exceptions_1_1ResdbException.html", null ],
       [ "ResDBError", "classresdb__validator_1_1exceptions_1_1ResDBError.html", [
         [ "ConfigurationError", "classresdb__validator_1_1exceptions_1_1ConfigurationError.html", null ],
         [ "CyclicBlockchainError", "classresdb__validator_1_1exceptions_1_1CyclicBlockchainError.html", null ],

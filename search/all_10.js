@@ -1,29 +1,6 @@
 var searchData=
 [
-  ['parsesdktransaction_0',['ParseSDKTransaction',['../namespaceresdb.html#a3bbb1cda5665b2d724cfe7acb3e71df2',1,'resdb']]],
-  ['path_1',['PATH',['../classresdb__driver_1_1driver_1_1MetadataEndpoint.html#a62345317491758a93722c16ba442b023',1,'resdb_driver.driver.MetadataEndpoint.PATH'],['../classresdb__driver_1_1driver_1_1AssetsEndpoint.html#a62345317491758a93722c16ba442b023',1,'resdb_driver.driver.AssetsEndpoint.PATH']]],
-  ['path_2',['path',['../classresdb__driver_1_1driver_1_1NamespacedDriver.html#ab73e6efc52ce7a21b22cbf9f3465df91',1,'resdb_driver::driver::NamespacedDriver']]],
-  ['path_3',['PATH',['../classresdb__driver_1_1driver_1_1NamespacedDriver.html#a62345317491758a93722c16ba442b023',1,'resdb_driver.driver.NamespacedDriver.PATH'],['../classresdb__driver_1_1driver_1_1TransactionsEndpoint.html#a62345317491758a93722c16ba442b023',1,'resdb_driver.driver.TransactionsEndpoint.PATH'],['../classresdb__driver_1_1driver_1_1OutputsEndpoint.html#a62345317491758a93722c16ba442b023',1,'resdb_driver.driver.OutputsEndpoint.PATH'],['../classresdb__driver_1_1driver_1_1BlocksEndpoint.html#a62345317491758a93722c16ba442b023',1,'resdb_driver.driver.BlocksEndpoint.PATH']]],
-  ['pick_4',['pick',['../classresdb__driver_1_1pool_1_1RoundRobinPicker.html#a31baddab8e28a2f11fe8337b41b18542',1,'resdb_driver.pool.RoundRobinPicker.pick()'],['../classresdb__driver_1_1pool_1_1AbstractPicker.html#afc26d9fa5b1db7c3fcbaa8b26ab2f6e3',1,'resdb_driver.pool.AbstractPicker.pick()']]],
-  ['picker_5',['picker',['../classresdb__driver_1_1pool_1_1Pool.html#a54842ec4fdf31222a42b3575edbbe798',1,'resdb_driver::pool::Pool']]],
-  ['pistache_5fexample_2ecpp_6',['pistache_example.cpp',['../pistache__example_8cpp.html',1,'']]],
-  ['pool_7',['Pool',['../classresdb__driver_1_1pool_1_1Pool.html',1,'resdb_driver::pool']]],
-  ['pool_2epy_8',['pool.py',['../pool_8py.html',1,'']]],
-  ['post_5ftransaction_9',['post_transaction',['../classresdb__validator_1_1lib_1_1ResDB.html#a4feb3e50892e229dc4bd625d38e5b969',1,'resdb_validator::lib::ResDB']]],
-  ['prepare_10',['prepare',['../classresdb__driver_1_1driver_1_1TransactionsEndpoint.html#abf0fc10a1bf0f21ec2083795c111ffb1',1,'resdb_driver::driver::TransactionsEndpoint']]],
-  ['prepare_5fcreate_5ftransaction_11',['prepare_create_transaction',['../namespaceresdb__driver_1_1offchain.html#a6124408413523ffeb74728a96730c00e',1,'resdb_driver::offchain']]],
-  ['prepare_5ftransaction_12',['prepare_transaction',['../namespaceresdb__driver_1_1offchain.html#a2b2beb547176338573a9b0daf90b7d86',1,'resdb_driver::offchain']]],
-  ['prepare_5ftransfer_5ftransaction_13',['prepare_transfer_transaction',['../namespaceresdb__driver_1_1offchain.html#a5a563b4eb30fade27d223f6ea868a043',1,'resdb_driver::offchain']]],
-  ['prepared_5ftoken_5ftx_14',['prepared_token_tx',['../namespacetest__update__metadata.html#a168e5c035dad669629ca0205baf21d9d',1,'test_update_metadata.prepared_token_tx'],['../namespacetest__driver.html#a168e5c035dad669629ca0205baf21d9d',1,'test_driver.prepared_token_tx']]],
-  ['prepared_5ftransfer_5ftx_15',['prepared_transfer_tx',['../namespacetest__update__metadata.html#aade84b102f57d59703393ef57edf7df4',1,'test_update_metadata.prepared_transfer_tx'],['../namespacetest__driver.html#aade84b102f57d59703393ef57edf7df4',1,'test_driver.prepared_transfer_tx']]],
-  ['print_5fsample_16',['print_sample',['../namespaceprint__sample.html',1,'']]],
-  ['print_5fsample_2epy_17',['print_sample.py',['../print__sample_8py.html',1,'']]],
-  ['privatekey_18',['PrivateKey',['../namespaceresdb__driver_1_1crypto.html#a32010f4ded5408a76cb0db31416438bc',1,'resdb_driver.crypto.PrivateKey'],['../namespaceresdb__validator_1_1crypto.html#a32010f4ded5408a76cb0db31416438bc',1,'resdb_validator.crypto.PrivateKey']]],
-  ['public_5fkey_5ffrom_5fed25519_5fkey_19',['public_key_from_ed25519_key',['../namespaceresdb__validator_1_1crypto.html#a3888b8a31538fdcf0f75083ac65bb198',1,'resdb_validator::crypto']]],
-  ['public_5fkeys_20',['public_keys',['../classresdb__validator_1_1transaction_1_1Output.html#ae8d6c1461f2263275cde668fcefdf6cf',1,'resdb_validator.transaction.Output.public_keys'],['../classresdb__driver_1_1transaction_1_1Output.html#ae8d6c1461f2263275cde668fcefdf6cf',1,'resdb_driver.transaction.Output.public_keys']]],
-  ['publickey_21',['PublicKey',['../namespaceresdb__driver_1_1crypto.html#a047dfef5e326f49ee6c832332e0f7763',1,'resdb_driver.crypto.PublicKey'],['../namespaceresdb__validator_1_1crypto.html#a047dfef5e326f49ee6c832332e0f7763',1,'resdb_validator.crypto.PublicKey']]],
-  ['py_5fverificator_2ecpp_22',['py_verificator.cpp',['../py__verificator_8cpp.html',1,'']]],
-  ['py_5fverificator_2eh_23',['py_verificator.h',['../py__verificator_8h.html',1,'']]],
-  ['pybind11_20information_24',['Pybind11 information',['../md__2github_2workspace_2service_2pybind__sample_2README.html',1,'']]],
-  ['pyverificator_25',['PYVerificator',['../classsdk_1_1PYVerificator.html#ada9b702b262087cb673f589f4bf90b98',1,'sdk::PYVerificator::PYVerificator()'],['../classsdk_1_1PYVerificator.html',1,'PYVerificator']]]
+  ['lib_2epy_0',['lib.py',['../lib_8py.html',1,'']]],
+  ['license_1',['license',['../md__2github_2workspace_2docs_2research.html#autotoc_md14',1,'BigchainBD License'],['../md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md41',1,'BigchainBD License']]],
+  ['logger_2',['logger',['../namespaceresdb__driver_1_1offchain.html#a0b14e488ae28d98d262453f3e9cd6e4d',1,'resdb_driver.offchain.logger'],['../namespaceresdb__validator_1_1lib.html#a0b14e488ae28d98d262453f3e9cd6e4d',1,'resdb_validator.lib.logger']]]
 ];
