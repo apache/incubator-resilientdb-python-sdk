@@ -98,23 +98,33 @@ $(document).ready(function(){initNavTree('md__2github_2workspace_2README.html','
 <h1><a class="anchor" id="autotoc_md18"></a>
 Check Python is up-to-date (3.9+)</h1>
 <p><code>$ python3 --version</code></p>
-<p>If your Python version number is too low you may encounter type hinting issues when attempting to run the code</p>
+<p>If your Python version number is too low you may encounter type hinting issues when attempting to run the code. You can use a Python virtual environment, as shown below.</p>
 <h1><a class="anchor" id="autotoc_md19"></a>
-Installing dependencies</h1>
-<p><code>$ python3 -m venv venv</code></p>
+First-time set up</h1>
+<p><code>$ sh INSTALL.sh</code></p>
+<p><code>$ python3.10 -m venv venv</code></p>
 <p><code>$ source venv/bin/activate</code></p>
 <p><code>$ pip install -r requirements.txt</code></p>
+<p>The correct Python configuration is needed for transaction validation.</p>
 <h1><a class="anchor" id="autotoc_md20"></a>
-Running kvserver</h1>
-<p>sh service/tools/start_kv_service_sdk.sh</p>
+Running KV service</h1>
+<p>If your virtual environment is not already active:</p>
+<p><code>$ source venv/bin/activate</code></p>
+<p>Run the script to start 4 local nodes</p>
+<p><code>$ sh service/tools/start_kv_service_sdk.sh</code></p>
 <h1><a class="anchor" id="autotoc_md21"></a>
-test</h1>
-<p>bazel-bin/service/kv_service/kv_service_tools service/tools/config/interface/service.config set test 1234</p>
+Running Crow service (HTTP endpoints)</h1>
+<p><code>$ bazel build service/http_server/crow_service_main</code></p>
+<p><code>$ bazel-bin/service/http_server/crow_service_main service/tools/config/interface/service.config service/http_server/server_config.config</code></p>
+<p>For a list of endpoints visit <a class="el" href="md__2github_2workspace_2service_2http__server_2README.html">here</a></p>
 <h1><a class="anchor" id="autotoc_md22"></a>
-Running the driver</h1>
-<p>examples of using the driver can be seen in <a href="/test_driver.py">test_driver</a></p>
-<p>replace the db_root_url with the url of resilient db e.g <code>120.0.0.1:8080</code></p>
+Testing</h1>
+<p><code>$ bazel-bin/service/kv_service/kv_service_tools service/tools/config/interface/service.config set test 1234</code></p>
 <h1><a class="anchor" id="autotoc_md23"></a>
+Running the driver</h1>
+<p>Examples of using the driver can be seen in <a href="/test_driver.py">test_driver</a></p>
+<p>Replace the db_root_url with the address of the ResilientDB HTTP endpoints e.g. <code>127.0.0.1:18000</code></p>
+<h1><a class="anchor" id="autotoc_md24"></a>
 TODO</h1>
 <ul>
 <li>Setting up linting (using <a href="https://github.com/psf/black">black</a>) through github hooks</li>

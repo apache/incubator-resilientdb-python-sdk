@@ -38,32 +38,50 @@ var NAVTREE =
     ] ],
     [ "ResilientDB SDK", "md__2github_2workspace_2README.html", [
       [ "Check Python is up-to-date (3.9+)", "md__2github_2workspace_2README.html#autotoc_md18", null ],
-      [ "Installing dependencies", "md__2github_2workspace_2README.html#autotoc_md19", null ],
-      [ "Running kvserver", "md__2github_2workspace_2README.html#autotoc_md20", null ],
-      [ "test", "md__2github_2workspace_2README.html#autotoc_md21", null ],
-      [ "Running the driver", "md__2github_2workspace_2README.html#autotoc_md22", null ],
-      [ "TODO", "md__2github_2workspace_2README.html#autotoc_md23", null ]
+      [ "First-time set up", "md__2github_2workspace_2README.html#autotoc_md19", null ],
+      [ "Running KV service", "md__2github_2workspace_2README.html#autotoc_md20", null ],
+      [ "Running Crow service (HTTP endpoints)", "md__2github_2workspace_2README.html#autotoc_md21", null ],
+      [ "Testing", "md__2github_2workspace_2README.html#autotoc_md22", null ],
+      [ "Running the driver", "md__2github_2workspace_2README.html#autotoc_md23", null ],
+      [ "TODO", "md__2github_2workspace_2README.html#autotoc_md24", null ]
+    ] ],
+    [ "HTTP Server Endpoints", "md__2github_2workspace_2service_2http__server_2README.html", [
+      [ "Transactions", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md26", [
+        [ "GET /v1/transactions", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md27", null ],
+        [ "GET /v1/transactions/<string>", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md28", null ],
+        [ "GET /v1/transactions/<string>/<string>", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md29", null ],
+        [ "POST /v1/transactions/commit", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md30", null ]
+      ] ],
+      [ "Blocks", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md31", [
+        [ "GET /v1/blocks", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md32", null ],
+        [ "GET /v1/blocks/<int>", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md33", null ],
+        [ "GET /v1/blocks/<int>/<int>", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md34", null ]
+      ] ],
+      [ "Miscellaneous", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md35", [
+        [ "GET /populatetable", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md36", null ]
+      ] ],
+      [ "Todo", "md__2github_2workspace_2service_2http__server_2README.html#autotoc_md37", null ]
     ] ],
     [ "README", "md__2github_2workspace_2service_2kv__service_2README.html", null ],
     [ "Pybind11 information", "md__2github_2workspace_2service_2pybind__sample_2README.html", [
-      [ "Requirements", "md__2github_2workspace_2service_2pybind__sample_2README.html#autotoc_md25", null ],
-      [ "client.cpp", "md__2github_2workspace_2service_2pybind__sample_2README.html#autotoc_md26", null ]
+      [ "Requirements", "md__2github_2workspace_2service_2pybind__sample_2README.html#autotoc_md39", null ],
+      [ "client.cpp", "md__2github_2workspace_2service_2pybind__sample_2README.html#autotoc_md40", null ]
     ] ],
     [ "Building a NFT market with resdb", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html", [
-      [ "How can Sajjad sell his painting to Mo?", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md28", [
-        [ "The above process in terms of transactions", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md29", null ]
+      [ "How can Sajjad sell his painting to Mo?", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md42", [
+        [ "The above process in terms of transactions", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md43", null ]
       ] ],
-      [ "Creating and Transferring Assets", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md30", null ]
+      [ "Creating and Transferring Assets", "md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md44", null ]
     ] ],
     [ "Transaction Specs", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html", [
-      [ "BigchainBD License", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md41", null ],
-      [ "Making client requests Asyncronous", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md42", null ],
-      [ "Remaining tasks", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md43", null ]
+      [ "BigchainBD License", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md55", null ],
+      [ "Making client requests Asyncronous", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md56", null ],
+      [ "Remaining tasks", "md__2github_2workspace_2service_2sdk__validator_2docs_2research.html#autotoc_md57", null ]
     ] ],
     [ "resdb validator code in python", "md__2github_2workspace_2service_2sdk__validator_2README.html", [
-      [ "Requirements", "md__2github_2workspace_2service_2sdk__validator_2README.html#autotoc_md45", null ],
-      [ "entrypoint", "md__2github_2workspace_2service_2sdk__validator_2README.html#autotoc_md46", null ],
-      [ "Transaction Validation", "md__2github_2workspace_2service_2sdk__validator_2README.html#autotoc_md47", null ]
+      [ "Requirements", "md__2github_2workspace_2service_2sdk__validator_2README.html#autotoc_md59", null ],
+      [ "entrypoint", "md__2github_2workspace_2service_2sdk__validator_2README.html#autotoc_md60", null ],
+      [ "Transaction Validation", "md__2github_2workspace_2service_2sdk__validator_2README.html#autotoc_md61", null ]
     ] ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ],
@@ -101,7 +119,7 @@ var NAVTREEINDEX =
 "classresdb__driver_1_1transaction_1_1Transaction.html#a34ea8af38721a6873df4a2baf3e8cb93",
 "classresdb__validator_1_1lib_1_1ResDB.html#aff023a8f6de8f340879aba96b266d0a4",
 "dir_a17ab2ced5eb040e9917e2f945ce4020.html",
-"namespacetest__update__metadata.html#a71ae2df7a15dbbca4489601810666b56"
+"namespacetest__driver.html#a89a7f6028a19c3dc081cc5f16eb53891"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

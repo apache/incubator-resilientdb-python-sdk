@@ -10,6 +10,6 @@ var searchData=
   ['normalize_5fnode_7',['normalize_node',['../namespaceresdb__driver_1_1utils.html#ac67e0153c85503044a7c3f316bb21652',1,'resdb_driver::utils']]],
   ['normalize_5fnodes_8',['normalize_nodes',['../namespaceresdb__driver_1_1utils.html#a0507370d5915f090cf56d15b4dc1e88f',1,'resdb_driver::utils']]],
   ['normalize_5furl_9',['normalize_url',['../namespaceresdb__driver_1_1utils.html#a2348e62786f89faa16350d03ff416b62',1,'resdb_driver::utils']]],
-  ['note_10',['note',['../md__2github_2workspace_2docs_2nft__market.html#autotoc_md12',1,'!Note!'],['../md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md39',1,'!Note!']]],
+  ['note_10',['note',['../md__2github_2workspace_2docs_2nft__market.html#autotoc_md12',1,'!Note!'],['../md__2github_2workspace_2service_2sdk__validator_2docs_2nft__market.html#autotoc_md53',1,'!Note!']]],
   ['notfounderror_11',['NotFoundError',['../classresdb__driver_1_1exceptions_1_1NotFoundError.html',1,'resdb_driver::exceptions']]]
 ];
