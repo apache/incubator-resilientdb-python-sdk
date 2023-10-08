@@ -43,8 +43,25 @@ namespace sdk {
 using resdb::ResConfigData;
 using resdb::ChainState;
 
-KVServiceTransactionManager::KVServiceTransactionManager(std::unique_ptr<ChainState> state)
-    :state_(std::move(state)){} 
+KVServiceTransactionManager::KVServiceTransactionManager(
+    const ResConfigData& config_data, char* cert_file) {
+#ifdef ENABLE_LEVELDB
+  bool equip_leveldb = config_data.leveldb_info().enable_leveldb();
+  if (equip_leveldb_) {
+    storage_ = NewResLevelDB(cert_file, config_data);
+  }
+#endif
+
+  if (storage_ == nullptr) {
+    storage_ = NewInMemKVStorage();
+  }
+
+  // py_verificator_ = std::make_unique<PYVerificator>();
+}
+
+KVServiceTransactionManager::KVServiceTransactionManager(
+    std::unique_ptr<Storage> storage)
+    : storage_(std::move(storage)) {}
 
 std::unique_ptr<std::string> KVServiceTransactionManager::ExecuteData(
     const std::string& request) {
@@ -76,12 +93,12 @@ std::unique_ptr<std::string> KVServiceTransactionManager::ExecuteData(
 
 void KVServiceTransactionManager::Set(const std::string& key,
                                       const std::string& value) {
-  bool is_valid = py_verificator_->Validate(value);
-  if (!is_valid) {
-    LOG(ERROR) << "Invalid transaction for " << key;
-    return;
-  }
-  state_->SetValue(key, value);
+  // bool is_valid = py_verificator_->Validate(value);
+  // if (!is_valid) {
+  //   LOG(ERROR) << "Invalid transaction for " << key;
+  //   return;
+  // }
+  storage_->SetValue(key, value);
 }
 
 std::string KVServiceTransactionManager::Get(const std::string& key) {

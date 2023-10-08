@@ -22,11 +22,52 @@ cc_library(
 )
 
 cc_library(
+    name = "c_validator",
+    srcs = ["c_validator.cpp"],
+    hdrs = ["c_validator.h"],
+    deps = [
+        "@com_resdb_nexres//:cryptopp_lib",
+        "//third_party:rapidjson",
+        "//third_party:json",
+        "//service/tools:base64",
+    ],
+)
+
+cc_binary(
+    name = "c_validator_main",
+    srcs = ["c_validator_main.cpp"],
+    deps = [
+        ":c_validator",
+        ":sdk_transaction_manager",
+    ],
+)
+
+cc_library(
+    name = "sdk_transaction",
+    srcs = ["sdk_transaction.cpp"],
+    hdrs = ["sdk_transaction.h"],
+    deps = [
+        "@com_resdb_nexres//:cryptopp_lib",
+        "//third_party:rapidjson",
+        "//third_party:json",
+    ],
+)
+
+cc_library(
+    name = "sdk_transaction_manager",
+    srcs = ["sdk_transaction_manager.cpp"],
+    hdrs = ["sdk_transaction_manager.h"],
+    deps = [
+        ":sdk_transaction",
+    ],
+)
+
+cc_library(
     name = "kv_service_transaction_manager",
     srcs = ["kv_service_transaction_manager.cpp"],
     hdrs = ["kv_service_transaction_manager.h"],
     deps = [
-        ":py_verificator",
+        # ":py_verificator",
         "@com_resdb_nexres//common:comm",
         "@com_resdb_nexres//platform/config:resdb_config_utils",
         "@com_resdb_nexres//executor/common:transaction_manager",

@@ -29,7 +29,7 @@
 #include <optional>
 #include <unordered_map>
 
-#include "service/kv_service/py_verificator.h"
+// #include "service/kv_service/py_verificator.h"
 
 #include "platform/config/resdb_config_utils.h"
 #include "executor/common/transaction_manager.h"
@@ -51,8 +51,8 @@ class KVServiceTransactionManager : public resdb::TransactionManager {
   std::string GetRange(const std::string& min_key, const std::string& max_key);
 
  private:
-  std::unique_ptr<resdb::ChainState> state_;
-  std::unique_ptr<PYVerificator> py_verificator_;
+  std::unique_ptr<resdb::Storage> storage_;
+  // std::unique_ptr<PYVerificator> py_verificator_;
 };
 
 }  // namespace resdb
