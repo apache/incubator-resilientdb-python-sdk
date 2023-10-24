@@ -422,7 +422,14 @@ std::string CrowService::ParseCreateTime(uint64_t createtime) {
 
   std::tm *tm_gmt = std::gmtime((time_t*) &sec);
   int year = tm_gmt->tm_year + 1900;
-  timestr += std::to_string(tm_gmt->tm_mon + 1) + "/" + std::to_string(tm_gmt->tm_mday) + "/" + std::to_string(year) + " ";
+  int month = tm_gmt->tm_mon; // 0-indexed
+  int day = tm_gmt-> tm_mday;
+  
+  std::string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+  // Using date time string format to support the Explorer transaction chart
+  if (day < 10) timestr += "0";
+  timestr += std::to_string(day) + " " + months[month] + " " + std::to_string(year) + " ";
   timestr += std::to_string(tm_gmt->tm_hour) + ":" + std::to_string(tm_gmt->tm_min) + ":" + std::to_string(tm_gmt->tm_sec) + " GMT";
 
   return timestr;
