@@ -30,6 +30,7 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -66,7 +67,7 @@ void CrowService::run() {
   std::mutex mtx;
 
   // Get all values
-  CROW_ROUTE(app, "/v1/transactions")
+  CROW_ROUTE(app, "/v1/transactions/getall")
   ([this](const crow::request& req, response& res) {
     auto values = kv_client_.GetValues();
     if (values != nullptr) {
@@ -81,15 +82,17 @@ void CrowService::run() {
       res.set_header("Content-Type", "application/json");
       res.end(std::string(values->c_str()));
     } else {
-      res.code = 500;
+      res.code = internal_server_error_code;
       res.set_header("Content-Type", "text/plain");
       res.end("getvalues fail");
     }
   });
 
   // Get value of specific id
-  CROW_ROUTE(app, "/v1/transactions/<string>")
-  ([this](const crow::request& req, response& res, std::string id) {
+  // <ip>:18000/v1/transactions/get?id='sampleid'
+  CROW_ROUTE(app, "/v1/transactions/get")
+  ([this](const crow::request& req, response& res) {
+    const std::string id = req.url_params.get("id");
     auto value = kv_client_.Get(id);
     if (value != nullptr) {
       LOG(INFO) << "client get value = " << value->c_str();
@@ -103,16 +106,32 @@ void CrowService::run() {
       res.set_header("Content-Type", "application/json");
       res.end(std::string(value->c_str()));
     } else {
-      res.code = 500;
+      res.code = internal_server_error_code;
       res.set_header("Content-Type", "text/plain");
-      res.end("get value fail");
+      res.end("get value fail\n");
     }
   });
 
   // Get values based on key range
-  CROW_ROUTE(app, "/v1/transactions/<string>/<string>")
-  ([this](const crow::request& req, response& res, std::string min_id,
-          std::string max_id) {
+  // <ip>:18000/v1/transactions/getrange?"min_id=<samplemin>&max_id=<samplemax>"
+  CROW_ROUTE(app, "/v1/transactions/getrange")
+  ([this](const crow::request& req, response& res) {    
+    if (req.url_params.get("min_id") == nullptr) {
+      res.code = bad_request_code;
+      res.set_header("Content-Type", "text/plain");
+      res.end("no min_id specified\nExample usage: <ip>:18000/v1/transactions/getrange?\"min_id=<samplemin>&max_id=<samplemax>\"\n");
+      return;
+    }
+    if (req.url_params.get("max_id") == nullptr) {
+      res.code = bad_request_code;
+      res.set_header("Content-Type", "text/plain");
+      res.end("no max_id specified\nExample usage: <ip>:18000/v1/transactions/getrange?\"min_id=<samplemin>&max_id=<samplemax>\"\n");
+      return;
+    }
+
+    const std::string min_id = req.url_params.get("min_id");
+    const std::string max_id = req.url_params.get("max_id");
+    
     auto value = kv_client_.GetRange(min_id, max_id);
     if (value != nullptr) {
       LOG(INFO) << "client getrange value = " << value->c_str();
@@ -126,9 +145,9 @@ void CrowService::run() {
       res.set_header("Content-Type", "application/json");
       res.end(std::string(value->c_str()));
     } else {
-      res.code = 500;
+      res.code = internal_server_error_code;
       res.set_header("Content-Type", "text/plain");
-      res.end("getrange fail");
+      res.end("getrange fail\n");
     }
   });
 
@@ -137,7 +156,6 @@ void CrowService::run() {
   CROW_ROUTE(app, "/v1/transactions/commit")
   .methods("POST"_method)([this](const request& req) {
     std::string body = req.body;
-    LOG(INFO) << "body: " << body;
     resdb::SDKTransaction transaction = resdb::ParseSDKTransaction(body);
     const std::string id = transaction.id;
     const std::string value = transaction.value;
@@ -147,7 +165,7 @@ void CrowService::run() {
 
     if (retval != 0) {
       LOG(ERROR) << "Error when trying to commit id " << id;
-      response res(500, "id: " + id);
+      response res(internal_server_error_code, "id: " + id);
       res.set_header("Content-Type", "text/plain");
       return res;
     }
@@ -158,25 +176,34 @@ void CrowService::run() {
       for (auto u : users)
         u->send_text("Update blocks");
     }
-    response res(201, "id: " + id);  // Created status code
+
+    response res(created_code, "id: " + id);  // Created status code
     res.set_header("Content-Type", "text/plain");
     return res;
   });
 
-  CROW_ROUTE(app, "/v1/blocks")([this](const crow::request& req, response& res) {
+  CROW_ROUTE(app, "/v1/blocks/getall")([this](const crow::request& req, response& res) {
     auto values = GetAllBlocks(1);
     res.set_header("Content-Type", "application/json");
     res.end(values);
   });
 
   // Retrieve blocks in batches of size of the int parameter
-  CROW_ROUTE(app, "/v1/blocks/<int>")
-  ([this](const crow::request& req, response& res, int batch_size) {
+  CROW_ROUTE(app, "/v1/blocks/get")
+  ([this](const crow::request& req, response& res) {
+    if (req.url_params.get("batch_size") == nullptr) {
+      res.code = bad_request_code;
+      res.set_header("Content-Type", "text/plain");
+      res.end("no batch_size specified\nExample usage: <ip>:18000/v1/blocks/get?batch_size=1>\"\n");
+      return;
+    }
+    // TODO: catch conversion error
+    int batch_size = atoi(req.url_params.get("batch_size"));
     auto values = GetAllBlocks(batch_size);
     if (values == "") {
-      res.code = 500;
+      res.code = internal_server_error_code;
       res.set_header("Content-Type", "text/plain");
-      res.end("get replica state fail");
+      res.end("get replica state fail\n");
       exit(1);
     };
     res.set_header("Content-Type", "application/json");
@@ -184,16 +211,39 @@ void CrowService::run() {
   });
 
   // Retrieve blocks within a range
-  CROW_ROUTE(app, "/v1/blocks/<int>/<int>")
-  ([this](const crow::request& req, response& res, int min_seq, int max_seq) {
+  CROW_ROUTE(app, "/v1/blocks/getrange")
+  ([this](const crow::request& req, response& res) {
+    if (req.url_params.get("min_seq") == nullptr) {
+      res.code = bad_request_code;
+      res.set_header("Content-Type", "text/plain");
+      res.end("no min_seq specified\nExample usage: <ip>:18000/v1/blocks/getrange?\"min_seq=1&max_seq=3\">\n");
+      return;
+    }
+    if (req.url_params.get("max_seq") == nullptr) {
+      res.code = bad_request_code;
+      res.set_header("Content-Type", "text/plain");
+      res.end("no max_seq specified\nExample usage: <ip>:18000/v1/blocks/getrange?\"min_seq=1&max_seq=3\">\n");
+      return;
+    }
+
+    char* pEnd; // dummy pointer used to pass to strtol
+    const uint64_t min_seq = strtol(req.url_params.get("min_seq"), &pEnd, 10);
+    const uint64_t max_seq = strtol(req.url_params.get("max_seq"), &pEnd, 10);
+
+    if (min_seq == 0 || max_seq == 0 || min_seq > max_seq) {
+      res.code = bad_request_code;
+      res.set_header("Content-Type", "text/plain");
+      res.end("Invalid range query. Blocks are 1-indexed.\n");
+      return;
+    }
     auto resp = txn_client_.GetTxn(min_seq, max_seq);
     absl::StatusOr<std::vector<std::pair<uint64_t, std::string>>> GetTxn(
         uint64_t min_seq, uint64_t max_seq);
     if (!resp.ok()) {
       LOG(ERROR) << "get replica state fail";
-      res.code = 500;
+      res.code = internal_server_error_code;
       res.set_header("Content-Type", "text/plain");
-      res.end("get replica state fail");
+      res.end("get replica state fail\n");
       exit(1);
     }
 

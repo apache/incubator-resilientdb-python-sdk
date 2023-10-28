@@ -53,6 +53,10 @@ class CrowService {
   ResDBKVClient kv_client_;
   resdb::ResDBTxnAccessor txn_client_;
   std::unordered_set<crow::websocket::connection*> users;
+  const int ok_code = 200;
+  const int created_code = 201;
+  const int bad_request_code = 400;
+  const int internal_server_error_code = 500;
 };
 
 }  // namespace resdb
