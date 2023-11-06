@@ -36,6 +36,6 @@ var searchData=
   ['get_5futxoset_5fmerkle_5froot_33',['get_utxoset_merkle_root',['../classresdb__validator_1_1lib_1_1ResDB.html#ad60234858df515c98be8922590955371',1,'resdb_validator::lib::ResDB']]],
   ['get_5fvalidator_5fchange_34',['get_validator_change',['../classresdb__validator_1_1lib_1_1ResDB.html#ad18600451b4407a7b2b4f48aee75d2ff',1,'resdb_validator::lib::ResDB']]],
   ['get_5fvalidators_35',['get_validators',['../classresdb__validator_1_1lib_1_1ResDB.html#ad5f30da73ef3686eb23ac06830c55faa',1,'resdb_validator::lib::ResDB']]],
-  ['getrange_36',['getrange',['../classsdk_1_1ResDBKVClient.html#a36ee03106575cba87b9539f78f772580',1,'sdk::ResDBKVClient::GetRange()'],['../classsdk_1_1KVServiceTransactionManager.html#ade7674310732b8447da26f76b7a81322',1,'sdk::KVServiceTransactionManager::GetRange()']]],
-  ['getvalues_37',['getvalues',['../classsdk_1_1ResDBKVClient.html#a8abc80b6c4dbdb80ef1848e419a88eaf',1,'sdk::ResDBKVClient::GetValues()'],['../classsdk_1_1KVServiceTransactionManager.html#a9feec34ef5d0a22b5cad800e01b62af3',1,'sdk::KVServiceTransactionManager::GetValues()']]]
+  ['getallvalues_36',['getallvalues',['../classsdk_1_1ResDBKVClient.html#a61336d6502842d7427a8c311897709c0',1,'sdk::ResDBKVClient::GetAllValues()'],['../classsdk_1_1KVServiceTransactionManager.html#a7a7d0b6a6c7a0971ec800816a48129d6',1,'sdk::KVServiceTransactionManager::GetAllValues()']]],
+  ['getrange_37',['getrange',['../classsdk_1_1ResDBKVClient.html#a36ee03106575cba87b9539f78f772580',1,'sdk::ResDBKVClient::GetRange()'],['../classsdk_1_1KVServiceTransactionManager.html#ade7674310732b8447da26f76b7a81322',1,'sdk::KVServiceTransactionManager::GetRange()']]]
 ];
