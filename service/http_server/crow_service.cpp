@@ -68,9 +68,9 @@ void CrowService::run() {
   // Get all values
   CROW_ROUTE(app, "/v1/transactions")
   ([this](const crow::request& req, response& res) {
-    auto values = kv_client_.GetValues();
+    auto values = kv_client_.GetAllValues();
     if (values != nullptr) {
-      LOG(INFO) << "client getvalues value = " << values->c_str();
+      LOG(INFO) << "client getallvalues value = " << values->c_str();
 
       // Send updated blocks list to websocket
       if (users.size() > 0) {
@@ -83,7 +83,7 @@ void CrowService::run() {
     } else {
       res.code = 500;
       res.set_header("Content-Type", "text/plain");
-      res.end("getvalues fail");
+      res.end("getallvalues fail");
     }
   });
 
@@ -396,11 +396,11 @@ std::string CrowService::ParseKVRequest(const KVRequest& kv_request) {
     rapidjson::Value val(rapidjson::kObjectType);
     doc.AddMember("cmd", "GET", allocator);
     doc.AddMember("key", kv_request.key(), allocator);
-  } else if (kv_request.cmd() == 3) {  // GETVALUES
+  } else if (kv_request.cmd() == 3) {  // GETALLVALUES
     doc.SetObject();
     rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
     rapidjson::Value val(rapidjson::kObjectType);
-    doc.AddMember("cmd", "GETVALUES", allocator);
+    doc.AddMember("cmd", "GETALLVALUES", allocator);
   } else if (kv_request.cmd() == 4) {  // GETRANGE
     doc.SetObject();
     rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
