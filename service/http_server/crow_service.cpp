@@ -430,7 +430,17 @@ std::string CrowService::ParseCreateTime(uint64_t createtime) {
   // Using date time string format to support the Explorer transaction chart
   if (day < 10) timestr += "0";
   timestr += std::to_string(day) + " " + months[month] + " " + std::to_string(year) + " ";
-  timestr += std::to_string(tm_gmt->tm_hour) + ":" + std::to_string(tm_gmt->tm_min) + ":" + std::to_string(tm_gmt->tm_sec) + " GMT";
+
+  std::string hour_str = std::to_string(tm_gmt->tm_hour);
+  std::string min_str = std::to_string(tm_gmt->tm_min);
+  std::string sec_str = std::to_string(tm_gmt->tm_sec);
+  
+  if (tm_gmt->tm_hour < 10) hour_str = "0" + hour_str;
+  if (tm_gmt->tm_min < 10) min_str = "0" + min_str;
+  if (tm_gmt->tm_sec < 10) sec_str = "0" + sec_str;
+  
+  LOG(INFO) << "sec_str " << sec_str;
+  timestr += hour_str + ":" + min_str + ":" + sec_str + " GMT";
 
   return timestr;
 }
