@@ -26,6 +26,23 @@ var namespaces_dup =
       [ "transfer_input", "namespacetest__driver.html#af0e6c7320463f4ee350c35f78fbc9f20", null ],
       [ "txid", "namespacetest__driver.html#acf5cc20af1153123b499214f36494a2c", null ]
     ] ],
+    [ "test_driver_2", "namespacetest__driver__2.html", [
+      [ "alice", "namespacetest__driver__2.html#a579e43b423b454623383471aeb85cd87", null ],
+      [ "bob", "namespacetest__driver__2.html#ae8557d12f6551b2ddd26bbdd0395465c", null ],
+      [ "db", "namespacetest__driver__2.html#a89a7f6028a19c3dc081cc5f16eb53891", null ],
+      [ "db_root_url", "namespacetest__driver__2.html#a5001fd32f5d2706963118939b8959481", null ],
+      [ "fulfilled_token_tx", "namespacetest__driver__2.html#ad9b4b7e0de1fff09e3b4e8a9dbcf8be1", null ],
+      [ "fulfilled_transfer_tx", "namespacetest__driver__2.html#a711f48e6155ccdfc5ccafa3250569146", null ],
+      [ "game_boy_token", "namespacetest__driver__2.html#aa7e45e7a9aac9f39623257bf65ae4283", null ],
+      [ "output", "namespacetest__driver__2.html#ad288825273ed7192429ab0474fb2d4a0", null ],
+      [ "output_index", "namespacetest__driver__2.html#a8c407de3757eea058580e7177b5809e1", null ],
+      [ "prepared_token_tx", "namespacetest__driver__2.html#a168e5c035dad669629ca0205baf21d9d", null ],
+      [ "prepared_transfer_tx", "namespacetest__driver__2.html#aade84b102f57d59703393ef57edf7df4", null ],
+      [ "sent_transfer_tx", "namespacetest__driver__2.html#a71ae2df7a15dbbca4489601810666b56", null ],
+      [ "transfer_asset", "namespacetest__driver__2.html#a7f3eac6ded011ff248eecd52a180c372", null ],
+      [ "transfer_input", "namespacetest__driver__2.html#af0e6c7320463f4ee350c35f78fbc9f20", null ],
+      [ "txid", "namespacetest__driver__2.html#acf5cc20af1153123b499214f36494a2c", null ]
+    ] ],
     [ "test_update_metadata", "namespacetest__update__metadata.html", [
       [ "alice", "namespacetest__update__metadata.html#a579e43b423b454623383471aeb85cd87", null ],
       [ "bob", "namespacetest__update__metadata.html#ae8557d12f6551b2ddd26bbdd0395465c", null ],
