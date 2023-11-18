@@ -13,6 +13,5 @@ var test__driver_8py =
     [ "prepared_transfer_tx", "test__driver_8py.html#aade84b102f57d59703393ef57edf7df4", null ],
     [ "sent_transfer_tx", "test__driver_8py.html#a71ae2df7a15dbbca4489601810666b56", null ],
     [ "transfer_asset", "test__driver_8py.html#a7f3eac6ded011ff248eecd52a180c372", null ],
-    [ "transfer_input", "test__driver_8py.html#af0e6c7320463f4ee350c35f78fbc9f20", null ],
-    [ "txid", "test__driver_8py.html#acf5cc20af1153123b499214f36494a2c", null ]
+    [ "transfer_input", "test__driver_8py.html#af0e6c7320463f4ee350c35f78fbc9f20", null ]
 ];

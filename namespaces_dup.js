@@ -23,8 +23,7 @@ var namespaces_dup =
       [ "prepared_transfer_tx", "namespacetest__driver.html#aade84b102f57d59703393ef57edf7df4", null ],
       [ "sent_transfer_tx", "namespacetest__driver.html#a71ae2df7a15dbbca4489601810666b56", null ],
       [ "transfer_asset", "namespacetest__driver.html#a7f3eac6ded011ff248eecd52a180c372", null ],
-      [ "transfer_input", "namespacetest__driver.html#af0e6c7320463f4ee350c35f78fbc9f20", null ],
-      [ "txid", "namespacetest__driver.html#acf5cc20af1153123b499214f36494a2c", null ]
+      [ "transfer_input", "namespacetest__driver.html#af0e6c7320463f4ee350c35f78fbc9f20", null ]
     ] ],
     [ "test_driver_2", "namespacetest__driver__2.html", [
       [ "alice", "namespacetest__driver__2.html#a579e43b423b454623383471aeb85cd87", null ],
@@ -40,8 +39,7 @@ var namespaces_dup =
       [ "prepared_transfer_tx", "namespacetest__driver__2.html#aade84b102f57d59703393ef57edf7df4", null ],
       [ "sent_transfer_tx", "namespacetest__driver__2.html#a71ae2df7a15dbbca4489601810666b56", null ],
       [ "transfer_asset", "namespacetest__driver__2.html#a7f3eac6ded011ff248eecd52a180c372", null ],
-      [ "transfer_input", "namespacetest__driver__2.html#af0e6c7320463f4ee350c35f78fbc9f20", null ],
-      [ "txid", "namespacetest__driver__2.html#acf5cc20af1153123b499214f36494a2c", null ]
+      [ "transfer_input", "namespacetest__driver__2.html#af0e6c7320463f4ee350c35f78fbc9f20", null ]
     ] ],
     [ "test_update_metadata", "namespacetest__update__metadata.html", [
       [ "alice", "namespacetest__update__metadata.html#a579e43b423b454623383471aeb85cd87", null ],
