@@ -69,8 +69,9 @@ sent_transfer_tx = db.transactions.send_commit(fulfilled_transfer_tx)
 
 
 # %%
-## replace `testId` with the txid for the transaction to retrieve
-db.transactions.retrieve(txid="testId")
+
+# sent_transfer_tx is in the form "id: ac98e91d01591156008e23de4b5564909228..."
+print(db.transactions.retrieve(txid=sent_transfer_tx[len("id: "):]))
 
 #%%
 # TODO valide a tx object
