@@ -1,37 +1,59 @@
-# Use ARM64 Ubuntu as base image
-FROM arm64v8/ubuntu:20.04
+FROM ubuntu:20.04
 
-ARG DEBIAN_FRONTEND=noninteractive 
+# Prevents prompts and dialogues during package installation
+ENV DEBIAN_FRONTEND=noninteractive 
 
-# Install dependencies
+# Setup the deadsnakes PPA and other basic dependencies
 RUN apt-get update && apt-get install -y \
     software-properties-common \
-    git \
+    apt-transport-https \
     curl \
-    python3-pip
+    gnupg \
+    git \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update
 
-# Install Bazelisk
+# Install other required packages
+RUN apt-get install -y \
+    protobuf-compiler \
+    rapidjson-dev \
+    clang-format \
+    build-essential \
+    openjdk-11-jdk \
+    zip unzip \
+    python3.10 \
+    python3.10-dev \
+    python3-venv \
+    python3-dev \
+    python3-pip \
+    python3-distutils
+
+# Set python3.10 as the default python3 version
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
+    python3 --version
+
+# Install pip3 using the get-pip.py script
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python3 get-pip.py && \
+    rm get-pip.py
+
+# Cleanup apt cache
+RUN rm -rf /var/lib/apt/lists/*
+
+# Add Bazel repository and its GPG key
 RUN curl -Lo /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-arm64 \
     && chmod +x /usr/local/bin/bazel
-
-# Install Python 3.10
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt-get update && apt-get install -y python3.10 python3-venv
-
-# Set up virtual environment
-RUN /usr/bin/python3 --version
-RUN /usr/bin/python3 -m venv venv
-ENV PATH="/app/venv/bin:$PATH" 
-
-# Install pip packages
-RUN pip install --upgrade pip
-RUN pip install wheel
 
 # Set the working directory
 WORKDIR /app
 
 # Copy your project files to the container
 COPY . /app
+
+RUN pip3 install virtualenv && \
+    . venv/bin/activate && \
+    pip install --upgrade setuptools && \
+    pip install -r requirements.txt 
 
 RUN sh service/tools/start_kv_service_sdk.sh
 
