@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "NexRes SDK", "index.html", [
+  [ "ResilientDB SDK", "index.html", [
     [ "Building a NFT market with resdb", "md__2github_2workspace_2docs_2nft__market.html", [
       [ "How can Sajjad sell his painting to Mo?", "md__2github_2workspace_2docs_2nft__market.html#autotoc_md1", [
         [ "The above process in terms of transactions", "md__2github_2workspace_2docs_2nft__market.html#autotoc_md2", null ]
