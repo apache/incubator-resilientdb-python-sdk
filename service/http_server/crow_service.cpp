@@ -51,13 +51,13 @@ using resdb::BatchUserRequest;
 
 namespace sdk {
 
-CrowService::CrowService(ResDBConfig config, ResDBConfig server_config,
+CrowService::CrowService(ResDBConfig client_config, ResDBConfig server_config,
                          uint16_t port_num)
-    : config_(config),
+    : client_config_(client_config),
       server_config_(server_config),
       port_num_(port_num),
-      kv_client_(config_),
-      txn_client_(server_config_) {}
+      kv_client_(client_config_),
+      txn_client_(client_config_) {}
 
 void CrowService::run() {
   crow::SimpleApp app;
@@ -265,23 +265,22 @@ void CrowService::run() {
   // For metadata table on the Explorer
   CROW_ROUTE(app, "/populatetable")
   ([this](const crow::request& req, response& res) {
-    std::vector<resdb::ReplicaInfo> replicas = config_.GetReplicaInfos();
-    size_t replica_num = replicas[0].id() - 1;
-    uint32_t client_num = config_.GetReplicaNum();
-    uint32_t worker_num = config_.GetWorkerNum();
-    uint32_t client_batch_num = config_.ClientBatchNum();
-    uint32_t max_process_txn = config_.GetMaxProcessTxn();
-    uint32_t client_batch_wait_time = config_.ClientBatchWaitTimeMS();
-    uint32_t input_worker_num = config_.GetInputWorkerNum();
-    uint32_t output_worker_num = config_.GetOutputWorkerNum();
-    int client_timeout_ms = config_.GetClientTimeoutMs();
-    int min_data_receive_num = config_.GetMinDataReceiveNum();
-    size_t max_malicious_replica_num = config_.GetMaxMaliciousReplicaNum();
-    int checkpoint_water_mark = config_.GetCheckPointWaterMark();
+//    std::vector<resdb::ReplicaInfo> replicas = server_config_.GetReplicaInfos();
+//    size_t num_replicas = replicas.size();
+    uint32_t replica_num = server_config_.GetReplicaNum();
+    uint32_t worker_num = server_config_.GetWorkerNum();
+    uint32_t client_batch_num = server_config_.ClientBatchNum();
+    uint32_t max_process_txn = server_config_.GetMaxProcessTxn();
+    uint32_t client_batch_wait_time = server_config_.ClientBatchWaitTimeMS();
+    uint32_t input_worker_num = server_config_.GetInputWorkerNum();
+    uint32_t output_worker_num = server_config_.GetOutputWorkerNum();
+    int client_timeout_ms = server_config_.GetClientTimeoutMs();
+    int min_data_receive_num = server_config_.GetMinDataReceiveNum();
+    size_t max_malicious_replica_num = server_config_.GetMaxMaliciousReplicaNum();
+    int checkpoint_water_mark = server_config_.GetCheckPointWaterMark();
 
     std::string values = "";
-    values.append("[{   \"replicaNum\": " + std::to_string(replica_num) 
-                      + ", \"clientNum\": " + std::to_string(client_num)
+    values.append("[{ \"replicaNum\": " + std::to_string(replica_num)
                       + ", \"workerNum\" : " + std::to_string(worker_num) 
                       + ", \"clientBatchNum\" : " + std::to_string(client_batch_num)
                       + ", \"maxProcessTxn\" : " + std::to_string(max_process_txn) 

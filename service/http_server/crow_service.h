@@ -47,7 +47,7 @@ class CrowService {
   std::string GetAllBlocks(int batch_size);
   std::string ParseKVRequest(const KVRequest &kv_request);
   std::string ParseCreateTime(uint64_t createtime);
-  resdb::ResDBConfig config_;
+  resdb::ResDBConfig client_config_;
   resdb::ResDBConfig server_config_;
   uint16_t port_num_;
   ResDBKVClient kv_client_;
