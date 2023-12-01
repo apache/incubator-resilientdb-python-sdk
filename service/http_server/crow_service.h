@@ -27,6 +27,8 @@
 
 #include <crow.h>
 
+#include <atomic>
+
 #include "service/kv_service/resdb_kv_client.h"
 #include "common/proto/signature_info.pb.h"
 #include "platform/config/resdb_config_utils.h"
@@ -44,7 +46,7 @@ class CrowService {
   void run();
 
  private:
-  std::string GetAllBlocks(int batch_size);
+  std::string GetAllBlocks(int batch_size, bool increment_txn_count = false);
   std::string ParseKVRequest(const KVRequest &kv_request);
   std::string ParseCreateTime(uint64_t createtime);
   resdb::ResDBConfig client_config_;
@@ -53,6 +55,8 @@ class CrowService {
   ResDBKVClient kv_client_;
   resdb::ResDBTxnAccessor txn_client_;
   std::unordered_set<crow::websocket::connection*> users;
+  std::atomic_uint16_t num_transactions_ = 0;
+  std::atomic_uint64_t first_commit_time_ = 0;
 };
 
 }  // namespace resdb
