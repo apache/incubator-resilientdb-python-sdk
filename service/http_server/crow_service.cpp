@@ -148,9 +148,17 @@ void CrowService::run() {
   .methods("POST"_method)([this](const request& req) {
     std::string body = req.body;
     LOG(INFO) << "body: " << body;
-    resdb::SDKTransaction transaction = resdb::ParseSDKTransaction(body);
-    const std::string id = transaction.id;
-    const std::string value = transaction.value;
+
+    // Parse transaction JSON
+    rapidjson::Document doc;
+    doc.Parse(body.c_str());
+    if (!doc.IsObject() || !doc.HasMember("id")) {
+      response res(400, "Invalid transaction format"); // Bad Request
+      res.set_header("Content-Type", "text/plain");
+      return res;
+    }
+    const std::string id = doc["id"].GetString();
+    const std::string value = body;
 
     // Set key-value pair in kv server
     int retval = kv_client_.Set(id, value);
@@ -344,7 +352,7 @@ void CrowService::run() {
 		                  + ", \"transactionNum\" : " + std::to_string(num_transactions_)
                       + ", \"blockNum\" : " + std::to_string(*block_num_resp)
                       + ", \"chainAge\" : " + std::to_string(chain_age)
-                      + "}]");  
+                      + "}]");
     LOG(INFO) <<   std::string(values.c_str());
     res.set_header("Content-Type", "application/json");
     res.end(std::string(values.c_str()));
@@ -385,8 +393,6 @@ std::string CrowService::GetAllBlocks(int batch_size,
       KVRequest kv_request;
       cur_size++;
       if (request.ParseFromString(txn.second)) {
-        LOG(INFO) << request.DebugString();
-
         if (!first_batch_element) cur_batch_str.append(",");
         first_batch_element = false;
 
