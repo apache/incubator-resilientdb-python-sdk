@@ -323,6 +323,12 @@ void CrowService::run() {
     uint64_t chain_age = first_commit_time_ == 0 ? 
                           0 : epoch_time - first_commit_time_;
 
+    auto block_num_resp = txn_client_.GetBlockNumbers();
+    if (!block_num_resp.ok()) {
+      LOG(ERROR) << "get number fail";
+      exit(1);
+    }
+
     std::string values = "";
     values.append("[{ \"replicaNum\": " + std::to_string(replica_num)
                       + ", \"workerNum\" : " + std::to_string(worker_num) 
@@ -336,7 +342,8 @@ void CrowService::run() {
                       + ", \"maxMaliciousReplicaNum\" : " + std::to_string(max_malicious_replica_num)
                       + ", \"checkpointWaterMark\" : " + std::to_string(checkpoint_water_mark)
 		                  + ", \"transactionNum\" : " + std::to_string(num_transactions_)
-                      + ", \"chainAge\": " + std::to_string(chain_age)
+                      + ", \"blockNum\" : " + std::to_string(*block_num_resp)
+                      + ", \"chainAge\" : " + std::to_string(chain_age)
                       + "}]");  
     LOG(INFO) <<   std::string(values.c_str());
     res.set_header("Content-Type", "application/json");
