@@ -39,6 +39,7 @@ cc_binary(
     deps = [
         ":c_validator",
         ":sdk_transaction_manager",
+        "@boringssl//:crypto",
     ],
 )
 

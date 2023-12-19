@@ -98,6 +98,12 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
 
+git_repository(
+    name = "boringssl",
+    commit = "02b83395323a154d5ce5ae8d8833acbcbf029f0c",
+    remote = "https://boringssl.googlesource.com/boringssl",
+)
+
 http_archive(
     name = "com_google_absl",
     strip_prefix = "abseil-cpp-20211102.0",
