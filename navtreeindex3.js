@@ -35,8 +35,8 @@ var NAVTREEINDEX3 =
 "functions_d.html":[10,3,0,4],
 "functions_e.html":[10,3,0,5],
 "functions_f.html":[10,3,0,6],
-"functions_func.html":[10,3,1],
 "functions_func.html":[10,3,1,0],
+"functions_func.html":[10,3,1],
 "functions_func_a.html":[10,3,1,1],
 "functions_func_b.html":[10,3,1,2],
 "functions_func_c.html":[10,3,1,3],
@@ -148,7 +148,6 @@ var NAVTREEINDEX3 =
 "namespacemembers_vars.html":[9,1,2],
 "namespaceprint__sample.html":[9,0,1],
 "namespaceresdb.html":[9,0,2],
-"namespaceresdb.html#a3bbb1cda5665b2d724cfe7acb3e71df2":[9,0,2,1],
 "namespaceresdb__driver.html":[9,0,3],
 "namespaceresdb__driver_1_1connection.html":[9,0,3,0],
 "namespaceresdb__driver_1_1connection.html#a12c40bac41268d36628cdd8c43da10dd":[9,0,3,0,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "namespacetest__driver.html#a579e43b423b454623383471aeb85cd87":[9,0,6,0],
 "namespacetest__driver.html#a711f48e6155ccdfc5ccafa3250569146":[9,0,6,5],
 "namespacetest__driver.html#a71ae2df7a15dbbca4489601810666b56":[9,0,6,11],
-"namespacetest__driver.html#a7f3eac6ded011ff248eecd52a180c372":[9,0,6,12]
+"namespacetest__driver.html#a7f3eac6ded011ff248eecd52a180c372":[9,0,6,12],
+"namespacetest__driver.html#a89a7f6028a19c3dc081cc5f16eb53891":[9,0,6,2]
 };

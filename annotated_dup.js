@@ -1,8 +1,5 @@
 var annotated_dup =
 [
-    [ "resdb", "namespaceresdb.html", [
-      [ "SDKTransaction", "structresdb_1_1SDKTransaction.html", "structresdb_1_1SDKTransaction" ]
-    ] ],
     [ "resdb_driver", "namespaceresdb__driver.html", [
       [ "connection", "namespaceresdb__driver_1_1connection.html", [
         [ "Connection", "classresdb__driver_1_1connection_1_1Connection.html", "classresdb__driver_1_1connection_1_1Connection" ]

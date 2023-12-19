@@ -102,7 +102,6 @@ var hierarchy =
     [ "Pool", "classresdb__driver_1_1pool_1_1Pool.html", null ],
     [ "PYVerificator", "classsdk_1_1PYVerificator.html", null ],
     [ "Resdb", "classresdb__driver_1_1driver_1_1Resdb.html", null ],
-    [ "SDKTransaction", "structresdb_1_1SDKTransaction.html", null ],
     [ "ToDictWrapper", "classresdb__validator_1_1memoize_1_1ToDictWrapper.html", null ],
     [ "Transaction", "classresdb__driver_1_1validate_1_1Transaction.html", null ],
     [ "TransactionConstructor", null, [

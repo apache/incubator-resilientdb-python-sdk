@@ -5,7 +5,7 @@ var namespaces_dup =
       [ "url", "namespaceendpoint__test.html#a20a9104258763c0bc647977724fb8883", null ]
     ] ],
     [ "print_sample", "namespaceprint__sample.html", null ],
-    [ "resdb", "namespaceresdb.html", "namespaceresdb" ],
+    [ "resdb", "namespaceresdb.html", null ],
     [ "resdb_driver", "namespaceresdb__driver.html", "namespaceresdb__driver" ],
     [ "resdb_validator", "namespaceresdb__validator.html", "namespaceresdb__validator" ],
     [ "sdk", "namespacesdk.html", "namespacesdk" ],
