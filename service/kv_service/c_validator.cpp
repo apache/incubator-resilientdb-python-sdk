@@ -12,44 +12,64 @@
 #include <string>
 #include <iostream>
 
+void printHex(std::string& str) {
+  std::byte bytes[str.length()];
+  std::memcpy(bytes, str.data(), str.length());
+  // std::cout << "decoded str length: " << decoded_str.length() << " size: " << decoded_str.size() << std::endl;
+
+  for (auto &b: bytes) {
+    std::cout << std::to_integer<int>(b) << ' ';
+  }
+  std::cout << std::endl;
+}
+
 std::string CValidator::CCFulfill(std::string& fulfillment) {
   // std::cout << base64_add_padding(fulfillment);
 
   std::string decoded_str = base64_decode(base64_add_padding(fulfillment), false);
   std::cout << decoded_str << std::endl;
  
-  std::byte bytes[decoded_str.length()];
-  std::memcpy(bytes, decoded_str.data(), decoded_str.length());
-  std::cout << "decoded str length: " << decoded_str.length() << " size: " << decoded_str.size() << std::endl;
-
-  for (auto &b: bytes) {
-    std::cout << std::to_integer<int>(b) << ' ';
-  }
-  std::cout << std::endl;
+  printHex(decoded_str);
 
   return decoded_str;
 }
 
-void CValidator::DERDecode(std::string& uri_bytes) {
-  // CryptoPP::byte* byteStr = new CryptoPP::byte[uri_bytes.length()];
-  // std::memcpy(byteStr, uri_bytes.data(), uri_bytes.length());
-  
-  // CryptoPP::ByteQueue queue;
-  // queue.Put(byteStr, uri_bytes.length());
-  // size_t len = uri_bytes.length();
-  // CryptoPP::ASNTag tag = CryptoPP::OCTET_STRING;
+/* 
+ * TODO: Use actual BER/DER decoding functions from a cryptographic library
+ *
+ * Example string: pGSAIB4t58gi0CHneoXjs358ykJTwUWGZkWkBo7DLZV64c2KgUDoeWkz2-KrjDXh5ulHa2t-WiF5TT4RnBhqrcXJulJ135i_ipXmtJkLUrsGy884eRNb2_LE8RU2CMtRe4J-3IYM
+ *
+ * Fulfillment ::= CHOICE {
+ *   ed25519Sha256    [0] Ed25519Sha512Fulfillment
+ * }
+ *
+ * Ed25519Sha512Fulfillment ::= SEQUENCE {
+ *   publicKey            OCTET STRING (SIZE(32)),
+ *   signature            OCTET STRING (SIZE(64))
+ * }
+ */
+void CValidator::DERDecode(std::string& uri_bytes_str) {
+  std::byte bytes[uri_bytes_str.length()];
+  std::memcpy(bytes, uri_bytes_str.data(), uri_bytes_str.length());
 
-  // std::string str;
-  // CryptoPP::ByteQueue decodedQueue;
-  // // CryptoPP::SecByteBlock sbb;
-  
-  // CryptoPP::BERDecodeOctetString(queue, decodedQueue);
+  assert(std::to_integer<int>(bytes[0]) == 164);
+  assert(std::to_integer<int>(bytes[1]) == 100);
+  assert(std::to_integer<int>(bytes[2]) == 128);
 
-  // for (int i = 0; i < queue.CurrentSize(); i++)
-  //   std::cout << queue[i];
-  // std::cout << std::endl;
+  // public key length is 32
+  assert(std::to_integer<int>(bytes[3]) == 32);
+  std::string public_key = uri_bytes_str.substr(4, 32);
+  // std::cout << public_key << std::endl;
+  printHex(public_key);
 
-  // https://www.cryptopp.com/docs/ref/class_o_i_d.html
+  assert(std::to_integer<int>(bytes[36]) == 129);
+
+  // signature length is 64
+  assert(std::to_integer<int>(bytes[37]) == 64);
+  std::string signature = uri_bytes_str.substr(38, 64);
+  // std::cout << signature << std::endl;
+
+  printHex(signature);
 }
 
 void CValidator::ConstructURI() {

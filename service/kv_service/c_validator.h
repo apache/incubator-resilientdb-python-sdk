@@ -11,7 +11,7 @@
 class CValidator {
  public:
   std::string CCFulfill(std::string& fulfillment);
-  void DERDecode(std::string& uri_bytes);
+  void DERDecode(std::string& uri_bytes_str);
   void ConstructURI();
   void VerifyMessage();
   std::string CreateMessage(std::string& tx);
