@@ -9,13 +9,11 @@
 
 #include <nlohmann/json.hpp>
 
-#include <string>
 #include <iostream>
 
-void printHex(std::string& str) {
+void CValidator::printHex(std::string& str) {
   std::byte bytes[str.length()];
   std::memcpy(bytes, str.data(), str.length());
-  // std::cout << "decoded str length: " << decoded_str.length() << " size: " << decoded_str.size() << std::endl;
 
   for (auto &b: bytes) {
     std::cout << std::to_integer<int>(b) << ' ';
@@ -24,8 +22,6 @@ void printHex(std::string& str) {
 }
 
 std::string CValidator::CCFulfill(std::string& fulfillment) {
-  // std::cout << base64_add_padding(fulfillment);
-
   std::string decoded_str = base64_decode(base64_add_padding(fulfillment), false);
   std::cout << decoded_str << std::endl;
  
@@ -48,28 +44,34 @@ std::string CValidator::CCFulfill(std::string& fulfillment) {
  *   signature            OCTET STRING (SIZE(64))
  * }
  */
-void CValidator::DERDecode(std::string& uri_bytes_str) {
+std::unique_ptr<std::vector<std::string>> CValidator::DERDecode(std::string& uri_bytes_str) {
+  // 4 + 32 + 2 + 64
+  if (uri_bytes_str.length() != 102) return nullptr;
+
   std::byte bytes[uri_bytes_str.length()];
   std::memcpy(bytes, uri_bytes_str.data(), uri_bytes_str.length());
 
-  assert(std::to_integer<int>(bytes[0]) == 164);
-  assert(std::to_integer<int>(bytes[1]) == 100);
-  assert(std::to_integer<int>(bytes[2]) == 128);
+  if (std::to_integer<int>(bytes[0]) != 164 ||
+      std::to_integer<int>(bytes[1]) != 100 ||
+      std::to_integer<int>(bytes[2]) != 128) {
+    return nullptr;
+  }
 
-  // public key length is 32
-  assert(std::to_integer<int>(bytes[3]) == 32);
+  if (std::to_integer<int>(bytes[3]) != PUBLIC_KEY_LENGTH) return nullptr;
   std::string public_key = uri_bytes_str.substr(4, 32);
-  // std::cout << public_key << std::endl;
   printHex(public_key);
 
-  assert(std::to_integer<int>(bytes[36]) == 129);
+  if (std::to_integer<int>(bytes[36]) != 129) return nullptr;
 
-  // signature length is 64
-  assert(std::to_integer<int>(bytes[37]) == 64);
+  if (std::to_integer<int>(bytes[37]) != SIGNATURE_LENGTH) return nullptr;
   std::string signature = uri_bytes_str.substr(38, 64);
-  // std::cout << signature << std::endl;
 
   printHex(signature);
+
+  std::unique_ptr<std::vector<std::string>> ptr(new std::vector<std::string>);
+  ptr->push_back(public_key);
+  ptr->push_back(signature);
+  return ptr;
 }
 
 void CValidator::ConstructURI() {
