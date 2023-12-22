@@ -31,7 +31,8 @@ std::string CValidator::CCFulfill(std::string& fulfillment) {
 }
 
 /* 
- * TODO: Use actual BER/DER decoding functions from a cryptographic library
+ * TODO: Use actual BER/DER decoding functions from a cryptographic library and
+ * replace hardcoded numbers with names of ASN1 bits
  *
  * Example string: pGSAIB4t58gi0CHneoXjs358ykJTwUWGZkWkBo7DLZV64c2KgUDoeWkz2-KrjDXh5ulHa2t-WiF5TT4RnBhqrcXJulJ135i_ipXmtJkLUrsGy884eRNb2_LE8RU2CMtRe4J-3IYM
  *
@@ -74,12 +75,29 @@ std::unique_ptr<std::vector<std::string>> CValidator::DERDecode(std::string& uri
   return ptr;
 }
 
-void CValidator::ConstructURI() {
-  ;
+/*
+ * TODO: Follow the steps according to
+ * https://perfect-sunstone-a3b.notion.site/NexRes-C-validation-369f5ad4ef074a1684dc227702a5c866
+ */
+std::string CValidator::ConstructURI(std::string &public_key, std::string &signature) {
+  // TODO: DER encode the fingerprint content object 
+
+  // TODO: SHA256 hash the fingerprint content
+
+  // TODO: Generate the fingerprint from the hash
+  std::string fingerprint = "";
+
+  return "ni:///sha-256;" + fingerprint + "?fpt=" + "ed25519-sha-256" + 
+  "&cost=" + std::to_string(ED25519_CRYPTOGRAPHY_COST);
 }
 
-void CValidator::VerifyMessage() {
-  ;
+/*
+ * TODO: Follow the steps according to
+ * https://perfect-sunstone-a3b.notion.site/NexRes-C-validation-369f5ad4ef074a1684dc227702a5c866
+ */
+bool CValidator::VerifyMessage(std::string &public_key, std::string &signature,
+                              std::string &message) {
+  return true;
 }
 
 std::string CValidator::base64_add_padding(std::string data) {
@@ -94,6 +112,14 @@ std::string CValidator::base64_add_padding(std::string data) {
   }
 
   return encoded_data;
+}
+
+std::string CValidator::base64_remove_padding(std::string data) {
+  int i = data.length() - 1;
+  while (i >= 0 && data[i] == '=') {
+    i--;
+  }
+  return data.substr(0, i+1);
 }
 
 std::string CValidator::CreateMessage(std::string& tx) {

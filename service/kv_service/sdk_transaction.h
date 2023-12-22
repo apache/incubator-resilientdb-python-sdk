@@ -1,3 +1,9 @@
+/*
+ * WORK IN PROGRESS
+ * 
+ * To be used with libcryptoconditions for SDK transaction validation
+ */
+
 #pragma once
 
 #include <string>
