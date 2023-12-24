@@ -48,7 +48,9 @@ namespace sdk {
 CrowService::CrowService(ResDBConfig client_config, ResDBConfig server_config,
                          uint16_t port_num)
     : client_config_(client_config), server_config_(server_config), port_num_(port_num),
-      kv_client_(client_config_), txn_client_(server_config_) {}
+      kv_client_(client_config_), txn_client_(server_config_) {
+  GetAllBlocks(100, true, false);
+}
 
 void CrowService::run() {
   crow::SimpleApp app;
@@ -181,7 +183,7 @@ void CrowService::run() {
   // Retrieve blocks in batches of size of the int parameter
   CROW_ROUTE(app, "/v1/blocks/<int>")
   ([this](const crow::request &req, response &res, int batch_size) {
-    auto values = GetAllBlocks(batch_size, true);
+    auto values = GetAllBlocks(batch_size, false, true);
     if (values == "") {
       res.code = 500;
       res.set_header("Content-Type", "text/plain");
@@ -343,7 +345,7 @@ void CrowService::run() {
                       + ", \"minDataReceiveNum\" : " + std::to_string(min_data_receive_num)
                       + ", \"maxMaliciousReplicaNum\" : " + std::to_string(max_malicious_replica_num)
                       + ", \"checkpointWaterMark\" : " + std::to_string(checkpoint_water_mark)
-		                  + ", \"transactionNum\" : " + std::to_string(num_transactions_)
+		      + ", \"transactionNum\" : " + std::to_string(num_transactions_)
                       + ", \"blockNum\" : " + std::to_string(*block_num_resp)
                       + ", \"chainAge\" : " + std::to_string(chain_age)
                       + "}]");
