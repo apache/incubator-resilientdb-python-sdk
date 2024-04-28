@@ -43,4 +43,4 @@ Examples of using the driver can be seen in [test_driver](/test_driver.py)
 Replace the `db_root_url` with the address of the ResilientDB HTTP endpoints e.g. `127.0.0.1:18000`.
 
 ## TODO
-- Covert the SDK into a package (for pip install)
+- Convert the SDK into a package (for pip install)
