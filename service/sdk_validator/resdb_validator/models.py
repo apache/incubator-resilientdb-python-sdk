@@ -5,27 +5,29 @@
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
-# under the License.    
+# under the License.
 
 
-from service.sdk_validator.resdb_validator.exceptions import (InvalidSignature,
-                                          DuplicateTransaction)
+from service.sdk_validator.resdb_validator.exceptions import (
+    InvalidSignature,
+    DuplicateTransaction,
+)
 from service.sdk_validator.resdb_validator.transaction import Transaction
-from service.sdk_validator.resdb_validator.utils import (validate_txn_obj, validate_key)
+from service.sdk_validator.resdb_validator.utils import validate_txn_obj, validate_key
 
 
 class Transaction(Transaction):
-    ASSET = 'asset'
-    METADATA = 'metadata'
-    DATA = 'data'
+    ASSET = "asset"
+    METADATA = "metadata"
+    DATA = "data"
 
     def validate(self, resdb=None, current_transactions=[]):
         """Validate transaction spend
@@ -42,12 +44,13 @@ class Transaction(Transaction):
 
         if self.operation == Transaction.CREATE:
             duplicates = any(txn for txn in current_transactions if txn.id == self.id)
-            if resdb and  resdb.is_committed(self.id) or duplicates:
-                raise DuplicateTransaction('transaction `{}` already exists'
-                                           .format(self.id))
+            if resdb and resdb.is_committed(self.id) or duplicates:
+                raise DuplicateTransaction(
+                    "transaction `{}` already exists".format(self.id)
+                )
 
             if not self.inputs_valid(input_conditions):
-                raise InvalidSignature('Transaction signature is invalid.')
+                raise InvalidSignature("Transaction signature is invalid.")
 
         elif self.operation == Transaction.TRANSFER:
             self.validate_transfer_inputs(resdb, current_transactions)
@@ -56,7 +59,7 @@ class Transaction(Transaction):
 
     @classmethod
     def from_dict(cls, tx_body):
-        #TODO schema validation
+        # TODO schema validation
         return super().from_dict(tx_body, True)
 
     # @classmethod
@@ -81,7 +84,7 @@ class FastTransaction:
 
     @property
     def id(self):
-        return self.data['id']
+        return self.data["id"]
 
     def to_dict(self):
         return self.data

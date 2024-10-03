@@ -5,15 +5,15 @@
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
-# under the License.    
+# under the License.
 
 
 """
@@ -76,19 +76,19 @@ def prepare_transaction(
 
     @param operation (str): The operation to perform. Must be ``'CREATE'``
             or ``'TRANSFER'``. Case insensitive. Defaults to ``'CREATE'``.
-    @param signers (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): 
+    @param signers (:obj:`list` | :obj:`tuple` | :obj:`str`, optional):
             One or more public keys representing the issuer(s) of
             the asset being created. Only applies for ``'CREATE'``
             operations. Defaults to ``None``.
-    @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): 
+    @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional):
             One or more public keys representing the new recipients(s)
             of the asset being created or transferred.
             Defaults to ``None``.
-    @param asset (:obj:`dict`, optional): 
-            The asset to be created orctransferred. 
+    @param asset (:obj:`dict`, optional):
+            The asset to be created orctransferred.
             MUST be supplied for ``'TRANSFER'`` operations.
             Defaults to ``None``.
-    @param metadata (:obj:`dict`, optional): 
+    @param metadata (:obj:`dict`, optional):
             Metadata associated with the
             transaction. Defaults to ``None``.
     @param inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`, optional):
@@ -151,11 +151,11 @@ def prepare_create_transaction(*, signers, recipients=None, asset=None, metadata
     """! Prepares a ``"CREATE"`` transaction payload, ready to be
     fulfilled.
 
-    @param signers (:obj:`list` | :obj:`tuple` | :obj:`str`): 
-            One or more public keys representing 
+    @param signers (:obj:`list` | :obj:`tuple` | :obj:`str`):
+            One or more public keys representing
             the issuer(s) of the asset being created.
-    @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): 
-            One or more public keys representing 
+    @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional):
+            One or more public keys representing
             the new recipients(s) of the asset being created. Defaults to ``None``.
     @param asset (:obj:`dict`, optional): The asset to be created. Defaults to ``None``.
     @param metadata (:obj:`dict`, optional): Metadata associated with the transaction. Defaults to ``None``.
@@ -208,12 +208,12 @@ def prepare_transfer_transaction(*, inputs, recipients, asset, metadata=None):
     """! Prepares a ``"TRANSFER"`` transaction payload, ready to be
     fulfilled.
 
-    @param inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`): 
+    @param inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`):
                 One or more inputs holding the condition(s) that this transaction
                 intends to fulfill. Each input is expected to be a
                 :obj:`dict`.
-    @param recipients (:obj:`str` | :obj:`list` | :obj:`tuple`): 
-            One or more public keys representing the 
+    @param recipients (:obj:`str` | :obj:`list` | :obj:`tuple`):
+            One or more public keys representing the
             new recipients(s) of the
             asset being transferred.
     @param asset (:obj:`dict`): A single-key dictionary holding the ``id``
@@ -327,7 +327,7 @@ def fulfill_transaction(transaction, *, private_keys) -> dict:
     """! Fulfills the given transaction.
 
     @param transaction The transaction to be fulfilled.
-    @param private_keys One or more private keys to be 
+    @param private_keys One or more private keys to be
             used for fulfilling the transaction.
 
     @return The fulfilled transaction payload, ready to be sent to a

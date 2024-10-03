@@ -5,15 +5,15 @@
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
-# under the License.    
+# under the License.
 
 
 from crypt import methods
@@ -71,8 +71,7 @@ class Resdb:
 
     @property
     def nodes(self):
-        """! :obj:`tuple` of :obj:`str`: URLs of connected nodes.
-        """
+        """! :obj:`tuple` of :obj:`str`: URLs of connected nodes."""
         return self._nodes
 
     @property
@@ -111,7 +110,7 @@ class Resdb:
     def metadata(self):
         """! :class:`~resdb_driver.driver.MetadataEndpoint`:
         Exposes functionalities of the ``'/metadata'`` endpoint.
-        TODO: check 
+        TODO: check
         """
         return self._metadata
 
@@ -142,7 +141,7 @@ class Resdb:
         """! Retrieves information provided by the API root endpoint
         ``'/api/v1'``.
 
-        TODO: implement the endpoint in the node 
+        TODO: implement the endpoint in the node
 
         @param headers (dict): Optional headers to pass to the request.
 
@@ -222,7 +221,7 @@ class TransactionsEndpoint(NamespacedDriver):
                 operations. Defaults to ``None``.
         @param recipients (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): One or more public keys representing the new recipients(s)
                 of the asset being created or transferred. Defaults to ``None``.
-        @param asset (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): The asset to be created or transferred. MUST be supplied 
+        @param asset (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): The asset to be created or transferred. MUST be supplied
                 for ``'TRANSFER'`` operations. Defaults to ``None``.
         @param metadata (:obj:`list` | :obj:`tuple` | :obj:`str`, optional): Metadata associated with the transaction. Defaults to ``None``.
         @param inputs (:obj:`dict` | :obj:`list` | :obj:`tuple`, optional): One or more inputs holding the condition(s) that this
@@ -285,10 +284,10 @@ class TransactionsEndpoint(NamespacedDriver):
         """! Fulfills the given transaction.
 
         @param transaction (dict): The transaction to be fulfilled.
-        @param private_keys (:obj:`str` | :obj:`list` | :obj:`tuple`): One or more private keys to be 
+        @param private_keys (:obj:`str` | :obj:`list` | :obj:`tuple`): One or more private keys to be
                 used for fulfilling the transaction.
 
-        @return The fulfilled transaction payload, ready to 
+        @return The fulfilled transaction payload, ready to
                 be sent to a Resdb federation.
 
         @exception :exc:`~.exceptions.MissingPrivateKeyError`: If a private
@@ -489,7 +488,7 @@ class BlocksEndpoint(NamespacedDriver):
 class AssetsEndpoint(NamespacedDriver):
     """! Exposes functionality of the ``'/assets'`` endpoint.
 
-        path (str): The path of the endpoint.
+    path (str): The path of the endpoint.
     """
 
     PATH = "/assets/"

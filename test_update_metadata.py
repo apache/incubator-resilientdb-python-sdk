@@ -39,7 +39,7 @@ prepared_token_tx = db.transactions.prepare(
     asset=game_boy_token,
 )
 
-prepared_token_tx["metadata"] = {"price": "100"} #metadata has to be a dict 
+prepared_token_tx["metadata"] = {"price": "100"}  # metadata has to be a dict
 #%%
 # fulfill the tnx
 fulfilled_token_tx = db.transactions.fulfill(
@@ -74,14 +74,17 @@ fulfilled_transfer_tx = db.transactions.fulfill(
 )
 
 # stage 3
-# Change the metadata 
+# Change the metadata
 #%%
 transfer_asset = {"id": fulfilled_token_tx["id"]}
 output_index = 0
 output = fulfilled_transfer_tx["outputs"][output_index]
 transfer_input = {
     "fulfillment": output["condition"]["details"],
-    "fulfills": {"output_index": output_index, "transaction_id": fulfilled_transfer_tx["id"]},
+    "fulfills": {
+        "output_index": output_index,
+        "transaction_id": fulfilled_transfer_tx["id"],
+    },
     "owners_before": output["public_keys"],
 }
 
@@ -105,7 +108,10 @@ output_index = 0
 output = fulfilled_transfer_tx["outputs"][output_index]
 transfer_input = {
     "fulfillment": output["condition"]["details"],
-    "fulfills": {"output_index": output_index, "transaction_id": fulfilled_transfer_tx["id"]},
+    "fulfills": {
+        "output_index": output_index,
+        "transaction_id": fulfilled_transfer_tx["id"],
+    },
     "owners_before": output["public_keys"],
 }
 
@@ -122,5 +128,6 @@ fulfilled_transfer_tx = db.transactions.fulfill(
 
 
 #%%
-sent_transfer_tx = db.transactions.send_commit(fulfilled_transfer_tx) # use this to commit whenever required
-
+sent_transfer_tx = db.transactions.send_commit(
+    fulfilled_transfer_tx
+)  # use this to commit whenever required

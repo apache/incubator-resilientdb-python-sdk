@@ -5,15 +5,15 @@
 # to you under the Apache License, Version 2.0 (the
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
-# 
+#
 #   http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
-# under the License.    
+# under the License.
 
 
 """!
@@ -190,7 +190,7 @@ def _fulfillment_to_details(fulfillment):
 
 def _fulfillment_from_details(data, _depth=0):
     """! Load a fulfillment for a signing spec dictionary
-        @param data tx.output[].condition.details dictionary
+    @param data tx.output[].condition.details dictionary
     """
     if _depth == 100:
         raise ThresholdTooDeep()
@@ -247,9 +247,9 @@ class TransactionLink(object):
     def from_dict(cls, link):
         """! Transforms a Python dictionary to a TransactionLink object.
 
-            @param link (dict): The link to be transformed.
+        @param link (dict): The link to be transformed.
 
-            @return :class:`~resdb.transaction.TransactionLink`
+        @return :class:`~resdb.transaction.TransactionLink`
         """
         try:
             return cls(link["transaction_id"], link["output_index"])
@@ -258,7 +258,7 @@ class TransactionLink(object):
 
     def to_dict(self):
         """! Transforms the object to a Python dictionary.
-            @return The link as an alternative serialization format.
+        @return The link as an alternative serialization format.
         """
         if self.txid is None and self.output is None:
             return None
@@ -369,20 +369,17 @@ class Output(object):
         if not isinstance(public_keys, list):
             raise TypeError("`public_keys` must be an instance of list")
         if len(public_keys) == 0:
-            raise ValueError(
-                "`public_keys` needs to contain at least one" "owner")
+            raise ValueError("`public_keys` needs to contain at least one" "owner")
         elif len(public_keys) == 1 and not isinstance(public_keys[0], list):
             if isinstance(public_keys[0], Fulfillment):
                 ffill = public_keys[0]
             else:
-                ffill = Ed25519Sha256(
-                    public_key=base58.b58decode(public_keys[0]))
+                ffill = Ed25519Sha256(public_key=base58.b58decode(public_keys[0]))
             return cls(ffill, public_keys, amount=amount)
         else:
             # Threshold conditions not supported by resdb yet
             initial_cond = ThresholdSha256(threshold=threshold)
-            threshold_cond = reduce(
-                cls._gen_condition, public_keys, initial_cond)
+            threshold_cond = reduce(cls._gen_condition, public_keys, initial_cond)
             return cls(threshold_cond, public_keys, amount=amount)
 
     @classmethod
@@ -422,8 +419,7 @@ class Output(object):
             if isinstance(new_public_keys, Fulfillment):
                 ffill = new_public_keys
             else:
-                ffill = Ed25519Sha256(
-                    public_key=base58.b58decode(new_public_keys))
+                ffill = Ed25519Sha256(public_key=base58.b58decode(new_public_keys))
         initial.add_subfulfillment(ffill)
         return initial
 
@@ -440,8 +436,7 @@ class Output(object):
         @return :class:`~resdb.transaction.Output`
         """
         try:
-            fulfillment = _fulfillment_from_details(
-                data["condition"]["details"])
+            fulfillment = _fulfillment_from_details(data["condition"]["details"])
         except KeyError:
             # NOTE: Hashlock condition case
             fulfillment = data["condition"]["uri"]
@@ -503,8 +498,7 @@ class Transaction(object):
         """
         if operation not in Transaction.ALLOWED_OPERATIONS:
             allowed_ops = ", ".join(self.__class__.ALLOWED_OPERATIONS)
-            raise ValueError(
-                "`operation` must be one of {}".format(allowed_ops))
+            raise ValueError("`operation` must be one of {}".format(allowed_ops))
 
         # Asset payloads for 'CREATE' operations must be None or
         # dicts holding a `data` property. Asset payloads for 'TRANSFER'
@@ -845,16 +839,14 @@ class Transaction(object):
         message = sha3_256(message.encode())
         if input_.fulfills:
             message.update(
-                "{}{}".format(input_.fulfills.txid,
-                              input_.fulfills.output).encode()
+                "{}{}".format(input_.fulfills.txid, input_.fulfills.output).encode()
             )
 
         try:
             # cryptoconditions makes no assumptions of the encoding of the
             # message to sign or verify. It only accepts bytestrings
             input_.fulfillment.sign(
-                message.digest(), base58.b58decode(
-                    key_pairs[public_key].encode())
+                message.digest(), base58.b58decode(key_pairs[public_key].encode())
             )
         except KeyError:
             raise KeypairMismatchException(
@@ -875,8 +867,7 @@ class Transaction(object):
         message = sha3_256(message.encode())
         if input_.fulfills:
             message.update(
-                "{}{}".format(input_.fulfills.txid,
-                              input_.fulfills.output).encode()
+                "{}{}".format(input_.fulfills.txid, input_.fulfills.output).encode()
             )
 
         for owner_before in set(input_.owners_before):
@@ -890,8 +881,7 @@ class Transaction(object):
             # TODO FOR CC: `get_subcondition` is singular. One would not
             #              expect to get a list back.
             ccffill = input_.fulfillment
-            subffills = ccffill.get_subcondition_from_vk(
-                base58.b58decode(owner_before))
+            subffills = ccffill.get_subcondition_from_vk(base58.b58decode(owner_before))
             if not subffills:
                 raise KeypairMismatchException(
                     "Public key {} cannot be found "
@@ -908,8 +898,7 @@ class Transaction(object):
             # cryptoconditions makes no assumptions of the encoding of the
             # message to sign or verify. It only accepts bytestrings
             for subffill in subffills:
-                subffill.sign(message.digest(),
-                              base58.b58decode(private_key.encode()))
+                subffill.sign(message.digest(), base58.b58decode(private_key.encode()))
         return input_
 
     def inputs_valid(self, outputs=None):
@@ -937,8 +926,7 @@ class Transaction(object):
             )
         else:
             allowed_ops = ", ".join(self.__class__.ALLOWED_OPERATIONS)
-            raise TypeError(
-                "`operation` must be one of {}".format(allowed_ops))
+            raise TypeError("`operation` must be one of {}".format(allowed_ops))
 
     def _inputs_valid(self, output_condition_uris):
         """!Validates an Input against a given set of Outputs.
@@ -999,8 +987,7 @@ class Transaction(object):
         message = sha3_256(message.encode())
         if input_.fulfills:
             message.update(
-                "{}{}".format(input_.fulfills.txid,
-                              input_.fulfills.output).encode()
+                "{}{}".format(input_.fulfills.txid, input_.fulfills.output).encode()
             )
 
         # NOTE: We pass a timestamp to `.validate`, as in case of a timeout
@@ -1197,8 +1184,7 @@ class Transaction(object):
         Transaction.type_registry[tx_type] = tx_class
 
     def resolve_class(operation):
-        """! For the given `tx` based on the `operation` key return its implementation class
-        """
+        """! For the given `tx` based on the `operation` key return its implementation class"""
 
         create_txn_class = Transaction.type_registry.get(Transaction.CREATE)
         return Transaction.type_registry.get(operation, create_txn_class)
@@ -1223,15 +1209,13 @@ class Transaction(object):
                         input_tx = ctxn
 
             if input_tx is None:
-                raise InputDoesNotExist(
-                    "input `{}` doesn't exist".format(input_txid))
+                raise InputDoesNotExist("input `{}` doesn't exist".format(input_txid))
 
             spent = resdb.get_spent(
                 input_txid, input_.fulfills.output, current_transactions
             )
             if spent:
-                raise DoubleSpend(
-                    "input `{}` was already spent".format(input_txid))
+                raise DoubleSpend("input `{}` was already spent".format(input_txid))
 
             output = input_tx.outputs[input_.fulfills.output]
             input_conditions.append(output)

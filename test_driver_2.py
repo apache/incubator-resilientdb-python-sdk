@@ -2,6 +2,7 @@
 
 from resdb_driver import Resdb
 import json
+
 db_root_url = "http://127.0.0.1:18000"
 
 db = Resdb(db_root_url)
@@ -71,7 +72,7 @@ sent_transfer_tx = db.transactions.send_commit(fulfilled_transfer_tx)
 # %%
 
 # sent_transfer_tx is in the form "id: ac98e91d01591156008e23de4b5564909228..."
-print(db.transactions.retrieve(txid=sent_transfer_tx[len("id: "):]))
+print(db.transactions.retrieve(txid=sent_transfer_tx[len("id: ") :]))
 
 #%%
 # TODO valide a tx object
