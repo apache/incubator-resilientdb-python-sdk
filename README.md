@@ -194,21 +194,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 - [ ] Docker setup for local ResilientDB
 
 ### Connection Improvements
-- [ ] WebSocket support for real-time updates
-- [ ] Connection pooling optimization
-- [ ] Automatic node health checking
-- [ ] Custom retry strategies
-- [ ] Connection encryption options
-- [ ] Bulk operations support
+- [ ] Connection encryption and authentication options
 - [ ] Load balancing strategies
 - [ ] Metrics and monitoring
 
 ### API Enhancements
 - [ ] Add async/await support using aiohttp
-- [ ] Complete implementation of async/sync transaction modes
-- [ ] Add batch transaction support
-- [ ] Implement streaming responses for large datasets
-- [ ] Add support for complex query operations
-- [ ] Implement automatic request compression
 - [ ] Improve transaction ID handling
-- [ ] Add retry mechanisms for failed transactions
